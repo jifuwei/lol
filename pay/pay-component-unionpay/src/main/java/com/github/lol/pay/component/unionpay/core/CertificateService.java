@@ -1,6 +1,5 @@
-package com.github.lol.pay.component.unionpay.util;
+package com.github.lol.pay.component.unionpay.core;
 
-import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,7 +23,18 @@ import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.*;
  * @create: 2019-07-12 14:22
  **/
 @Slf4j
-public class CertificateUtil {
+public class CertificateService {
+
+    private UnionpayConfig config;
+
+    public CertificateService(UnionpayConfig config) {
+        this.config = config;
+        init();
+    }
+
+    public static CertificateService of(UnionpayConfig config) {
+        return new CertificateService(config);
+    }
 
     /**
      * 证书容器，存储对商户请求报文签名私钥证书
@@ -59,7 +69,7 @@ public class CertificateUtil {
     /**
      * init all certificate
      */
-    static {
+    private void init() {
         // 向系统添加BC provider
         addProvider();
         // 初始化签名私钥证书
@@ -76,12 +86,10 @@ public class CertificateUtil {
         initValidateCertFromDir();
     }
 
-    private static UnionpayConfig config = new UnionpayConfig();
-
     /**
      * add sign, verify，encrypt provider
      */
-    private static void addProvider() {
+    private void addProvider() {
         if (Security.getProvider(DEFAULT_PROVIDER) == null) {
             log.info("==> add [provider] name: {}", DEFAULT_PROVIDER);
             Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
@@ -95,7 +103,7 @@ public class CertificateUtil {
         printSysInfo();
     }
 
-    private static void printSysInfo() {
+    private void printSysInfo() {
         log.info("================= SYS INFO begin====================");
         log.info("os_name: {}", System.getProperty("os.name"));
         log.info("os_arch: {}", System.getProperty("os.arch"));
@@ -112,7 +120,7 @@ public class CertificateUtil {
         log.info("================= SYS INFO end=====================");
     }
 
-    private static void printProviders() {
+    private void printProviders() {
         log.info("Providers List:");
         Provider[] providers = Security.getProviders();
         for (int i = 0; i < providers.length; i++) {
@@ -123,7 +131,7 @@ public class CertificateUtil {
     /**
      * init sign certificate
      */
-    private static void initSignCert() {
+    private void initSignCert() {
         if (!SIGN_METHOD_RSA.equals(config.getSignMethod())) {
             log.warn("非RSA签名方式，不需要加载签名证书");
             return;
@@ -146,7 +154,7 @@ public class CertificateUtil {
     /**
      * init middle certificate
      */
-    private static void initMiddleCert() {
+    private void initMiddleCert() {
         if (StringUtils.isEmpty(config.getMiddleCertPath())) {
             throw new RuntimeException("middleCertPath is empty");
         }
@@ -155,7 +163,7 @@ public class CertificateUtil {
         log.info("==> Load MiddleCert Successful");
     }
 
-    private static void initRootCert() {
+    private void initRootCert() {
         if (StringUtils.isEmpty(config.getRootCertPath())) {
             throw new RuntimeException("rootCertPath is empty");
         }
@@ -164,7 +172,7 @@ public class CertificateUtil {
         log.info("==> Load RootCert Successful");
     }
 
-    private static void initEncryptCert() {
+    private void initEncryptCert() {
         if (StringUtils.isEmpty(config.getEncryptCertPath())) {
             throw new RuntimeException("encryptCertPath is empty");
         }
@@ -173,17 +181,19 @@ public class CertificateUtil {
         log.info("==> Load EncryptCert Successful");
     }
 
-    private static void initTrackKey() {
+    private void initTrackKey() {
         if (StringUtils.isEmpty(config.getEncryptTrackKeyModulus())
                 || StringUtils.isEmpty(config.getEncryptTrackKeyExponent())) {
-            throw new RuntimeException("encryptTrackKey or encryptTrackKey is empty");
+
+            log.warn("==> encryptTrackKey or encryptTrackKeyExponent is empty");
+            return;
         }
 
         encryptTrackKey = getPublicKey(config.getEncryptTrackKeyModulus(), config.getEncryptTrackKeyExponent());
         log.info("==> Load EncryptCert Successful");
     }
 
-    private static void initValidateCertFromDir() {
+    private void initValidateCertFromDir() {
         if (!SIGN_METHOD_RSA.equals(config.getSignMethod())) {
             log.warn("==> 非RSA签名方式，不需要加载签名证书");
             return;
@@ -191,9 +201,9 @@ public class CertificateUtil {
 
         certMap.clear();
         String dir = config.getValidateCertDir();
-        log.info("==> 加载验证签名证书目录: {}", dir);
         if (StringUtils.isEmpty(dir)) {
-            throw new RuntimeException("validateCert dir empty");
+            log.warn("==> validateCert dir empty");
+            return;
         }
 
         FileInputStream in = null;
@@ -238,7 +248,7 @@ public class CertificateUtil {
         }
     }
 
-    private static PublicKey getPublicKey(String encryptTrackKeyModulus, String encryptTrackKeyExponent) {
+    private PublicKey getPublicKey(String encryptTrackKeyModulus, String encryptTrackKeyExponent) {
         try {
             BigInteger b1 = new BigInteger(encryptTrackKeyModulus);
             BigInteger b2 = new BigInteger(encryptTrackKeyExponent);
@@ -252,7 +262,7 @@ public class CertificateUtil {
     }
 
 
-    private static X509Certificate initCert(String path) {
+    private X509Certificate initCert(String path) {
         try (FileInputStream in = new FileInputStream(path)) {
             CertificateFactory cf = CertificateFactory.getInstance(DEFAULT_CERT_TYPE, DEFAULT_PROVIDER);
             X509Certificate encryptCertTemp = (X509Certificate) cf.generateCertificate(in);
@@ -274,7 +284,7 @@ public class CertificateUtil {
      * @param signCertType
      * @return
      */
-    private static KeyStore getKeyInfo(String signCertPath, String signCertPwd, String signCertType) {
+    private KeyStore getKeyInfo(String signCertPath, String signCertPwd, String signCertType) {
 
         try (FileInputStream fis = new FileInputStream(signCertPath)) {
             KeyStore ks = KeyStore.getInstance(signCertType, DEFAULT_PROVIDER);
@@ -288,7 +298,7 @@ public class CertificateUtil {
         }
     }
 
-    static String getSignCertId() {
+    public String getSignCertId() {
         try {
             Enumeration<String> aliasenum = keyStore.aliases();
             String keyAlias = null;
@@ -304,7 +314,7 @@ public class CertificateUtil {
         }
     }
 
-    static PrivateKey getSignCertPrivateKey() {
+    public PrivateKey getSignCertPrivateKey() {
         try {
             Enumeration<String> aliasenum = keyStore.aliases();
             String keyAlias = null;

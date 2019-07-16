@@ -1,9 +1,19 @@
 package com.github.lol.pay.component.unionpay.product.gateway.service;
 
-import com.github.lol.pay.component.unionpay.UnionpayConfig;
+import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
+import com.github.lol.pay.component.unionpay.core.CertificateService;
+import com.github.lol.pay.component.unionpay.core.UnionpayConfig;
+import com.github.lol.pay.component.unionpay.core.UnionpaySignService;
 import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductService;
+import com.github.lol.pay.component.unionpay.product.common.model.FormReq;
 import com.github.lol.pay.component.unionpay.product.gateway.IUnionGatewayClient;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;
+import org.apache.commons.lang3.Validate;
+
+import java.util.Map;
+
+import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.Api.URL_GATEWAY_CONSUME;
+import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.UTF_8_ENCODING;
 
 /**
  * unionpay gateway client
@@ -13,13 +23,28 @@ import com.github.lol.pay.component.unionpay.product.gateway.model.*;
  **/
 public class UnionpayGatewayService extends AbstractUnionpayProductService implements IUnionGatewayClient {
 
-    public UnionpayGatewayService(UnionpayConfig config) {
-        setConfig(config);
+    public UnionpayGatewayService(UnionpayConfig config, CertificateService certService) {
+        this.config = config;
+        this.signService = UnionpaySignService.of(config, certService);
+        this.certService = CertificateService.of(config);
+    }
+
+    public static UnionpayGatewayService of(UnionpayConfig config, CertificateService certService) {
+        return new UnionpayGatewayService(config, certService);
     }
 
     @Override
-    public ConsumeSyncResp consume(ConsumeReq consumeReq) {
-        return null;
+    public FormReq consume(ConsumeReq consumeReq) {
+        Validate.notNull(consumeReq);
+
+        Map<String, String> dataMap = convertData2Map(consumeReq);
+        signService.sign(dataMap, UTF_8_ENCODING);
+
+        String reqUrl = config.getDomain() + URL_GATEWAY_CONSUME;
+
+        return FormReq.builder()
+                .actionUrl(reqUrl).encoding(config.getEncoding()).inputDataMap(dataMap)
+                .build();
     }
 
     @Override
@@ -65,5 +90,15 @@ public class UnionpayGatewayService extends AbstractUnionpayProductService imple
     @Override
     public FileTransferSyncResp fileTransfer(FileTransferReq fileTransferReq) {
         return null;
+    }
+
+    @Override
+    protected String productName() {
+        return UnionpayProductEnum.GATEWAY.getDesc();
+    }
+
+    @Override
+    protected String productId() {
+        return UnionpayProductEnum.GATEWAY.name();
     }
 }

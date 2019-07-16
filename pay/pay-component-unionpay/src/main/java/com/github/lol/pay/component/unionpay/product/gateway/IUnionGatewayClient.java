@@ -1,5 +1,6 @@
 package com.github.lol.pay.component.unionpay.product.gateway;
 
+import com.github.lol.pay.component.unionpay.product.common.model.FormReq;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;
 
 /**
@@ -20,7 +21,7 @@ public interface IUnionGatewayClient {
      * @param consumeReq
      * @return
      */
-    ConsumeSyncResp consume(ConsumeReq consumeReq);
+    FormReq consume(ConsumeReq consumeReq);
 
     /**
      * 是指因人为原因而撤销已完成的消费，商户可以通过SDK向银联全渠道支付平台发起消费撤销交易，

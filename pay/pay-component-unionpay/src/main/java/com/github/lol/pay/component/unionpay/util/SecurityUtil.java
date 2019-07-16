@@ -37,6 +37,11 @@ public class SecurityUtil {
      */
     private static final String BC_PROV_ALGORITHM_SHA1RSA = "SHA1withRSA";
 
+    /**
+     * 算法常量：SHA256withRSA
+     */
+    private static final String BC_PROV_ALGORITHM_SHA256RSA = "SHA256withRSA";
+
 
     /**
      * SHA-1 then to hex str
@@ -47,13 +52,13 @@ public class SecurityUtil {
      * @throws UnsupportedEncodingException
      * @throws NoSuchAlgorithmException
      */
-    static byte[] sha1X16(String data, String encoding)
+    public static String sha1X16(String data, String encoding)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Validate.notEmpty(data, "data can't empty");
         encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
 
         byte[] bytes = sha(data.getBytes(encoding), ALGORITHM_SHA1);
-        return X16(bytes, encoding).getBytes(encoding);
+        return X16(bytes, encoding);
     }
 
     /**
@@ -65,7 +70,7 @@ public class SecurityUtil {
      * @throws UnsupportedEncodingException
      * @throws NoSuchAlgorithmException
      */
-    static String sha256X16(String data, String encoding)
+    public static String sha256X16(String data, String encoding)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Validate.notEmpty(data, "data can't empty");
         encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
@@ -82,7 +87,7 @@ public class SecurityUtil {
      * @return
      * @throws UnsupportedEncodingException
      */
-    static String sm3X16(String data, String encoding)
+    public static String sm3X16(String data, String encoding)
             throws UnsupportedEncodingException {
         Validate.notEmpty(data, "data can't empty");
         encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
@@ -142,9 +147,17 @@ public class SecurityUtil {
         return sb.toString();
     }
 
-    static byte[] signBySoft(PrivateKey signCertPrivateKey, byte[] signDigest) {
+    public static byte[] signBySoftSHA1(PrivateKey signCertPrivateKey, byte[] signDigest) {
+        return signBySoft(signCertPrivateKey, signDigest, BC_PROV_ALGORITHM_SHA1RSA);
+    }
+
+    public static byte[] signBySoftSHA256(PrivateKey signCertPrivateKey, byte[] signDigest) {
+        return signBySoft(signCertPrivateKey, signDigest, BC_PROV_ALGORITHM_SHA256RSA);
+    }
+
+    private static byte[] signBySoft(PrivateKey signCertPrivateKey, byte[] signDigest, String algorithm) {
         try {
-            Signature st = Signature.getInstance(BC_PROV_ALGORITHM_SHA1RSA, DEFAULT_PROVIDER);
+            Signature st = Signature.getInstance(algorithm, DEFAULT_PROVIDER);
             st.initSign(signCertPrivateKey);
             st.update(signDigest);
             return st.sign();
@@ -153,7 +166,7 @@ public class SecurityUtil {
         }
     }
 
-    static byte[] base64Encode(byte[] signBySoft) {
+    public static byte[] base64Encode(byte[] signBySoft) {
         return Base64.encodeBase64(signBySoft);
     }
 }

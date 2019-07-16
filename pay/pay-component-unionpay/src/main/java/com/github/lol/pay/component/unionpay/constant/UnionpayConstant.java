@@ -48,4 +48,11 @@ public class UnionpayConstant {
     public final static String DEFAULT_PROVIDER = "BC";
     public final static String DEFAULT_CERT_TYPE = "X.509";
     public final static String DEFAULT_ALGORITHM = "RSA";
+
+    /**
+     * all api url
+     */
+    public class Api {
+        public final static String URL_GATEWAY_CONSUME = "/gateway/api/frontTransReq.do";
+    }
 }
