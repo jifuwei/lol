@@ -43,7 +43,8 @@ public class UnionpayGatewayServiceTest {
 
         IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
         FormReq formReq = gatewayClient.consume(consumeReq);
-        
+        System.out.println("html: " + formReq.buildAutoFormHtml());
+
         assertNotNull(formReq);
     }
 }

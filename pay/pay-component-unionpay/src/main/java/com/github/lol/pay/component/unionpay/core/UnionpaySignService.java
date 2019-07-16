@@ -124,6 +124,8 @@ public class UnionpaySignService {
          */
         EncryptHandle RSA = (params, encoding, config, certService) -> {
 
+            // certId should sign
+            params.put(PARMA_CERT_ID, certService.getSignCertId());
             BiFunction<Map<String, String>, String, byte[]> signDigestBiFunction = (p, e) -> {
 
                 try {
@@ -182,7 +184,6 @@ public class UnionpaySignService {
             String stringSign = signSeqFunction.apply(signDigest, params);
             LOGGER.debug("==> RSA EncryptHandle [stringSign]: {}", stringSign);
 
-            params.put(PARMA_CERT_ID, certService.getSignCertId());
             params.put(PARAM_SIGNATURE, stringSign);
         };
 

@@ -39,32 +39,32 @@ public class CertificateService {
     /**
      * 证书容器，存储对商户请求报文签名私钥证书
      */
-    private static KeyStore keyStore;
+    private KeyStore keyStore;
 
     /**
      * 验签中级证书
      */
-    private static X509Certificate middleCert;
+    private X509Certificate middleCert;
 
     /**
      * 验签根证书
      */
-    private static X509Certificate rootCert;
+    private X509Certificate rootCert;
 
     /**
      * 磁道加密公钥
      */
-    private static PublicKey encryptTrackKey;
+    private PublicKey encryptTrackKey;
 
     /**
      * 验证银联返回报文签名证书.
      */
-    private static X509Certificate validateCert;
+    private X509Certificate validateCert;
 
     /**
      * 验证银联返回报文签名的公钥证书存储Map.
      */
-    private static Map<String, X509Certificate> certMap = new HashMap<>();
+    private Map<String, X509Certificate> certMap = new HashMap<>();
 
     /**
      * init all certificate
