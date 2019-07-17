@@ -20,6 +20,7 @@
     <!-- model info -->
     <modules>
         <module>pay</module>
+        <module>lib-util</module>
     </modules>
 
     <!-- dependency management -->

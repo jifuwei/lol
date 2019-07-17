@@ -54,5 +54,6 @@ public class UnionpayConstant {
      */
     public class Api {
         public final static String URL_GATEWAY_CONSUME = "/gateway/api/frontTransReq.do";
+        public final static String URL_GATEWAY_CANCEL_CONSUME = "/gateway/api/backTransReq.do";
     }
 }

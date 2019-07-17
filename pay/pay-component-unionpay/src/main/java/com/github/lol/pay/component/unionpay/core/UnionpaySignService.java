@@ -54,14 +54,14 @@ public class UnionpaySignService {
      * @param params
      * @param encoding
      */
-    public void sign(Map<String, String> params, String encoding) {
+    public void sign(Map params, String encoding) {
         Validate.notNull(params, "sign params can't null");
         encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
         params.forEach((k, v) -> log.debug("==> param [key]: {} [value]: {}", k, v));
         log.debug("==> encoding [params]: {}", encoding);
 
-        String signMethod = params.get(PARMA_SIGN_METHOD);
-        String version = params.get(PARMA_VERSION);
+        String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
+        String version = String.valueOf(params.get(PARMA_VERSION));
 
         Validate.notEmpty(signMethod, "signMethod can't empty");
         Validate.notEmpty(version, "version can't empty");
@@ -87,8 +87,8 @@ public class UnionpaySignService {
          * @param config
          * @param certService
          */
-        static void execute(Map<String, String> params, String encoding, UnionpayConfig config, CertificateService certService) {
-            String signMethod = params.get(PARMA_SIGN_METHOD);
+        static void execute(Map params, String encoding, UnionpayConfig config, CertificateService certService) {
+            String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
 
             EncryptHandle targetHandler;
             switch (signMethod) {
@@ -116,7 +116,7 @@ public class UnionpaySignService {
          * @param config
          * @param certService
          */
-        void handle(Map<String, String> params, String encoding, UnionpayConfig config, CertificateService certService);
+        void handle(Map params, String encoding, UnionpayConfig config, CertificateService certService);
 
         /**
          * RSA encrypt handler

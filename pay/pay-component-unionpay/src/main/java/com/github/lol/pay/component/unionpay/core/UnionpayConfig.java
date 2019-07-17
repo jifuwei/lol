@@ -2,6 +2,8 @@ package com.github.lol.pay.component.unionpay.core;
 
 import lombok.Data;
 
+import java.util.Map;
+
 import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.*;
 
 /**
@@ -13,6 +15,10 @@ import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.*;
 @Data
 public class UnionpayConfig {
 
+    private Integer connectTimeout;
+    private Integer readTimeout;
+    private Boolean verifyCert;
+
     /**
      * 编码
      */
@@ -22,6 +28,21 @@ public class UnionpayConfig {
      * 版本
      */
     private String version;
+
+    /**
+     * 商户ID
+     */
+    private String merId;
+
+    /**
+     * 接入类型
+     */
+    private String accessType;
+
+    /**
+     * 交易币种
+     */
+    private String currencyCode;
 
     /**
      * api domain
@@ -83,10 +104,22 @@ public class UnionpayConfig {
      */
     private String secureKey;
 
+    /**
+     * url管理
+     */
+    private Map<String, String> urlMap;
+
+    // TODO: only for test
     public UnionpayConfig() {
+        this.connectTimeout = 30000;
+        this.readTimeout = 30000;
+        this.verifyCert = false;
         this.encoding = UTF_8_ENCODING;
         this.version = VERSION_5_1_0;
         this.domain = "https://gateway.test.95516.com";
+        this.merId = "777290058171299";
+        this.accessType = "0";
+        this.currencyCode = "156";
         this.signMethod = SIGN_METHOD_RSA;
         this.signCertPath = "/Users/jifuwei/acp_test_sign.pfx";
         this.signCertPwd = "000000";
