@@ -16,7 +16,6 @@ import java.util.Map;
 
 import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.Api.URL_GATEWAY_CANCEL_CONSUME;
 import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.Api.URL_GATEWAY_CONSUME;
-import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.UTF_8_ENCODING;
 
 /**
  * unionpay gateway client
@@ -26,14 +25,14 @@ import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.UT
  **/
 public class UnionpayGatewayService extends AbstractUnionpayProductService implements IUnionGatewayClient {
 
-    public UnionpayGatewayService(UnionpayConfig config, CertificateService certService) {
+    public UnionpayGatewayService(UnionpayConfig config) {
         this.setConfig(config);
-        this.setSignService(UnionpaySignService.of(config, certService));
         this.setCertService(CertificateService.of(config));
+        this.setSignService(UnionpaySignService.of(config, this.getCertService()));
     }
 
-    public static UnionpayGatewayService of(UnionpayConfig config, CertificateService certService) {
-        return new UnionpayGatewayService(config, certService);
+    public static UnionpayGatewayService of(UnionpayConfig config) {
+        return new UnionpayGatewayService(config);
     }
 
     @Override
@@ -41,7 +40,7 @@ public class UnionpayGatewayService extends AbstractUnionpayProductService imple
         Validate.notNull(consumeReq);
 
         Map<String, String> dataMap = convertData2Map(consumeReq);
-        this.getSignService().sign(dataMap, UTF_8_ENCODING);
+        this.getSignService().sign(dataMap, this.getConfig().getEncoding());
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CONSUME;
 
         return FormReq.builder()
@@ -53,10 +52,11 @@ public class UnionpayGatewayService extends AbstractUnionpayProductService imple
     public CancelConsumeSyncResp cancelConsume(CancelConsumeReq cancelConsumeReq) {
 
         Map<String, Object> dataMap = SerializeUtil.objectToMapNullRemove(cancelConsumeReq, String.class, Object.class);
-        this.getSignService().sign(dataMap, UTF_8_ENCODING);
+        this.getSignService().sign(dataMap, this.getConfig().getEncoding());
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CANCEL_CONSUME;
 
         Map<String, String> respMap = this.buildNetUtil(reqUrl, HttpNetUtil.HTTP_METHOD_POST).post(dataMap);
+        this.getSignService().validate(respMap, this.getConfig().getEncoding());
 
         return SerializeUtil.mapToObject(respMap, CancelConsumeSyncResp.class);
     }

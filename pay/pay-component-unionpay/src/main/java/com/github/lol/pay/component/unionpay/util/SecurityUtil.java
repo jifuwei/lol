@@ -5,11 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.bouncycastle.crypto.digests.SM3Digest;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.Signature;
+import java.security.*;
 
 import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.DEFAULT_PROVIDER;
 import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.UTF_8_ENCODING;
@@ -155,6 +153,14 @@ public class SecurityUtil {
         return signBySoft(signCertPrivateKey, signDigest, BC_PROV_ALGORITHM_SHA256RSA);
     }
 
+    public static boolean validateSignBySoftSHA256(PublicKey publicKey,
+                                                   byte[] signData, byte[] srcData) throws Exception {
+        Signature st = Signature.getInstance(BC_PROV_ALGORITHM_SHA256RSA, DEFAULT_PROVIDER);
+        st.initVerify(publicKey);
+        st.update(srcData);
+        return st.verify(signData);
+    }
+
     private static byte[] signBySoft(PrivateKey signCertPrivateKey, byte[] signDigest, String algorithm) {
         try {
             Signature st = Signature.getInstance(algorithm, DEFAULT_PROVIDER);
@@ -168,5 +174,9 @@ public class SecurityUtil {
 
     public static byte[] base64Encode(byte[] signBySoft) {
         return Base64.encodeBase64(signBySoft);
+    }
+
+    public static byte[] base64Decode(byte[] inputByte) throws IOException {
+        return Base64.decodeBase64(inputByte);
     }
 }

@@ -1,5 +1,6 @@
 package com.github.lol.pay.component.unionpay.core;
 
+import com.github.lol.lib.util.SerializeUtil;
 import com.github.lol.pay.component.unionpay.util.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -9,12 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.TreeMap;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.*;
 
@@ -72,6 +73,22 @@ public class UnionpaySignService {
         EncryptHandle.execute(params, encoding, config, certService);
     }
 
+    /**
+     * verify resp params
+     *
+     * @param respMap
+     * @param encoding
+     */
+    public void validate(Map<String, String> respMap, String encoding) {
+        if (Objects.isNull(respMap) || respMap.isEmpty()) {
+            throw new RuntimeException("verify failed: respMap is Empty");
+        }
+
+        encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
+
+        VerifyHandle.execute(respMap, encoding, config, certService);
+    }
+
 
     /**
      * diff encrypt method collection
@@ -120,7 +137,6 @@ public class UnionpaySignService {
 
         /**
          * RSA encrypt handler
-         * api version must VERSION_5_0_1 or VERSION_1_0_0
          */
         EncryptHandle RSA = (params, encoding, config, certService) -> {
 
@@ -129,7 +145,9 @@ public class UnionpaySignService {
             BiFunction<Map<String, String>, String, byte[]> signDigestBiFunction = (p, e) -> {
 
                 try {
-                    String stringData = coverMap2String(p);
+                    String stringData = SerializeUtil.map2KVStr(p, new HashSet<String>() {{
+                        add(PARAM_SIGNATURE);
+                    }});
                     LOGGER.debug("==> RSA EncryptHandle [stringData]: {}", stringData);
                     String version = p.get(PARMA_VERSION);
 
@@ -195,7 +213,9 @@ public class UnionpaySignService {
             try {
                 String secureKey = Optional.ofNullable(config.getSecureKey())
                         .orElseThrow(() -> new RuntimeException("secureKey can't empty"));
-                String stringData = coverMap2String(params);
+                String stringData = SerializeUtil.map2KVStr(params, new HashSet<String>() {{
+                    add(PARAM_SIGNATURE);
+                }});
                 LOGGER.debug("==> SHA256 EncryptHandle [stringData]: {}", stringData);
                 LOGGER.debug("==> SHA256 EncryptHandle [secureKey]: {}", secureKey);
 
@@ -219,7 +239,9 @@ public class UnionpaySignService {
             try {
                 String secureKey = Optional.ofNullable(config.getSecureKey())
                         .orElseThrow(() -> new RuntimeException("secureKey can't empty"));
-                String stringData = coverMap2String(params);
+                String stringData = SerializeUtil.map2KVStr(params, new HashSet<String>() {{
+                    add(PARAM_SIGNATURE);
+                }});
                 LOGGER.debug("==> SM3 EncryptHandle [stringData]: {}", stringData);
                 LOGGER.debug("==> SM3 EncryptHandle [secureKey]: {}", secureKey);
 
@@ -234,23 +256,176 @@ public class UnionpaySignService {
 
         };
 
+    }
+
+    /**
+     * verify handler collection
+     */
+    interface VerifyHandle {
+        Logger LOGGER = LoggerFactory.getLogger(VerifyHandle.class);
+
         /**
-         * convert map to k=v&k=v seq order by key's ASCII num ASC
+         * execute handler
          *
          * @param params
-         * @return
+         * @param encoding
+         * @param config
+         * @param certService
          */
-        static String coverMap2String(Map<String, String> params) {
-            if (Objects.isNull(params) || params.size() < 1) {
-                return null;
+        static void execute(Map params, String encoding, UnionpayConfig config, CertificateService certService) {
+            String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
+
+            EncryptHandle targetHandler;
+            switch (signMethod) {
+                case SIGN_METHOD_RSA:
+                    targetHandler = RSA;
+                    break;
+                case SIGN_METHOD_SHA256:
+                    targetHandler = SHA256;
+                    break;
+                case SIGN_METHOD_SM3:
+                    targetHandler = SM3;
+                    break;
+                default:
+                    throw new RuntimeException("verify handler can't find");
             }
 
-            return new TreeMap<>(params).entrySet()
-                    .stream()
-                    .filter(e -> !PARAM_SIGNATURE.equals(e.getKey().trim()))
-                    .map(e -> e.getKey() + EQUAL + e.getValue())
-                    .collect(Collectors.joining(AMPERSAND));
+            targetHandler.handle(params, encoding, config, certService);
         }
+
+        /**
+         * sign data & verify cert
+         *
+         * @param params
+         * @param encoding
+         * @param config
+         * @param certService
+         */
+        void handle(Map params, String encoding, UnionpayConfig config, CertificateService certService);
+
+        /**
+         * RSA verify handler
+         */
+        EncryptHandle RSA = (params, encoding, config, certService) -> {
+
+            // 1.从返回报文获取公钥
+            String certStr = Optional.of(params.get(PARAM_SIGN_PUB_KEY_CERT))
+                    .orElseThrow(() -> new RuntimeException("resp data can't find " + PARAM_SIGN_PUB_KEY_CERT))
+                    .toString();
+            log.debug("==> RSA VerifyHandle [certStr]: {}", certStr);
+
+            X509Certificate x509Cert = certService.genCertificateByStr(certStr);
+            if (Objects.isNull(x509Cert)) {
+                throw new RuntimeException("convert signPubKeyCert failed");
+            }
+
+            // 2.验证证书链，是否来自银联
+            if (!certService.verifyCertificate(x509Cert)) {
+                log.error("==> RSA VerifyHandle verify certificate failed, info: {}", certStr);
+                throw new RuntimeException("verify certificate failed");
+            }
+
+            // 3.验签
+            String respSignSeq = Optional.of(params.get(PARAM_SIGNATURE))
+                    .orElseThrow(() -> new RuntimeException("resp data can't find " + PARAM_SIGNATURE))
+                    .toString();
+            log.debug("==> RSA VerifyHandle [respSignSeq]: {}", respSignSeq);
+            String targetSignSeq = SerializeUtil.map2KVStr(params, new HashSet<String>() {{
+                add(PARAM_SIGNATURE);
+            }});
+            log.debug("==> RSA VerifyHandle [targetSignSeq]: {}", targetSignSeq);
+
+            try {
+
+                boolean res = SecurityUtil.validateSignBySoftSHA256(x509Cert.getPublicKey(),
+                        SecurityUtil.base64Decode(respSignSeq.getBytes(encoding)),
+                        SecurityUtil.sha256X16(targetSignSeq, encoding).getBytes(encoding));
+                if (!res) {
+                    throw new RuntimeException("RSA VerifyHandle final verify failed");
+                }
+
+            } catch (Exception e) {
+                throw new RuntimeException("RSA VerifyHandle final verify error", e);
+            }
+
+            log.debug("==> RSA VerifyHandle [verify success]");
+
+        };
+
+        /**
+         * SHA-256 encrypt handler
+         */
+        EncryptHandle SHA256 = (params, encoding, config, certService) -> {
+
+            String respSignSeq = Optional.of(params.get(PARAM_SIGNATURE))
+                    .orElseThrow(() -> new RuntimeException("resp data can't find " + PARAM_SIGNATURE))
+                    .toString();
+            log.debug("==> SHA256 VerifyHandle [respSignSeq]: {}", respSignSeq);
+
+            try {
+
+                String secureKey = Optional.ofNullable(config.getSecureKey())
+                        .orElseThrow(() -> new RuntimeException("secureKey can't empty"));
+                String targetSignSeq = SerializeUtil.map2KVStr(params, new HashSet<String>() {{
+                    add(PARAM_SIGNATURE);
+                }});
+                LOGGER.debug("==> SHA256 VerifyHandle [targetSignSeq]: {}", targetSignSeq);
+                LOGGER.debug("==> SHA256 VerifyHandle [secureKey]: {}", secureKey);
+
+                String strBeforeSha256 = targetSignSeq +
+                        AMPERSAND + SecurityUtil.sha256X16(secureKey, encoding);
+                String strAfterSha256 = SecurityUtil.sha256X16(strBeforeSha256, encoding);
+                LOGGER.debug("==> SHA256 VerifyHandle [strAfterSha256]: {}", strAfterSha256);
+
+                boolean res = respSignSeq.equalsIgnoreCase(strAfterSha256);
+                if (!res) {
+                    throw new RuntimeException("SHA256 VerifyHandle final verify failed");
+                }
+
+            } catch (Exception e) {
+                throw new RuntimeException("SHA256 VerifyHandle final verify error", e);
+            }
+
+            log.debug("==> SHA256 VerifyHandle [verify success]");
+
+        };
+
+        /**
+         * SM3 encrypt handler
+         */
+        EncryptHandle SM3 = (params, encoding, config, certService) -> {
+
+            String respSignSeq = Optional.of(params.get(PARAM_SIGNATURE))
+                    .orElseThrow(() -> new RuntimeException("resp data can't find " + PARAM_SIGNATURE))
+                    .toString();
+            log.debug("==> SM3 VerifyHandle [respSignSeq]: {}", respSignSeq);
+
+            try {
+
+                String secureKey = Optional.ofNullable(config.getSecureKey())
+                        .orElseThrow(() -> new RuntimeException("secureKey can't empty"));
+                String targetSignSeq = SerializeUtil.map2KVStr(params, new HashSet<String>() {{
+                    add(PARAM_SIGNATURE);
+                }});
+                LOGGER.debug("==> SM3 VerifyHandle [targetSignSeq]: {}", targetSignSeq);
+                LOGGER.debug("==> SM3 VerifyHandle [secureKey]: {}", secureKey);
+
+                String strBeforeSM3 = targetSignSeq + AMPERSAND + SecurityUtil.sm3X16(secureKey, encoding);
+                String strAfterSM3 = SecurityUtil.sm3X16(strBeforeSM3, encoding);
+                LOGGER.debug("==> SM3 VerifyHandle [strAfterSM3]: {}", strAfterSM3);
+
+                boolean res = respSignSeq.equalsIgnoreCase(strAfterSM3);
+                if (!res) {
+                    throw new RuntimeException("SM3 VerifyHandle final verify failed");
+                }
+
+            } catch (Exception e) {
+                throw new RuntimeException("SM3 VerifyHandle final verify error", e);
+            }
+
+            log.debug("==> SM3 VerifyHandle [verify success]");
+
+        };
 
     }
 }

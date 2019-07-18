@@ -1,6 +1,5 @@
 package com.github.lol.pay.component.unionpay;
 
-import com.github.lol.pay.component.unionpay.core.CertificateService;
 import com.github.lol.pay.component.unionpay.core.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductService;
 import com.github.lol.pay.component.unionpay.product.gateway.service.UnionpayGatewayService;
@@ -29,11 +28,9 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
     private final ConcurrentMap<Class<?>, Object> productMap = new ConcurrentHashMap<>();
 
     private UnionpayConfig config;
-    private CertificateService certService;
 
     private SimpleCacheUnionpayProductFactory setConfig(UnionpayConfig config) {
         this.config = config;
-        this.certService = CertificateService.of(config);
 
         return this;
     }
@@ -92,7 +89,7 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
 
     private <T> Object buildClass(Class<T> clazz) {
         if (UnionpayGatewayService.class.equals(clazz)) {
-            return UnionpayGatewayService.of(config, certService);
+            return UnionpayGatewayService.of(config);
         } else {
             throw new RuntimeException(String.format("[Class]: %s not support now", clazz.getName()));
         }

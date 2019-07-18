@@ -1,18 +1,18 @@
 package com.github.lol.pay.component.unionpay.core;
 
+import com.github.lol.lib.util.StrUtil;
+import com.github.lol.lib.util.ValidUtil;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.math.BigInteger;
 import java.security.*;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
+import java.security.cert.*;
 import java.security.spec.RSAPublicKeySpec;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.*;
 
@@ -50,6 +50,11 @@ public class CertificateService {
      * 验签根证书
      */
     private X509Certificate rootCert;
+
+    /**
+     * 敏感信息加密公钥证书
+     */
+    private static X509Certificate encryptCert;
 
     /**
      * 磁道加密公钥
@@ -177,7 +182,7 @@ public class CertificateService {
             throw new RuntimeException("encryptCertPath is empty");
         }
 
-        rootCert = initCert(config.getEncryptCertPath());
+        encryptCert = initCert(config.getEncryptCertPath());
         log.info("==> Load EncryptCert Successful");
     }
 
@@ -326,6 +331,123 @@ public class CertificateService {
         } catch (Exception e) {
             throw new RuntimeException("getSignCertPrivateKey error", e);
         }
+    }
+
+    @SneakyThrows
+    public X509Certificate genCertificateByStr(String certStr) {
+        CertificateFactory cf = CertificateFactory.getInstance(DEFAULT_CERT_TYPE, DEFAULT_PROVIDER);
+        @Cleanup InputStream tIn = new ByteArrayInputStream(certStr.getBytes(DEFAULT_CHARSET_NAME));
+        return (X509Certificate) cf.generateCertificate(tIn);
+    }
+
+    @SneakyThrows
+    public boolean verifyCertificate(X509Certificate cert) {
+        ValidUtil.notNull(cert);
+
+        cert.checkValidity();
+        if (!verifyCertificateChain(cert)) {
+            throw new RuntimeException("verifyCertificate fail");
+        }
+
+        if (config.isIfValidateCNName()) {
+            // 验证证书是否属于银联
+            if (!UNIONPAY_CNNAME.equals(getIdentitiesFromCertficate(cert))) {
+                throw new RuntimeException("cer owner is not CUP:" + getIdentitiesFromCertficate(cert));
+            }
+        } else {
+            // 验证公钥是否属于银联
+            if (!UNIONPAY_CNNAME.equals(getIdentitiesFromCertficate(cert))
+                    && !"00040000:SIGN".equals(getIdentitiesFromCertficate(cert))) {
+                throw new RuntimeException("cer owner is not CUP:" + getIdentitiesFromCertficate(cert));
+            }
+        }
+
+        return true;
+    }
+
+    private String getIdentitiesFromCertficate(X509Certificate aCert) {
+        String tDN = aCert.getSubjectDN().toString();
+        String tPart = "";
+        if (Objects.isNull(tDN)) {
+            return tPart;
+        }
+
+        String[] tSplitStr = tDN.substring(tDN.indexOf("CN=")).split("@");
+        if (tSplitStr.length > 2 && tSplitStr[2] != null) {
+            tPart = tSplitStr[2];
+        }
+
+        return tPart;
+    }
+
+    @SneakyThrows
+    private boolean verifyCertificateChain(X509Certificate cert) {
+        ValidUtil.notNull(cert);
+
+        X509Certificate middleCert = getMiddleCert();
+        if (Objects.isNull(middleCert)) {
+            throw new RuntimeException("can't load middleCert");
+        }
+
+        X509Certificate rootCert = getRootCert();
+        if (Objects.isNull(rootCert)) {
+            throw new RuntimeException("can't load rootCert");
+        }
+
+        X509CertSelector selector = new X509CertSelector();
+        selector.setCertificate(cert);
+
+        Set<TrustAnchor> trustAnchors = new HashSet<>();
+        trustAnchors.add(new TrustAnchor(rootCert, null));
+        PKIXBuilderParameters pkixParams = new PKIXBuilderParameters(
+                trustAnchors, selector);
+
+        Set<X509Certificate> intermediateCerts = new HashSet<>();
+        intermediateCerts.add(rootCert);
+        intermediateCerts.add(middleCert);
+        intermediateCerts.add(cert);
+
+        pkixParams.setRevocationEnabled(false);
+
+        CertStore intermediateCertStore = CertStore.getInstance("Collection",
+                new CollectionCertStoreParameters(intermediateCerts), DEFAULT_PROVIDER);
+        pkixParams.addCertStore(intermediateCertStore);
+
+        CertPathBuilder builder = CertPathBuilder.getInstance("PKIX", DEFAULT_PROVIDER);
+
+        @SuppressWarnings("unused")
+        PKIXCertPathBuilderResult result = (PKIXCertPathBuilderResult) builder
+                .build(pkixParams);
+
+        return true;
+    }
+
+    private X509Certificate getRootCert() {
+        if (Objects.isNull(rootCert)) {
+            String path = config.getRootCertPath();
+            if (StrUtil.isEmpty(path)) {
+                log.warn("==> not set middleCertPath");
+                return null;
+            }
+
+            initRootCert();
+        }
+
+        return rootCert;
+    }
+
+    private X509Certificate getMiddleCert() {
+        if (Objects.isNull(middleCert)) {
+            String path = config.getMiddleCertPath();
+            if (StrUtil.isEmpty(path)) {
+                log.warn("==> not set middleCertPath");
+                return null;
+            }
+
+            initMiddleCert();
+        }
+
+        return middleCert;
     }
 
     /**

@@ -15,6 +15,7 @@ public class UnionpayConstant {
     public final static String PARMA_VERSION = "version";
     public final static String PARMA_CERT_ID = "certId";
     public final static String PARAM_SIGNATURE = "signature";
+    public static final String PARAM_SIGN_PUB_KEY_CERT = "signPubKeyCert";
 
     /**
      * api version
@@ -48,6 +49,8 @@ public class UnionpayConstant {
     public final static String DEFAULT_PROVIDER = "BC";
     public final static String DEFAULT_CERT_TYPE = "X.509";
     public final static String DEFAULT_ALGORITHM = "RSA";
+    public final static String DEFAULT_CHARSET_NAME = "ISO-8859-1";
+    public static final String UNIONPAY_CNNAME = "中国银联股份有限公司";
 
     /**
      * all api url

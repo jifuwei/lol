@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Serialize util
@@ -13,6 +14,9 @@ import java.util.*;
  * @create: 2019-07-17 16:58
  **/
 public class SerializeUtil {
+
+    public final static String EQUAL = "=";
+    public final static String AMPERSAND = "&";
 
     /**
      * map to object
@@ -49,6 +53,16 @@ public class SerializeUtil {
         return obj;
     }
 
+    /**
+     * object to map & remove val = null
+     *
+     * @param source
+     * @param keyClass
+     * @param valClass
+     * @param <T>
+     * @param <U>
+     * @return
+     */
     public static <T, U> Map<T, U> objectToMapNullRemove(Object source, Class<T> keyClass, Class<U> valClass) {
         Map target = objectToMap(source);
         if (Objects.isNull(target)) {
@@ -93,6 +107,24 @@ public class SerializeUtil {
         }
 
         return map;
+    }
+
+    /**
+     * convert map to k=v&k=v seq order by key's ASCII num ASC
+     *
+     * @param sourceMap
+     * @return
+     */
+    public static String map2KVStr(Map<String, String> sourceMap, Set<String> removeKeySet) {
+        if (Objects.isNull(sourceMap) || sourceMap.isEmpty()) {
+            return null;
+        }
+
+        return new TreeMap<>(sourceMap).entrySet()
+                .stream()
+                .filter(e -> Objects.isNull(removeKeySet) || !removeKeySet.contains(e.getKey()))
+                .map(e -> e.getKey() + EQUAL + e.getValue())
+                .collect(Collectors.joining(AMPERSAND));
     }
 
     private static List<Class> getAllClazz(Class clazz) {

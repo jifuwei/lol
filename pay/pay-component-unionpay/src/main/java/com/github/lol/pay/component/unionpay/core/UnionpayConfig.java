@@ -117,6 +117,11 @@ public class UnionpayConfig {
     private String secureKey;
 
     /**
+     * 是否验证验签证书CN，除了false都验
+     */
+    private boolean ifValidateCNName = true;
+
+    /**
      * url管理
      */
     private Map<String, String> urlMap;
@@ -143,5 +148,7 @@ public class UnionpayConfig {
         this.encryptTrackKeyExponent = null;
         this.validateCertDir = null;
         this.secureKey = null;
+        // 测试环境只能是false 生产环境必须是true
+        this.ifValidateCNName = false;
     }
 }

@@ -71,7 +71,6 @@ public class UnionpayGatewayServiceTest {
 
         IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
         CancelConsumeSyncResp syncResp = gatewayClient.cancelConsume(req);
-        System.out.println("==> " + syncResp.toString());
 
         assertNotNull(syncResp);
     }
