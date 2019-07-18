@@ -6,15 +6,16 @@
     <parent>
         <artifactId>pay</artifactId>
         <groupId>com.github</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>pay-component-unionpay</artifactId>
     <name>pay-component-unionpay</name>
+    <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <default.snapshot>1.0-SNAPSHOT</default.snapshot>
+        <default.snapshot>0.0.1-SNAPSHOT</default.snapshot>
     </properties>
 
 
