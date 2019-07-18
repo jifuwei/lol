@@ -15,14 +15,14 @@ public interface IUnionPayProductFactory {
      *
      * @return
      */
-    boolean isClassCacheEnabled();
+    Boolean isClassCacheEnabled();
 
     /**
      * set cache config
      *
      * @param classCacheEnabled
      */
-    void setClassCacheEnabled(boolean classCacheEnabled);
+    void setClassCacheEnabled(Boolean classCacheEnabled);
 
     /**
      * produce a product

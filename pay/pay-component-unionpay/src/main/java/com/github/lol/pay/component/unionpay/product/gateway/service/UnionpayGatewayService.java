@@ -10,7 +10,7 @@ import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductServ
 import com.github.lol.pay.component.unionpay.product.common.model.FormReq;
 import com.github.lol.pay.component.unionpay.product.gateway.IUnionGatewayClient;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;
-import org.apache.commons.lang3.Validate;
+import lombok.NonNull;
 
 import java.util.Map;
 
@@ -25,21 +25,21 @@ import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.Ap
  **/
 public class UnionpayGatewayService extends AbstractUnionpayProductService implements IUnionGatewayClient {
 
-    public UnionpayGatewayService(UnionpayConfig config) {
+    public UnionpayGatewayService(@NonNull UnionpayConfig config) {
         this.setConfig(config);
         this.setCertService(CertificateService.of(config));
         this.setSignService(UnionpaySignService.of(config, this.getCertService()));
     }
 
-    public static UnionpayGatewayService of(UnionpayConfig config) {
+    public static UnionpayGatewayService of(@NonNull UnionpayConfig config) {
         return new UnionpayGatewayService(config);
     }
 
     @Override
-    public FormReq consume(ConsumeReq consumeReq) {
-        Validate.notNull(consumeReq);
+    public FormReq consume(@NonNull ConsumeReq consumeReq) {
+        Map<String, String> dataMap = SerializeUtil.objectToMapNullRemove(consumeReq,
+                String.class, String.class);
 
-        Map<String, String> dataMap = convertData2Map(consumeReq);
         this.getSignService().sign(dataMap, this.getConfig().getEncoding());
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CONSUME;
 
@@ -49,9 +49,10 @@ public class UnionpayGatewayService extends AbstractUnionpayProductService imple
     }
 
     @Override
-    public CancelConsumeSyncResp cancelConsume(CancelConsumeReq cancelConsumeReq) {
+    public CancelConsumeSyncResp cancelConsume(@NonNull CancelConsumeReq cancelConsumeReq) {
+        Map<String, Object> dataMap = SerializeUtil.objectToMapNullRemove(cancelConsumeReq,
+                String.class, Object.class);
 
-        Map<String, Object> dataMap = SerializeUtil.objectToMapNullRemove(cancelConsumeReq, String.class, Object.class);
         this.getSignService().sign(dataMap, this.getConfig().getEncoding());
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CANCEL_CONSUME;
 
@@ -62,42 +63,42 @@ public class UnionpayGatewayService extends AbstractUnionpayProductService imple
     }
 
     @Override
-    public BackConsumeSyncResp backConsume(BackConsumeReq backConsumeReq) {
+    public BackConsumeSyncResp backConsume(@NonNull BackConsumeReq backConsumeReq) {
         return null;
     }
 
     @Override
-    public TransactionStatusQuerySyncResp transactionStatusQuery(TransactionStatusQueryReq transactionStatusQueryReq) {
+    public TransactionStatusQuerySyncResp transactionStatusQuery(@NonNull TransactionStatusQueryReq transactionStatusQueryReq) {
         return null;
     }
 
     @Override
-    public EncryptInfoUpdateSyncResp encryptInfoUpdate(EncryptInfoUpdateReq encryptInfoUpdateReq) {
+    public EncryptInfoUpdateSyncResp encryptInfoUpdate(@NonNull EncryptInfoUpdateReq encryptInfoUpdateReq) {
         return null;
     }
 
     @Override
-    public PreAuthSyncResp preAuth(PreAuthReq preAuthReq) {
+    public PreAuthSyncResp preAuth(@NonNull PreAuthReq preAuthReq) {
         return null;
     }
 
     @Override
-    public CancelPreAuthSyncResp cancelPreAuth(CancelPreAuthReq cancelPreAuthReq) {
+    public CancelPreAuthSyncResp cancelPreAuth(@NonNull CancelPreAuthReq cancelPreAuthReq) {
         return null;
     }
 
     @Override
-    public CompletePreAuthSyncResp completePreAuth(CompletePreAuthReq completePreAuthReq) {
+    public CompletePreAuthSyncResp completePreAuth(@NonNull CompletePreAuthReq completePreAuthReq) {
         return null;
     }
 
     @Override
-    public CancelCompletedPreAuthSyncResp cancelCompletedPreAuth(CancelCompletedPreAuthReq cancelCompletedPreAuthReq) {
+    public CancelCompletedPreAuthSyncResp cancelCompletedPreAuth(@NonNull CancelCompletedPreAuthReq cancelCompletedPreAuthReq) {
         return null;
     }
 
     @Override
-    public FileTransferSyncResp fileTransfer(FileTransferReq fileTransferReq) {
+    public FileTransferSyncResp fileTransfer(@NonNull FileTransferReq fileTransferReq) {
         return null;
     }
 

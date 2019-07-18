@@ -2,6 +2,7 @@ package com.github.lol.pay.component.unionpay.core;
 
 import com.github.lol.lib.util.SerializeUtil;
 import com.github.lol.pay.component.unionpay.util.SecurityUtil;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -31,12 +32,13 @@ public class UnionpaySignService {
     private UnionpayConfig config;
     private CertificateService certService;
 
-    public UnionpaySignService(UnionpayConfig config, CertificateService certService) {
+    public UnionpaySignService(@NonNull UnionpayConfig config, @NonNull CertificateService certService) {
         this.config = config;
         this.certService = certService;
     }
 
-    public static UnionpaySignService of(UnionpayConfig config, CertificateService certService) {
+    public static UnionpaySignService of(@NonNull UnionpayConfig config,
+                                         @NonNull CertificateService certService) {
         return new UnionpaySignService(config, certService);
     }
 
@@ -45,7 +47,7 @@ public class UnionpaySignService {
      *
      * @param params
      */
-    public void sign(Map<String, String> params) {
+    public void sign(@NonNull Map<String, String> params) {
         sign(params, null);
     }
 
@@ -55,7 +57,7 @@ public class UnionpaySignService {
      * @param params
      * @param encoding
      */
-    public void sign(Map params, String encoding) {
+    public void sign(@NonNull Map params, String encoding) {
         Validate.notNull(params, "sign params can't null");
         encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
         params.forEach((k, v) -> log.debug("==> param [key]: {} [value]: {}", k, v));
@@ -66,7 +68,8 @@ public class UnionpaySignService {
 
         Validate.notEmpty(signMethod, "signMethod can't empty");
         Validate.notEmpty(version, "version can't empty");
-        if (!VERSION_1_0_0.equals(version) && !VERSION_5_0_1.equals(version) && StringUtils.isEmpty(signMethod)) {
+        if (!VERSION_1_0_0.equals(version) && !VERSION_5_0_1.equals(version)
+                && StringUtils.isEmpty(signMethod)) {
             throw new RuntimeException("illegal version: " + version);
         }
 
@@ -79,11 +82,7 @@ public class UnionpaySignService {
      * @param respMap
      * @param encoding
      */
-    public void validate(Map<String, String> respMap, String encoding) {
-        if (Objects.isNull(respMap) || respMap.isEmpty()) {
-            throw new RuntimeException("verify failed: respMap is Empty");
-        }
-
+    public void validate(@NonNull Map<String, String> respMap, String encoding) {
         encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
 
         VerifyHandle.execute(respMap, encoding, config, certService);
@@ -93,47 +92,9 @@ public class UnionpaySignService {
     /**
      * diff encrypt method collection
      */
+    @FunctionalInterface
     interface EncryptHandle {
         Logger LOGGER = LoggerFactory.getLogger(EncryptHandle.class);
-
-        /**
-         * execute handler
-         *
-         * @param params
-         * @param encoding
-         * @param config
-         * @param certService
-         */
-        static void execute(Map params, String encoding, UnionpayConfig config, CertificateService certService) {
-            String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
-
-            EncryptHandle targetHandler;
-            switch (signMethod) {
-                case SIGN_METHOD_RSA:
-                    targetHandler = RSA;
-                    break;
-                case SIGN_METHOD_SHA256:
-                    targetHandler = SHA256;
-                    break;
-                case SIGN_METHOD_SM3:
-                    targetHandler = SM3;
-                    break;
-                default:
-                    throw new RuntimeException("encrypt handler can't find");
-            }
-
-            targetHandler.handle(params, encoding, config, certService);
-        }
-
-        /**
-         * sign data & verify cert
-         *
-         * @param params
-         * @param encoding
-         * @param config
-         * @param certService
-         */
-        void handle(Map params, String encoding, UnionpayConfig config, CertificateService certService);
 
         /**
          * RSA encrypt handler
@@ -256,14 +217,6 @@ public class UnionpaySignService {
 
         };
 
-    }
-
-    /**
-     * verify handler collection
-     */
-    interface VerifyHandle {
-        Logger LOGGER = LoggerFactory.getLogger(VerifyHandle.class);
-
         /**
          * execute handler
          *
@@ -272,7 +225,9 @@ public class UnionpaySignService {
          * @param config
          * @param certService
          */
-        static void execute(Map params, String encoding, UnionpayConfig config, CertificateService certService) {
+        static void execute(@NonNull Map params, String encoding,
+                            @NonNull UnionpayConfig config,
+                            @NonNull CertificateService certService) {
             String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
 
             EncryptHandle targetHandler;
@@ -287,7 +242,7 @@ public class UnionpaySignService {
                     targetHandler = SM3;
                     break;
                 default:
-                    throw new RuntimeException("verify handler can't find");
+                    throw new RuntimeException("encrypt handler can't find");
             }
 
             targetHandler.handle(params, encoding, config, certService);
@@ -303,14 +258,24 @@ public class UnionpaySignService {
          */
         void handle(Map params, String encoding, UnionpayConfig config, CertificateService certService);
 
+    }
+
+    /**
+     * verify handler collection
+     */
+    @FunctionalInterface
+    interface VerifyHandle {
+        Logger LOGGER = LoggerFactory.getLogger(VerifyHandle.class);
+
         /**
          * RSA verify handler
          */
-        EncryptHandle RSA = (params, encoding, config, certService) -> {
+        VerifyHandle RSA = (params, encoding, config, certService) -> {
 
             // 1.从返回报文获取公钥
             String certStr = Optional.of(params.get(PARAM_SIGN_PUB_KEY_CERT))
-                    .orElseThrow(() -> new RuntimeException("resp data can't find " + PARAM_SIGN_PUB_KEY_CERT))
+                    .orElseThrow(() -> new RuntimeException("resp data can't find " +
+                            PARAM_SIGN_PUB_KEY_CERT))
                     .toString();
             log.debug("==> RSA VerifyHandle [certStr]: {}", certStr);
 
@@ -327,7 +292,8 @@ public class UnionpaySignService {
 
             // 3.验签
             String respSignSeq = Optional.of(params.get(PARAM_SIGNATURE))
-                    .orElseThrow(() -> new RuntimeException("resp data can't find " + PARAM_SIGNATURE))
+                    .orElseThrow(() -> new RuntimeException("resp data can't find " +
+                            PARAM_SIGNATURE))
                     .toString();
             log.debug("==> RSA VerifyHandle [respSignSeq]: {}", respSignSeq);
             String targetSignSeq = SerializeUtil.map2KVStr(params, new HashSet<String>() {{
@@ -353,12 +319,13 @@ public class UnionpaySignService {
         };
 
         /**
-         * SHA-256 encrypt handler
+         * SHA-256 verify handler
          */
-        EncryptHandle SHA256 = (params, encoding, config, certService) -> {
+        VerifyHandle SHA256 = (params, encoding, config, certService) -> {
 
             String respSignSeq = Optional.of(params.get(PARAM_SIGNATURE))
-                    .orElseThrow(() -> new RuntimeException("resp data can't find " + PARAM_SIGNATURE))
+                    .orElseThrow(() -> new RuntimeException("resp data can't find " +
+                            PARAM_SIGNATURE))
                     .toString();
             log.debug("==> SHA256 VerifyHandle [respSignSeq]: {}", respSignSeq);
 
@@ -391,12 +358,13 @@ public class UnionpaySignService {
         };
 
         /**
-         * SM3 encrypt handler
+         * SM3 verify handler
          */
-        EncryptHandle SM3 = (params, encoding, config, certService) -> {
+        VerifyHandle SM3 = (params, encoding, config, certService) -> {
 
             String respSignSeq = Optional.of(params.get(PARAM_SIGNATURE))
-                    .orElseThrow(() -> new RuntimeException("resp data can't find " + PARAM_SIGNATURE))
+                    .orElseThrow(() -> new RuntimeException("resp data can't find " +
+                            PARAM_SIGNATURE))
                     .toString();
             log.debug("==> SM3 VerifyHandle [respSignSeq]: {}", respSignSeq);
 
@@ -410,7 +378,8 @@ public class UnionpaySignService {
                 LOGGER.debug("==> SM3 VerifyHandle [targetSignSeq]: {}", targetSignSeq);
                 LOGGER.debug("==> SM3 VerifyHandle [secureKey]: {}", secureKey);
 
-                String strBeforeSM3 = targetSignSeq + AMPERSAND + SecurityUtil.sm3X16(secureKey, encoding);
+                String strBeforeSM3 = targetSignSeq + AMPERSAND +
+                        SecurityUtil.sm3X16(secureKey, encoding);
                 String strAfterSM3 = SecurityUtil.sm3X16(strBeforeSM3, encoding);
                 LOGGER.debug("==> SM3 VerifyHandle [strAfterSM3]: {}", strAfterSM3);
 
@@ -426,6 +395,47 @@ public class UnionpaySignService {
             log.debug("==> SM3 VerifyHandle [verify success]");
 
         };
+
+        /**
+         * execute handler
+         *
+         * @param params
+         * @param encoding
+         * @param config
+         * @param certService
+         */
+        static void execute(@NonNull Map params, String encoding,
+                            @NonNull UnionpayConfig config,
+                            @NonNull CertificateService certService) {
+            String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
+
+            VerifyHandle targetHandler;
+            switch (signMethod) {
+                case SIGN_METHOD_RSA:
+                    targetHandler = RSA;
+                    break;
+                case SIGN_METHOD_SHA256:
+                    targetHandler = SHA256;
+                    break;
+                case SIGN_METHOD_SM3:
+                    targetHandler = SM3;
+                    break;
+                default:
+                    throw new RuntimeException("verify handler can't find");
+            }
+
+            targetHandler.handle(params, encoding, config, certService);
+        }
+
+        /**
+         * sign data & verify cert
+         *
+         * @param params
+         * @param encoding
+         * @param config
+         * @param certService
+         */
+        void handle(Map params, String encoding, UnionpayConfig config, CertificateService certService);
 
     }
 }

@@ -1,5 +1,6 @@
 package com.github.lol.lib.util;
 
+import lombok.NonNull;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -27,8 +28,8 @@ public class SerializeUtil {
      * @throws Exception
      */
     @SneakyThrows
-    public static <T> T mapToObject(Map map, Class<T> beanClass) {
-        if (Objects.isNull(map) || map.isEmpty()) {
+    public static <T> T mapToObject(@NonNull Map map, @NonNull Class<T> beanClass) {
+        if (map.isEmpty()) {
             return null;
         }
 
@@ -63,7 +64,8 @@ public class SerializeUtil {
      * @param <U>
      * @return
      */
-    public static <T, U> Map<T, U> objectToMapNullRemove(Object source, Class<T> keyClass, Class<U> valClass) {
+    public static <T, U> Map<T, U> objectToMapNullRemove(@NonNull Object source,
+                                                         @NonNull Class<T> keyClass, @NonNull Class<U> valClass) {
         Map target = objectToMap(source);
         if (Objects.isNull(target)) {
             return null;
@@ -83,11 +85,7 @@ public class SerializeUtil {
      * @throws Exception
      */
     @SneakyThrows
-    public static Map<String, Object> objectToMap(Object source) {
-        if (Objects.isNull(source)) {
-            return null;
-        }
-
+    public static Map<String, Object> objectToMap(@NonNull Object source) {
         // get all super class
         Class clazz = source.getClass();
         List<Class> clazzList = getAllClazz(clazz);
@@ -115,8 +113,8 @@ public class SerializeUtil {
      * @param sourceMap
      * @return
      */
-    public static String map2KVStr(Map<String, String> sourceMap, Set<String> removeKeySet) {
-        if (Objects.isNull(sourceMap) || sourceMap.isEmpty()) {
+    public static String map2KVStr(@NonNull Map<String, String> sourceMap, Set<String> removeKeySet) {
+        if (sourceMap.isEmpty()) {
             return null;
         }
 
@@ -127,7 +125,7 @@ public class SerializeUtil {
                 .collect(Collectors.joining(AMPERSAND));
     }
 
-    private static List<Class> getAllClazz(Class clazz) {
+    private static List<Class> getAllClazz(@NonNull Class clazz) {
         List<Class> clazzList = new ArrayList<>();
         do {
             clazzList.add(clazz);
@@ -137,7 +135,7 @@ public class SerializeUtil {
         return clazzList;
     }
 
-    private static void removeNullKey(Map map) {
+    private static void removeNullKey(@NonNull Map map) {
         Set set = map.keySet();
         for (Iterator iterator = set.iterator(); iterator.hasNext(); ) {
             Object obj = iterator.next();
@@ -145,7 +143,7 @@ public class SerializeUtil {
         }
     }
 
-    public static void removeNullValue(Map map) {
+    public static void removeNullValue(@NonNull Map map) {
         Set set = map.keySet();
         for (Iterator iterator = set.iterator(); iterator.hasNext(); ) {
             Object obj = iterator.next();
@@ -154,7 +152,7 @@ public class SerializeUtil {
         }
     }
 
-    private static void remove(Object obj, Iterator iterator) {
+    private static void remove(Object obj, @NonNull Iterator iterator) {
         if (obj instanceof String) {
             String str = (String) obj;
             if (str.trim().isEmpty()) {

@@ -1,8 +1,8 @@
 package com.github.lol.pay.component.unionpay.core;
 
 import com.github.lol.lib.util.StrUtil;
-import com.github.lol.lib.util.ValidUtil;
 import lombok.Cleanup;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -27,12 +27,12 @@ public class CertificateService {
 
     private UnionpayConfig config;
 
-    public CertificateService(UnionpayConfig config) {
+    public CertificateService(@NonNull UnionpayConfig config) {
         this.config = config;
         init();
     }
 
-    public static CertificateService of(UnionpayConfig config) {
+    public static CertificateService of(@NonNull UnionpayConfig config) {
         return new CertificateService(config);
     }
 
@@ -95,7 +95,7 @@ public class CertificateService {
      * add sign, verify，encrypt provider
      */
     private void addProvider() {
-        if (Security.getProvider(DEFAULT_PROVIDER) == null) {
+        if (Objects.isNull(Security.getProvider(DEFAULT_PROVIDER))) {
             log.info("==> add [provider] name: {}", DEFAULT_PROVIDER);
             Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         } else {
@@ -148,7 +148,7 @@ public class CertificateService {
             throw new RuntimeException("can't find certificate or pwd or certType");
         }
 
-        if (null != keyStore) {
+        if (!Objects.isNull(keyStore)) {
             keyStore = null;
         }
 
@@ -198,6 +198,7 @@ public class CertificateService {
         log.info("==> Load EncryptCert Successful");
     }
 
+    @SneakyThrows
     private void initValidateCertFromDir() {
         if (!SIGN_METHOD_RSA.equals(config.getSignMethod())) {
             log.warn("==> 非RSA签名方式，不需要加载签名证书");
@@ -211,74 +212,50 @@ public class CertificateService {
             return;
         }
 
-        FileInputStream in = null;
-        try {
-            CertificateFactory cf = CertificateFactory.getInstance(DEFAULT_CERT_TYPE, DEFAULT_PROVIDER);
-            File fileDir = new File(dir);
-            File[] files = fileDir.listFiles(new CerFilter());
+        CertificateFactory cf = CertificateFactory.getInstance(DEFAULT_CERT_TYPE, DEFAULT_PROVIDER);
+        File fileDir = new File(dir);
+        File[] files = fileDir.listFiles(new CerFilter());
 
-            assert files != null;
-            for (File file : files) {
-                try {
-                    in = new FileInputStream(file.getAbsolutePath());
-                    validateCert = (X509Certificate) cf.generateCertificate(in);
-                    if (validateCert == null) {
-                        log.error("==> Load verify cert error, {} has error cert content.", file.getAbsolutePath());
-                        continue;
-                    }
-
-                    certMap.put(validateCert.getSerialNumber().toString(), validateCert);
-                    // 打印证书加载信息,供测试阶段调试
-                    log.info("==> [path]: {}, [CertId]: {}", file.getAbsolutePath(),
-                            validateCert.getSerialNumber().toString());
-
-                } catch (CertificateException e) {
-                    log.error("LoadVerifyCert Error", e);
-                } catch (FileNotFoundException e) {
-                    log.error("LoadVerifyCert Error File Not Found", e);
-                } finally {
-                    if (null != in) {
-                        try {
-                            in.close();
-                        } catch (IOException e) {
-                            log.error(e.toString());
-                        }
-                    }
-                }
+        assert files != null;
+        @Cleanup FileInputStream in = null;
+        for (File file : files) {
+            in = new FileInputStream(file.getAbsolutePath());
+            validateCert = (X509Certificate) cf.generateCertificate(in);
+            if (validateCert == null) {
+                log.error("==> Load verify cert error, {} has error cert content.", file.getAbsolutePath());
+                continue;
             }
 
-            log.info("==> initValidateCertFromDir success");
-        } catch (Exception e) {
-            throw new RuntimeException("initValidateCertFromDir error", e);
-        }
-    }
-
-    private PublicKey getPublicKey(String encryptTrackKeyModulus, String encryptTrackKeyExponent) {
-        try {
-            BigInteger b1 = new BigInteger(encryptTrackKeyModulus);
-            BigInteger b2 = new BigInteger(encryptTrackKeyExponent);
-            KeyFactory keyFactory = KeyFactory.getInstance(DEFAULT_ALGORITHM, DEFAULT_PROVIDER);
-            RSAPublicKeySpec keySpec = new RSAPublicKeySpec(b1, b2);
-
-            return keyFactory.generatePublic(keySpec);
-        } catch (Exception e) {
-            throw new RuntimeException("构造RSA公钥失败", e);
-        }
-    }
-
-
-    private X509Certificate initCert(String path) {
-        try (FileInputStream in = new FileInputStream(path)) {
-            CertificateFactory cf = CertificateFactory.getInstance(DEFAULT_CERT_TYPE, DEFAULT_PROVIDER);
-            X509Certificate encryptCertTemp = (X509Certificate) cf.generateCertificate(in);
-
+            certMap.put(validateCert.getSerialNumber().toString(), validateCert);
             // 打印证书加载信息,供测试阶段调试
-            log.info("==> [path]: {}, [CertId]: {}", path, encryptCertTemp.getSerialNumber().toString());
+            log.info("==> [path]: {}, [CertId]: {}", file.getAbsolutePath(),
+                    validateCert.getSerialNumber().toString());
 
-            return encryptCertTemp;
-        } catch (Exception e) {
-            throw new RuntimeException("InitCert Error", e);
         }
+
+        log.info("==> initValidateCertFromDir success");
+    }
+
+    @SneakyThrows
+    private PublicKey getPublicKey(@NonNull String encryptTrackKeyModulus, @NonNull String encryptTrackKeyExponent) {
+        BigInteger b1 = new BigInteger(encryptTrackKeyModulus);
+        BigInteger b2 = new BigInteger(encryptTrackKeyExponent);
+        KeyFactory keyFactory = KeyFactory.getInstance(DEFAULT_ALGORITHM, DEFAULT_PROVIDER);
+        RSAPublicKeySpec keySpec = new RSAPublicKeySpec(b1, b2);
+
+        return keyFactory.generatePublic(keySpec);
+    }
+
+
+    @SneakyThrows
+    private X509Certificate initCert(@NonNull String path) {
+        @Cleanup FileInputStream in = new FileInputStream(path);
+        CertificateFactory cf = CertificateFactory.getInstance(DEFAULT_CERT_TYPE, DEFAULT_PROVIDER);
+        X509Certificate encryptCertTemp = (X509Certificate) cf.generateCertificate(in);
+        // 打印证书加载信息,供测试阶段调试
+        log.info("==> [path]: {}, [CertId]: {}", path, encryptCertTemp.getSerialNumber().toString());
+
+        return encryptCertTemp;
     }
 
     /**
@@ -289,61 +266,51 @@ public class CertificateService {
      * @param signCertType
      * @return
      */
-    private KeyStore getKeyInfo(String signCertPath, String signCertPwd, String signCertType) {
+    @SneakyThrows
+    private KeyStore getKeyInfo(@NonNull String signCertPath, @NonNull String signCertPwd, @NonNull String signCertType) {
 
-        try (FileInputStream fis = new FileInputStream(signCertPath)) {
-            KeyStore ks = KeyStore.getInstance(signCertType, DEFAULT_PROVIDER);
-            log.info("==> load RSA Cert [path]: {}, [pwd]: {}, [type]: {}", signCertPath, signCertPwd, signCertType);
-            char[] nPassword = StringUtils.isEmpty(signCertPwd) ? null : signCertPwd.toCharArray();
-            ks.load(fis, nPassword);
+        @Cleanup FileInputStream fis = new FileInputStream(signCertPath);
+        KeyStore ks = KeyStore.getInstance(signCertType, DEFAULT_PROVIDER);
+        log.info("==> load RSA Cert [path]: {}, [pwd]: {}, [type]: {}", signCertPath, signCertPwd, signCertType);
+        char[] nPassword = StringUtils.isEmpty(signCertPwd) ? null : signCertPwd.toCharArray();
+        ks.load(fis, nPassword);
 
-            return ks;
-        } catch (Exception e) {
-            throw new RuntimeException("getKeyInfo error", e);
-        }
-    }
-
-    public String getSignCertId() {
-        try {
-            Enumeration<String> aliasenum = keyStore.aliases();
-            String keyAlias = null;
-            if (aliasenum.hasMoreElements()) {
-                keyAlias = aliasenum.nextElement();
-            }
-
-            X509Certificate cert = (X509Certificate) keyStore.getCertificate(keyAlias);
-
-            return cert.getSerialNumber().toString();
-        } catch (Exception e) {
-            throw new RuntimeException("getSignCertId Error", e);
-        }
-    }
-
-    public PrivateKey getSignCertPrivateKey() {
-        try {
-            Enumeration<String> aliasenum = keyStore.aliases();
-            String keyAlias = null;
-            if (aliasenum.hasMoreElements()) {
-                keyAlias = aliasenum.nextElement();
-            }
-            return (PrivateKey) keyStore.getKey(keyAlias,
-                    config.getSignCertPwd().toCharArray());
-        } catch (Exception e) {
-            throw new RuntimeException("getSignCertPrivateKey error", e);
-        }
+        return ks;
     }
 
     @SneakyThrows
-    public X509Certificate genCertificateByStr(String certStr) {
+    public String getSignCertId() {
+        Enumeration<String> aliasenum = keyStore.aliases();
+        String keyAlias = null;
+        if (aliasenum.hasMoreElements()) {
+            keyAlias = aliasenum.nextElement();
+        }
+
+        X509Certificate cert = (X509Certificate) keyStore.getCertificate(keyAlias);
+
+        return cert.getSerialNumber().toString();
+    }
+
+    @SneakyThrows
+    public PrivateKey getSignCertPrivateKey() {
+        Enumeration<String> aliasenum = keyStore.aliases();
+        String keyAlias = null;
+        if (aliasenum.hasMoreElements()) {
+            keyAlias = aliasenum.nextElement();
+        }
+        return (PrivateKey) keyStore.getKey(keyAlias,
+                config.getSignCertPwd().toCharArray());
+    }
+
+    @SneakyThrows
+    public X509Certificate genCertificateByStr(@NonNull String certStr) {
         CertificateFactory cf = CertificateFactory.getInstance(DEFAULT_CERT_TYPE, DEFAULT_PROVIDER);
         @Cleanup InputStream tIn = new ByteArrayInputStream(certStr.getBytes(DEFAULT_CHARSET_NAME));
         return (X509Certificate) cf.generateCertificate(tIn);
     }
 
     @SneakyThrows
-    public boolean verifyCertificate(X509Certificate cert) {
-        ValidUtil.notNull(cert);
-
+    public boolean verifyCertificate(@NonNull X509Certificate cert) {
         cert.checkValidity();
         if (!verifyCertificateChain(cert)) {
             throw new RuntimeException("verifyCertificate fail");
@@ -365,7 +332,7 @@ public class CertificateService {
         return true;
     }
 
-    private String getIdentitiesFromCertficate(X509Certificate aCert) {
+    private String getIdentitiesFromCertficate(@NonNull X509Certificate aCert) {
         String tDN = aCert.getSubjectDN().toString();
         String tPart = "";
         if (Objects.isNull(tDN)) {
@@ -381,9 +348,7 @@ public class CertificateService {
     }
 
     @SneakyThrows
-    private boolean verifyCertificateChain(X509Certificate cert) {
-        ValidUtil.notNull(cert);
-
+    private boolean verifyCertificateChain(@NonNull X509Certificate cert) {
         X509Certificate middleCert = getMiddleCert();
         if (Objects.isNull(middleCert)) {
             throw new RuntimeException("can't load middleCert");

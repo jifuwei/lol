@@ -3,6 +3,7 @@ package com.github.lol.pay.component.unionpay;
 import com.github.lol.pay.component.unionpay.core.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductService;
 import com.github.lol.pay.component.unionpay.product.gateway.service.UnionpayGatewayService;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
     /**
      * check need cache
      */
-    private boolean classCacheEnabled = true;
+    private Boolean classCacheEnabled = true;
 
     /**
      * cache map
@@ -29,9 +30,8 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
 
     private UnionpayConfig config;
 
-    private SimpleCacheUnionpayProductFactory setConfig(UnionpayConfig config) {
+    private SimpleCacheUnionpayProductFactory setConfig(@NonNull UnionpayConfig config) {
         this.config = config;
-
         return this;
     }
 
@@ -48,22 +48,22 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
      * @param config
      * @return
      */
-    public static SimpleCacheUnionpayProductFactory getInstance(UnionpayConfig config) {
+    public static SimpleCacheUnionpayProductFactory getInstance(@NonNull UnionpayConfig config) {
         return UnionpayProductFactoryHolder.instance.setConfig(config);
     }
 
     @Override
-    public void setClassCacheEnabled(boolean classCacheEnabled) {
+    public void setClassCacheEnabled(@NonNull Boolean classCacheEnabled) {
         this.classCacheEnabled = classCacheEnabled;
     }
 
     @Override
-    public boolean isClassCacheEnabled() {
+    public Boolean isClassCacheEnabled() {
         return classCacheEnabled;
     }
 
     @Override
-    public <T extends AbstractUnionpayProductService> T produce(Class<T> clazz) {
+    public <T extends AbstractUnionpayProductService> T produce(@NonNull Class<T> clazz) {
         if (classCacheEnabled) {
             Object cached = productMap.get(clazz);
             if (!Objects.isNull(cached)) {
@@ -82,12 +82,12 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
         }
     }
 
-    private <T extends AbstractUnionpayProductService> T refreshCustomerConfig(T cached) {
+    private <T extends AbstractUnionpayProductService> T refreshCustomerConfig(@NonNull T cached) {
         cached.setConfig(config);
         return cached;
     }
 
-    private <T> Object buildClass(Class<T> clazz) {
+    private <T> Object buildClass(@NonNull Class<T> clazz) {
         if (UnionpayGatewayService.class.equals(clazz)) {
             return UnionpayGatewayService.of(config);
         } else {
