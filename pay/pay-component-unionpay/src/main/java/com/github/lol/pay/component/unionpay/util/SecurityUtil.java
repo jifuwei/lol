@@ -1,8 +1,9 @@
 package com.github.lol.pay.component.unionpay.util;
 
+import com.github.lol.lib.util.StrUtil;
+import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 import org.bouncycastle.crypto.digests.SM3Digest;
 
 import java.io.IOException;
@@ -50,10 +51,9 @@ public class SecurityUtil {
      * @throws UnsupportedEncodingException
      * @throws NoSuchAlgorithmException
      */
-    public static String sha1X16(String data, String encoding)
+    public static String sha1X16(@NonNull String data, String encoding)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        Validate.notEmpty(data, "data can't empty");
-        encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
+        encoding = StrUtil.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
 
         byte[] bytes = sha(data.getBytes(encoding), ALGORITHM_SHA1);
         return X16(bytes, encoding);
@@ -68,10 +68,9 @@ public class SecurityUtil {
      * @throws UnsupportedEncodingException
      * @throws NoSuchAlgorithmException
      */
-    public static String sha256X16(String data, String encoding)
+    public static String sha256X16(@NonNull String data, String encoding)
             throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        Validate.notEmpty(data, "data can't empty");
-        encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
+        encoding = StrUtil.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
 
         byte[] bytes = sha(data.getBytes(encoding), ALGORITHM_SHA256);
         return X16(bytes, encoding);
@@ -85,10 +84,9 @@ public class SecurityUtil {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public static String sm3X16(String data, String encoding)
+    public static String sm3X16(@NonNull String data, String encoding)
             throws UnsupportedEncodingException {
-        Validate.notEmpty(data, "data can't empty");
-        encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
+        encoding = StrUtil.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
 
         byte[] bytes = sm3(data.getBytes(encoding));
         return X16(bytes, encoding);
@@ -100,7 +98,7 @@ public class SecurityUtil {
      * @param data
      * @return
      */
-    private static byte[] sm3(byte[] data) {
+    private static byte[] sm3(@NonNull byte[] data) {
         SM3Digest sm3 = new SM3Digest();
         sm3.update(data, 0, data.length);
         byte[] result = new byte[sm3.getDigestSize()];
@@ -117,7 +115,7 @@ public class SecurityUtil {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    private static byte[] sha(byte[] data, String algorithm) throws NoSuchAlgorithmException {
+    private static byte[] sha(@NonNull byte[] data, @NonNull String algorithm) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance(algorithm);
         md.reset();
         md.update(data);
@@ -132,7 +130,7 @@ public class SecurityUtil {
      * @param encoding
      * @return
      */
-    private static String X16(byte[] bytes, String encoding) {
+    private static String X16(@NonNull byte[] bytes, String encoding) {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
             if (Integer.toHexString(0xFF & b).length() == 1) {
@@ -145,38 +143,40 @@ public class SecurityUtil {
         return sb.toString();
     }
 
-    public static byte[] signBySoftSHA1(PrivateKey signCertPrivateKey, byte[] signDigest) {
+    public static byte[] signBySoftSHA1(@NonNull PrivateKey signCertPrivateKey,
+                                        @NonNull byte[] signDigest) {
         return signBySoft(signCertPrivateKey, signDigest, BC_PROV_ALGORITHM_SHA1RSA);
     }
 
-    public static byte[] signBySoftSHA256(PrivateKey signCertPrivateKey, byte[] signDigest) {
+    public static byte[] signBySoftSHA256(@NonNull PrivateKey signCertPrivateKey,
+                                          @NonNull byte[] signDigest) {
         return signBySoft(signCertPrivateKey, signDigest, BC_PROV_ALGORITHM_SHA256RSA);
     }
 
-    public static boolean validateSignBySoftSHA256(PublicKey publicKey,
-                                                   byte[] signData, byte[] srcData) throws Exception {
+    public static boolean validateSignBySoftSHA256(@NonNull PublicKey publicKey,
+                                                   @NonNull byte[] signData,
+                                                   @NonNull byte[] srcData) throws Exception {
         Signature st = Signature.getInstance(BC_PROV_ALGORITHM_SHA256RSA, DEFAULT_PROVIDER);
         st.initVerify(publicKey);
         st.update(srcData);
         return st.verify(signData);
     }
 
-    private static byte[] signBySoft(PrivateKey signCertPrivateKey, byte[] signDigest, String algorithm) {
-        try {
-            Signature st = Signature.getInstance(algorithm, DEFAULT_PROVIDER);
-            st.initSign(signCertPrivateKey);
-            st.update(signDigest);
-            return st.sign();
-        } catch (Exception e) {
-            throw new RuntimeException("signBySoft error", e);
-        }
+    @SneakyThrows
+    private static byte[] signBySoft(@NonNull PrivateKey signCertPrivateKey,
+                                     @NonNull byte[] signDigest,
+                                     @NonNull String algorithm) {
+        Signature st = Signature.getInstance(algorithm, DEFAULT_PROVIDER);
+        st.initSign(signCertPrivateKey);
+        st.update(signDigest);
+        return st.sign();
     }
 
-    public static byte[] base64Encode(byte[] signBySoft) {
+    public static byte[] base64Encode(@NonNull byte[] signBySoft) {
         return Base64.encodeBase64(signBySoft);
     }
 
-    public static byte[] base64Decode(byte[] inputByte) throws IOException {
+    public static byte[] base64Decode(@NonNull byte[] inputByte) throws IOException {
         return Base64.decodeBase64(inputByte);
     }
 }

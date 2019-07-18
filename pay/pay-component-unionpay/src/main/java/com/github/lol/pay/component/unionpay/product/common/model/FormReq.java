@@ -1,10 +1,10 @@
 package com.github.lol.pay.component.unionpay.product.common.model;
 
+import com.github.lol.lib.util.ValidUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.Validate;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -28,9 +28,9 @@ public class FormReq implements Serializable {
     private Map<String, String> inputDataMap;
 
     public String buildAutoFormHtml() {
-        Validate.notEmpty(actionUrl);
-        Validate.notEmpty(encoding);
-        Validate.isTrue(!Objects.isNull(inputDataMap) && inputDataMap.size() > 0);
+        ValidUtil.notEmpty(actionUrl);
+        ValidUtil.notEmpty(encoding);
+        ValidUtil.isTrue(!Objects.isNull(inputDataMap) && inputDataMap.size() > 0);
 
         StringBuffer sf = new StringBuffer();
         sf.append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=")

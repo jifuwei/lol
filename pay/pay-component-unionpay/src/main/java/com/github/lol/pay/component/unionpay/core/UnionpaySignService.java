@@ -1,11 +1,11 @@
 package com.github.lol.pay.component.unionpay.core;
 
 import com.github.lol.lib.util.SerializeUtil;
+import com.github.lol.lib.util.StrUtil;
+import com.github.lol.lib.util.ValidUtil;
 import com.github.lol.pay.component.unionpay.util.SecurityUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,18 +58,17 @@ public class UnionpaySignService {
      * @param encoding
      */
     public void sign(@NonNull Map params, String encoding) {
-        Validate.notNull(params, "sign params can't null");
-        encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
+        encoding = StrUtil.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
         params.forEach((k, v) -> log.debug("==> param [key]: {} [value]: {}", k, v));
         log.debug("==> encoding [params]: {}", encoding);
 
         String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
         String version = String.valueOf(params.get(PARMA_VERSION));
 
-        Validate.notEmpty(signMethod, "signMethod can't empty");
-        Validate.notEmpty(version, "version can't empty");
+        ValidUtil.notEmpty(signMethod, "signMethod can't empty");
+        ValidUtil.notEmpty(version, "version can't empty");
         if (!VERSION_1_0_0.equals(version) && !VERSION_5_0_1.equals(version)
-                && StringUtils.isEmpty(signMethod)) {
+                && StrUtil.isEmpty(signMethod)) {
             throw new RuntimeException("illegal version: " + version);
         }
 
@@ -83,7 +82,7 @@ public class UnionpaySignService {
      * @param encoding
      */
     public void validate(@NonNull Map<String, String> respMap, String encoding) {
-        encoding = StringUtils.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
+        encoding = StrUtil.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
 
         VerifyHandle.execute(respMap, encoding, config, certService);
     }

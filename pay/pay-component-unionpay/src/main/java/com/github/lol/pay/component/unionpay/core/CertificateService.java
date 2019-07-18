@@ -5,7 +5,6 @@ import lombok.Cleanup;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -142,9 +141,9 @@ public class CertificateService {
             return;
         }
 
-        if (StringUtils.isEmpty(config.getSignCertPath())
-                || StringUtils.isEmpty(config.getSignCertPwd())
-                || StringUtils.isEmpty(config.getSignCertType())) {
+        if (StrUtil.isEmpty(config.getSignCertPath())
+                || StrUtil.isEmpty(config.getSignCertPwd())
+                || StrUtil.isEmpty(config.getSignCertType())) {
             throw new RuntimeException("can't find certificate or pwd or certType");
         }
 
@@ -160,7 +159,7 @@ public class CertificateService {
      * init middle certificate
      */
     private void initMiddleCert() {
-        if (StringUtils.isEmpty(config.getMiddleCertPath())) {
+        if (StrUtil.isEmpty(config.getMiddleCertPath())) {
             throw new RuntimeException("middleCertPath is empty");
         }
 
@@ -169,7 +168,7 @@ public class CertificateService {
     }
 
     private void initRootCert() {
-        if (StringUtils.isEmpty(config.getRootCertPath())) {
+        if (StrUtil.isEmpty(config.getRootCertPath())) {
             throw new RuntimeException("rootCertPath is empty");
         }
 
@@ -178,7 +177,7 @@ public class CertificateService {
     }
 
     private void initEncryptCert() {
-        if (StringUtils.isEmpty(config.getEncryptCertPath())) {
+        if (StrUtil.isEmpty(config.getEncryptCertPath())) {
             throw new RuntimeException("encryptCertPath is empty");
         }
 
@@ -187,8 +186,8 @@ public class CertificateService {
     }
 
     private void initTrackKey() {
-        if (StringUtils.isEmpty(config.getEncryptTrackKeyModulus())
-                || StringUtils.isEmpty(config.getEncryptTrackKeyExponent())) {
+        if (StrUtil.isEmpty(config.getEncryptTrackKeyModulus())
+                || StrUtil.isEmpty(config.getEncryptTrackKeyExponent())) {
 
             log.warn("==> encryptTrackKey or encryptTrackKeyExponent is empty");
             return;
@@ -207,7 +206,7 @@ public class CertificateService {
 
         certMap.clear();
         String dir = config.getValidateCertDir();
-        if (StringUtils.isEmpty(dir)) {
+        if (StrUtil.isEmpty(dir)) {
             log.warn("==> validateCert dir empty");
             return;
         }
@@ -272,7 +271,7 @@ public class CertificateService {
         @Cleanup FileInputStream fis = new FileInputStream(signCertPath);
         KeyStore ks = KeyStore.getInstance(signCertType, DEFAULT_PROVIDER);
         log.info("==> load RSA Cert [path]: {}, [pwd]: {}, [type]: {}", signCertPath, signCertPwd, signCertType);
-        char[] nPassword = StringUtils.isEmpty(signCertPwd) ? null : signCertPwd.toCharArray();
+        char[] nPassword = StrUtil.isEmpty(signCertPwd) ? null : signCertPwd.toCharArray();
         ks.load(fis, nPassword);
 
         return ks;
