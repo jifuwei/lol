@@ -66,7 +66,7 @@ public abstract class AbstractUnionpayProductService {
      * @return
      */
     protected HttpNetUtil buildNetUtil(String url, String reqMethod) {
-        return new HttpNetUtil(url, config.getEncoding(), reqMethod,
+        return new HttpNetUtil(url, reqMethod, config.getEncoding(),
                 config.getConnectTimeout(), config.getReadTimeout(), false, config.getVerifyCert());
     }
 

@@ -65,6 +65,7 @@ public class UnionpayGatewayServiceTest {
                 .orderId("cjfw123456712")
                 .txnTime("20190716170412")
                 .txnAmt("10000000")
+                .backUrl("http://222.222.222.222:8080/ACPSample_B2C/backRcvResponse")
                 .origQryId("561907111704129975038")
                 .build();
 

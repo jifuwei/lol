@@ -15,8 +15,20 @@ import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.*;
 @Data
 public class UnionpayConfig {
 
+    /**
+     * api请求超时设置
+     */
     private Integer connectTimeout;
+
+    /**
+     * api请求读取设置
+     */
     private Integer readTimeout;
+
+    /**
+     * api请求是否校验证书
+     * 建议生产环境校验
+     */
     private Boolean verifyCert;
 
     /**
@@ -111,9 +123,9 @@ public class UnionpayConfig {
 
     // TODO: only for test
     public UnionpayConfig() {
-        this.connectTimeout = 30000;
-        this.readTimeout = 30000;
-        this.verifyCert = false;
+//        this.connectTimeout = 30000;
+//        this.readTimeout = 30000;
+//        this.verifyCert = false;
         this.encoding = UTF_8_ENCODING;
         this.version = VERSION_5_1_0;
         this.domain = "https://gateway.test.95516.com";

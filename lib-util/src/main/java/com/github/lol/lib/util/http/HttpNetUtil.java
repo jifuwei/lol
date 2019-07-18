@@ -1,5 +1,6 @@
 package com.github.lol.lib.util.http;
 
+import com.github.lol.lib.util.StrUtil;
 import com.github.lol.lib.util.ValidUtil;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -63,12 +64,12 @@ public class HttpNetUtil {
     }
 
     public HttpNetUtil(String url, String reqMethod) {
-        new HttpNetUtil(url, DEFAULT_ENCODING, reqMethod, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT, DEFAULT_CACHE_ENABLE, DEFAULT_VERIFY_CERT);
+        new HttpNetUtil(url, reqMethod, null, null, null, null, null);
     }
 
-    public HttpNetUtil(String url, String encoding, String reqMethod, int connectTimeout, int readTimeout, boolean cacheEnable, boolean verifyCert) {
+    public HttpNetUtil(String url, String reqMethod, String encoding, Integer connectTimeout, Integer readTimeout, Boolean cacheEnable, Boolean verifyCert) {
         this.reqUrl = url;
-        this.encoding = encoding;
+        this.encoding = StrUtil.isEmpty(encoding) ? DEFAULT_ENCODING : encoding;
         this.reqMethod = reqMethod;
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;
@@ -83,7 +84,7 @@ public class HttpNetUtil {
      * set url connection config
      */
     @SneakyThrows(IOException.class)
-    private HttpNetUtil config() {
+    private void config() {
         ValidUtil.notEmpty(reqUrl);
 
         URL url = new URL(reqUrl);
@@ -100,15 +101,13 @@ public class HttpNetUtil {
 
         if (!HTTPS_PROTOCOL.equalsIgnoreCase(url.getProtocol())
                 || Objects.isNull(verifyCert) || !verifyCert) {
-            return this;
+            return;
         }
 
         // verify https certificate
         HttpsURLConnection httpsConn = (HttpsURLConnection) conn;
         httpsConn.setSSLSocketFactory(new BaseHttpSSLSocketFactory());
         httpsConn.setHostnameVerifier(new TrustAnyHostnameVerifier());
-
-        return this;
     }
 
     /**
