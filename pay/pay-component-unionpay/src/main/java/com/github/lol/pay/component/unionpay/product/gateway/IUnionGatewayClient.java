@@ -46,6 +46,8 @@ public interface IUnionGatewayClient {
      * 对于未收到交易结果的联机交易，商户应向银联全渠道支付平台发起交易状态查询交易，
      * 查询交易结果。完成交易的过程不需要同持卡人交互，属于后台交易。
      * 交易查询类交易可由商户通过SDK向银联全渠道支付交易平台发起交易。
+     * <p>
+     * 注意：orderId & txnTime 必须与待查询交易单完全一致
      *
      * @param transactionStatusQueryReq
      * @return
@@ -69,7 +71,7 @@ public interface IUnionGatewayClient {
      * @param preAuthReq
      * @return
      */
-    PreAuthSyncResp preAuth(PreAuthReq preAuthReq);
+    FormReq preAuth(PreAuthReq preAuthReq);
 
     /**
      * 对已成功的POS预授权交易，在结算前使用预授权撤销交易，通知发卡方取消付款承诺。

@@ -32,7 +32,7 @@ public class HttpNetUtil {
     private static final int DEFAULT_CONNECT_TIMEOUT = 30000;
     private static final int DEFAULT_READ_TIMEOUT = 30000;
     private static final boolean DEFAULT_CACHE_ENABLE = false;
-    private static final boolean DEFAULT_VERIFY_CERT = false;
+    private static final String DEFAULT_RESP_NONE_MSG = "[lol-default]远程服务无任何返回";
 
     /**
      * http method
@@ -156,12 +156,14 @@ public class HttpNetUtil {
 
             // 3.response
             String respSeq;
+            log.debug("{} resp code: {}", preLogStr(), conn.getResponseCode());
             @Cleanup InputStream in = null;
             if (CODE_SUCCESS != conn.getResponseCode()) {
                 in = conn.getErrorStream();
                 respSeq = read(in);
-                log.error("{} server resp code: {} msg: {}", preLogStr(), conn.getResponseCode(), respSeq);
-                throw new RuntimeException(preLogStr() + " request failed");
+                log.error("{} server resp msg: {}", preLogStr(), respSeq);
+                throw new RuntimeException(preLogStr() + " request failed, respCode: " +
+                        conn.getResponseCode() + " respMsg: " + respSeq);
             }
 
             in = conn.getInputStream();
@@ -252,6 +254,10 @@ public class HttpNetUtil {
 
     @SneakyThrows(IOException.class)
     private String read(InputStream in) {
+        if (Objects.isNull(in)) {
+            return DEFAULT_RESP_NONE_MSG;
+        }
+
         byte[] buf = new byte[1024];
         int length;
 

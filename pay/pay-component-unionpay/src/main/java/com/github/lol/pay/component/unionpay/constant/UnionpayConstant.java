@@ -56,7 +56,17 @@ public class UnionpayConstant {
      * all api url
      */
     public class Api {
+        /**
+         * product: online gateway pay
+         */
         public final static String URL_GATEWAY_CONSUME = "/gateway/api/frontTransReq.do";
         public final static String URL_GATEWAY_CANCEL_CONSUME = "/gateway/api/backTransReq.do";
+        public final static String URL_GATEWAY_BACK_CONSUME = "/gateway/api/backTransReq.do";
+        public final static String URL_GATEWAY_TRANSACTION_STATUS_QUERY = "/gateway/api/queryTrans.do";
+        public final static String URL_GATEWAY_ENCRYPT_INFO_UPDATE = "/gateway/api/backTransReq.do";
+        public final static String URL_GATEWAY_PRE_AUTH = "/gateway/api/frontTransReq.do";
+        public final static String URL_GATEWAY_CANCEL_PRE_AUTH = "/gateway/api/backTransReq.do";
+        public final static String URL_GATEWAY_COMPLETE_PRE_AUTH = "/gateway/api/backTransReq.do";
+        public final static String URL_GATEWAY_CANCEL_COMPLETE_PRE_AUTH = "/gateway/api/backTransReq.do";
     }
 }

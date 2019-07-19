@@ -1,5 +1,7 @@
 package com.github.lol.pay.component.unionpay.product.gateway.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,32 +17,22 @@ import java.io.Serializable;
  **/
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TransactionStatusQueryReq implements Serializable {
-    private static final long serialVersionUID = -5004757830957689713L;
+    private static final long serialVersionUID = 6039495038109611528L;
 
     private String version;
     private String encoding;
     private String bizType;
     private String txnTime;
-    private String backUrl;
-    private String txnAmt;
     private String txnType;
     private String txnSubType;
     private String accessType;
     private String signature;
     private String signMethod;
-    private String channelType;
     private String merId;
     private String orderId;
-    private String acqInsCode;
-    private String origQryId;
-    private String subMerId;
-    private String subMerAbbr;
-    private String subMerName;
     private String certId;
     private String reserved;
-    private String accSplitData;
-    private String ctrlRule;
-    private String reqReserved;
-    private String termId;
 }

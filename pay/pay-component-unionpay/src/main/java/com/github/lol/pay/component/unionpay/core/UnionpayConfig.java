@@ -62,6 +62,11 @@ public class UnionpayConfig {
     private String domain;
 
     /**
+     * 对账文件地址
+     */
+    private String fileDownLoadUrl;
+
+    /**
      * 签名方法
      */
     private String signMethod;
@@ -150,5 +155,6 @@ public class UnionpayConfig {
         this.secureKey = null;
         // 测试环境只能是false 生产环境必须是true
         this.ifValidateCNName = false;
+        this.fileDownLoadUrl = "https://filedownload.test.95516.com/";
     }
 }
