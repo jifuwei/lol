@@ -1,8 +1,7 @@
 package com.github.lol.pay.component.unionpay;
 
-import com.github.lol.pay.component.unionpay.core.UnionpayConfig;
-import com.github.lol.pay.component.unionpay.product.gateway.IUnionGatewayClient;
-import com.github.lol.pay.component.unionpay.product.gateway.service.UnionpayGatewayService;
+import com.github.lol.pay.component.unionpay.client.IUnionGatewayClient;
+import com.github.lol.pay.component.unionpay.product.gateway.impl.UnionpayGatewayService;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

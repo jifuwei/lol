@@ -2,9 +2,9 @@ package com.github.lol.pay.component.unionpay.product;
 
 import com.github.lol.lib.util.SerializeUtil;
 import com.github.lol.lib.util.http.HttpNetUtil;
-import com.github.lol.pay.component.unionpay.core.CertificateService;
-import com.github.lol.pay.component.unionpay.core.UnionpayConfig;
-import com.github.lol.pay.component.unionpay.core.UnionpaySignService;
+import com.github.lol.pay.component.unionpay.UnionpayCertHolder;
+import com.github.lol.pay.component.unionpay.UnionpayConfig;
+import com.github.lol.pay.component.unionpay.UnionpaySignHolder;
 import com.github.lol.pay.component.unionpay.product.common.model.FormReq;
 import lombok.Getter;
 import lombok.NonNull;
@@ -23,8 +23,8 @@ import java.util.Map;
 public abstract class AbstractUnionpayProductService {
 
     private UnionpayConfig config;
-    private UnionpaySignService signService;
-    private CertificateService certService;
+    private UnionpaySignHolder signService;
+    private UnionpayCertHolder certService;
 
     /**
      * define product name

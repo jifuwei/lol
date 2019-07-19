@@ -1,5 +1,7 @@
-package com.github.lol.pay.component.unionpay.core;
+package com.github.lol.pay.component.unionpay;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Map;
@@ -13,6 +15,8 @@ import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.*;
  * @create: 2019-07-12 15:06
  **/
 @Data
+@AllArgsConstructor
+@Builder
 public class UnionpayConfig {
 
     /**

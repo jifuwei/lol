@@ -1,8 +1,7 @@
 package com.github.lol.pay.component.unionpay;
 
-import com.github.lol.pay.component.unionpay.core.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductService;
-import com.github.lol.pay.component.unionpay.product.gateway.service.UnionpayGatewayService;
+import com.github.lol.pay.component.unionpay.product.gateway.impl.UnionpayGatewayService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +17,7 @@ import java.util.concurrent.ConcurrentMap;
  **/
 @Slf4j
 public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactory {
+
     /**
      * check need cache
      */
@@ -38,7 +38,7 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
     /**
      * instance of UnionpayProductFactory holder
      */
-    private static class UnionpayProductFactoryHolder {
+    private static class SimpleCacheUnionpayProductFactoryHolder {
         private static SimpleCacheUnionpayProductFactory instance = new SimpleCacheUnionpayProductFactory();
     }
 
@@ -49,7 +49,7 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
      * @return
      */
     public static SimpleCacheUnionpayProductFactory getInstance(@NonNull UnionpayConfig config) {
-        return UnionpayProductFactoryHolder.instance.setConfig(config);
+        return SimpleCacheUnionpayProductFactoryHolder.instance.setConfig(config);
     }
 
     @Override
@@ -62,6 +62,13 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
         return classCacheEnabled;
     }
 
+    /**
+     * product a product
+     *
+     * @param clazz 支持的产品实现类，请在com.github.lol.pay.component.unionpay.product下寻找对应的产品
+     * @param <T>
+     * @return
+     */
     @Override
     public <T extends AbstractUnionpayProductService> T produce(@NonNull Class<T> clazz) {
         if (classCacheEnabled) {
@@ -76,12 +83,19 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
             log.debug("==> UnionpayProductFactory first init [Class]: {}", clazz.getName());
 
 
-            return refreshCustomerConfig((T) cached);
+            return (T) cached;
         } else {
             return refreshCustomerConfig((T) buildClass(clazz));
         }
     }
 
+    /**
+     * refresh Customer Config
+     *
+     * @param cached
+     * @param <T>
+     * @return
+     */
     private <T extends AbstractUnionpayProductService> T refreshCustomerConfig(@NonNull T cached) {
         cached.setConfig(config);
         return cached;

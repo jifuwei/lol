@@ -1,4 +1,4 @@
-package com.github.lol.pay.component.unionpay.product.gateway;
+package com.github.lol.pay.component.unionpay.client;
 
 import com.github.lol.pay.component.unionpay.product.common.model.FormReq;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;

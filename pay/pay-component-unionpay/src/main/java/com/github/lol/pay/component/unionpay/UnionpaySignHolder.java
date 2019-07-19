@@ -1,4 +1,4 @@
-package com.github.lol.pay.component.unionpay.core;
+package com.github.lol.pay.component.unionpay;
 
 import com.github.lol.lib.util.SerializeUtil;
 import com.github.lol.lib.util.StrUtil;
@@ -27,19 +27,19 @@ import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.*;
  * @create: 2019-07-12 11:55
  **/
 @Slf4j
-public class UnionpaySignService {
+public class UnionpaySignHolder {
 
     private UnionpayConfig config;
-    private CertificateService certService;
+    private UnionpayCertHolder certService;
 
-    public UnionpaySignService(@NonNull UnionpayConfig config, @NonNull CertificateService certService) {
+    public UnionpaySignHolder(@NonNull UnionpayConfig config, @NonNull UnionpayCertHolder certService) {
         this.config = config;
         this.certService = certService;
     }
 
-    public static UnionpaySignService of(@NonNull UnionpayConfig config,
-                                         @NonNull CertificateService certService) {
-        return new UnionpaySignService(config, certService);
+    public static UnionpaySignHolder of(@NonNull UnionpayConfig config,
+                                        @NonNull UnionpayCertHolder certService) {
+        return new UnionpaySignHolder(config, certService);
     }
 
     /**
@@ -226,7 +226,7 @@ public class UnionpaySignService {
          */
         static void execute(@NonNull Map params, String encoding,
                             @NonNull UnionpayConfig config,
-                            @NonNull CertificateService certService) {
+                            @NonNull UnionpayCertHolder certService) {
             String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
 
             EncryptHandle targetHandler;
@@ -255,7 +255,7 @@ public class UnionpaySignService {
          * @param config
          * @param certService
          */
-        void handle(Map params, String encoding, UnionpayConfig config, CertificateService certService);
+        void handle(Map params, String encoding, UnionpayConfig config, UnionpayCertHolder certService);
 
     }
 
@@ -405,7 +405,7 @@ public class UnionpaySignService {
          */
         static void execute(@NonNull Map params, String encoding,
                             @NonNull UnionpayConfig config,
-                            @NonNull CertificateService certService) {
+                            @NonNull UnionpayCertHolder certService) {
             String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
 
             VerifyHandle targetHandler;
@@ -434,7 +434,7 @@ public class UnionpaySignService {
          * @param config
          * @param certService
          */
-        void handle(Map params, String encoding, UnionpayConfig config, CertificateService certService);
+        void handle(Map params, String encoding, UnionpayConfig config, UnionpayCertHolder certService);
 
     }
 }

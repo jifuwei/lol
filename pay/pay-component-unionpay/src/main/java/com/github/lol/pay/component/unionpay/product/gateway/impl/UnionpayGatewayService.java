@@ -1,12 +1,12 @@
-package com.github.lol.pay.component.unionpay.product.gateway.service;
+package com.github.lol.pay.component.unionpay.product.gateway.impl;
 
 import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
-import com.github.lol.pay.component.unionpay.core.CertificateService;
-import com.github.lol.pay.component.unionpay.core.UnionpayConfig;
-import com.github.lol.pay.component.unionpay.core.UnionpaySignService;
+import com.github.lol.pay.component.unionpay.UnionpayCertHolder;
+import com.github.lol.pay.component.unionpay.UnionpayConfig;
+import com.github.lol.pay.component.unionpay.UnionpaySignHolder;
 import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductService;
 import com.github.lol.pay.component.unionpay.product.common.model.FormReq;
-import com.github.lol.pay.component.unionpay.product.gateway.IUnionGatewayClient;
+import com.github.lol.pay.component.unionpay.client.IUnionGatewayClient;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;
 import lombok.NonNull;
 
@@ -23,8 +23,8 @@ public class UnionpayGatewayService extends AbstractUnionpayProductService
 
     public UnionpayGatewayService(@NonNull UnionpayConfig config) {
         this.setConfig(config);
-        this.setCertService(CertificateService.of(config));
-        this.setSignService(UnionpaySignService.of(config, this.getCertService()));
+        this.setCertService(UnionpayCertHolder.of(config));
+        this.setSignService(UnionpaySignHolder.of(config, this.getCertService()));
     }
 
     public static UnionpayGatewayService of(@NonNull UnionpayConfig config) {

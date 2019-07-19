@@ -1,4 +1,4 @@
-package com.github.lol.pay.component.unionpay.core;
+package com.github.lol.pay.component.unionpay;
 
 import com.github.lol.lib.util.StrUtil;
 import lombok.Cleanup;
@@ -22,17 +22,17 @@ import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.*;
  * @create: 2019-07-12 14:22
  **/
 @Slf4j
-public class CertificateService {
+public class UnionpayCertHolder {
 
     private UnionpayConfig config;
 
-    public CertificateService(@NonNull UnionpayConfig config) {
+    public UnionpayCertHolder(@NonNull UnionpayConfig config) {
         this.config = config;
         init();
     }
 
-    public static CertificateService of(@NonNull UnionpayConfig config) {
-        return new CertificateService(config);
+    public static UnionpayCertHolder of(@NonNull UnionpayConfig config) {
+        return new UnionpayCertHolder(config);
     }
 
     /**
