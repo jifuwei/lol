@@ -11,9 +11,9 @@ public class UnionpayConstant {
     /**
      * api params
      */
-    public final static String PARMA_SIGN_METHOD = "signMethod";
-    public final static String PARMA_VERSION = "version";
-    public final static String PARMA_CERT_ID = "certId";
+    public final static String PARAM_SIGN_METHOD = "signMethod";
+    public final static String PARAM_VERSION = "version";
+    public final static String PARAM_CERT_ID = "certId";
     public final static String PARAM_SIGNATURE = "signature";
     public static final String PARAM_SIGN_PUB_KEY_CERT = "signPubKeyCert";
 

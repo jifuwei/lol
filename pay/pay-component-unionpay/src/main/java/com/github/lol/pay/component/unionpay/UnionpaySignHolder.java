@@ -62,8 +62,8 @@ public class UnionpaySignHolder {
         params.forEach((k, v) -> log.debug("==> param [key]: {} [value]: {}", k, v));
         log.debug("==> encoding [params]: {}", encoding);
 
-        String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
-        String version = String.valueOf(params.get(PARMA_VERSION));
+        String signMethod = String.valueOf(params.get(PARAM_SIGN_METHOD));
+        String version = String.valueOf(params.get(PARAM_VERSION));
 
         ValidUtil.notEmpty(signMethod, "signMethod can't empty");
         ValidUtil.notEmpty(version, "version can't empty");
@@ -101,7 +101,7 @@ public class UnionpaySignHolder {
         EncryptHandle RSA = (params, encoding, config, certService) -> {
 
             // certId should sign
-            params.put(PARMA_CERT_ID, certService.getSignCertId());
+            params.put(PARAM_CERT_ID, certService.getSignCertId());
             BiFunction<Map<String, String>, String, byte[]> signDigestBiFunction = (p, e) -> {
 
                 try {
@@ -109,7 +109,7 @@ public class UnionpaySignHolder {
                         add(PARAM_SIGNATURE);
                     }});
                     LOGGER.debug("==> RSA EncryptHandle [stringData]: {}", stringData);
-                    String version = p.get(PARMA_VERSION);
+                    String version = p.get(PARAM_VERSION);
 
                     byte[] signDigest;
                     switch (version) {
@@ -137,7 +137,7 @@ public class UnionpaySignHolder {
 
             BiFunction<byte[], Map<String, String>, String> signSeqFunction = (s, p) -> {
 
-                String version = p.get(PARMA_VERSION);
+                String version = p.get(PARAM_VERSION);
 
                 byte[] byteSign;
                 switch (version) {
@@ -227,7 +227,7 @@ public class UnionpaySignHolder {
         static void execute(@NonNull Map params, String encoding,
                             @NonNull UnionpayConfig config,
                             @NonNull UnionpayCertHolder certService) {
-            String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
+            String signMethod = String.valueOf(params.get(PARAM_SIGN_METHOD));
 
             EncryptHandle targetHandler;
             switch (signMethod) {
@@ -406,7 +406,7 @@ public class UnionpaySignHolder {
         static void execute(@NonNull Map params, String encoding,
                             @NonNull UnionpayConfig config,
                             @NonNull UnionpayCertHolder certService) {
-            String signMethod = String.valueOf(params.get(PARMA_SIGN_METHOD));
+            String signMethod = String.valueOf(params.get(PARAM_SIGN_METHOD));
 
             VerifyHandle targetHandler;
             switch (signMethod) {

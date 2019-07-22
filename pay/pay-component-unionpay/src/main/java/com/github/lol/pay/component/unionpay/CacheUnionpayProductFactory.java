@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  * @create: 2019-07-15 15:07
  **/
 @Slf4j
-public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactory {
+public class CacheUnionpayProductFactory implements IUnionPayProductFactory {
 
     /**
      * check need cache
@@ -32,7 +32,7 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
 
     private UnionpayConfig config;
 
-    private SimpleCacheUnionpayProductFactory setConfig(@NonNull UnionpayConfig config) {
+    private CacheUnionpayProductFactory setConfig(@NonNull UnionpayConfig config) {
         this.config = config;
         return this;
     }
@@ -41,7 +41,7 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
      * instance of UnionpayProductFactory holder
      */
     private static class SimpleCacheUnionpayProductFactoryHolder {
-        private static SimpleCacheUnionpayProductFactory instance = new SimpleCacheUnionpayProductFactory();
+        private static CacheUnionpayProductFactory instance = new CacheUnionpayProductFactory();
     }
 
     /**
@@ -50,7 +50,7 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
      * @param config
      * @return
      */
-    public static SimpleCacheUnionpayProductFactory getInstance(@NonNull UnionpayConfig config) {
+    public static CacheUnionpayProductFactory getInstance(@NonNull UnionpayConfig config) {
         return SimpleCacheUnionpayProductFactoryHolder.instance.setConfig(config);
     }
 
