@@ -11,7 +11,7 @@
 
 ### 组件集成
 
-快速集成：
+**快速集成：**
 ```java
 UnionpayConfig config = new UnionpayConfig();
 
@@ -21,7 +21,7 @@ new CacheUnionpayProductFactory(config).produce(UnionpayProductEnum.GATEWAY.name
 - 工厂类建议是**单例**，减少不必要的资源浪费
 - `CacheUnionpayProductFactory`默认有**缓存功能**，可通过设置`classCacheEnabled`值关闭，当然依赖方也可自行扩展`IUnionPayProductFactory`
 
-1.与Spring集成（此处展示java config版本配置，xml参考集成即可）
+**与Spring集成（此处展示java config版本配置，xml参考集成即可）**
 ```java
 @Bean
 public UnionpayConfig unionpayConfig() {
@@ -38,7 +38,7 @@ public CacheUnionpayProductFactory unionpayProductFactory(
 }
 ```
 
-服务调用：
+服务调用
 ```java
 @Autowired
 IUnionPayProductFactory unionpayProductFactory;
@@ -50,11 +50,11 @@ public void test() {
 }
 ```
 
-测试用例：  
+
+**测试用例：**  
 测试类中详细的测试了每个产品的方法，集成时可参考，各字段含义可直接查询官方文档
 
 ### 注意事项
-pay/pay-component-unionpay/README.md
 - [如何申请银联注册号？](../../doc/支付/银联-测试账号申请.md)
 
 - 如何集成产品测试权限？  
