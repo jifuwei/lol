@@ -25,9 +25,9 @@ public UnionpayConfig unionpayConfig() {
             .build();
 }
 
-public SimpleCacheUnionpayProductFactory unionpayProductFactory(
+public CacheUnionpayProductFactory unionpayProductFactory(
         @Qualifier("unionpayConfig") UnionpayConfig unionpayConfig) {
-    return new SimpleCacheUnionpayProductFactory(unionpayConfig);
+    return new CacheUnionpayProductFactory(unionpayConfig);
 }
 ```
 

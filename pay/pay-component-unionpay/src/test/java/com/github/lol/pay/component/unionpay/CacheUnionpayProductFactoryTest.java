@@ -9,15 +9,8 @@ import static org.junit.Assert.assertEquals;
 public class CacheUnionpayProductFactoryTest {
 
     @Test
-    public void getInstance() {
-        CacheUnionpayProductFactory first = CacheUnionpayProductFactory.getInstance(new UnionpayConfig());
-        CacheUnionpayProductFactory second = CacheUnionpayProductFactory.getInstance(new UnionpayConfig());
-        assertEquals(first, second);
-    }
-
-    @Test
     public void produce() {
-        CacheUnionpayProductFactory factory = CacheUnionpayProductFactory.getInstance(new UnionpayConfig());
+        CacheUnionpayProductFactory factory = new CacheUnionpayProductFactory(new UnionpayConfig());
         IUnionpayGatewayClient unionGatewayClient1 = (IUnionpayGatewayClient) factory.produce(UnionpayProductEnum.GATEWAY.name());
         IUnionpayGatewayClient unionGatewayClient2 = (IUnionpayGatewayClient) factory.produce(UnionpayProductEnum.GATEWAY.name());
         assertEquals(unionGatewayClient1, unionGatewayClient2);

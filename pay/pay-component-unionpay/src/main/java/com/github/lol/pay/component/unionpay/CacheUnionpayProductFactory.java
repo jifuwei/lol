@@ -32,26 +32,8 @@ public class CacheUnionpayProductFactory implements IUnionPayProductFactory {
 
     private UnionpayConfig config;
 
-    private CacheUnionpayProductFactory setConfig(@NonNull UnionpayConfig config) {
+    public CacheUnionpayProductFactory(@NonNull UnionpayConfig config) {
         this.config = config;
-        return this;
-    }
-
-    /**
-     * instance of UnionpayProductFactory holder
-     */
-    private static class SimpleCacheUnionpayProductFactoryHolder {
-        private static CacheUnionpayProductFactory instance = new CacheUnionpayProductFactory();
-    }
-
-    /**
-     * get UnionpayProductFactory.class instance
-     *
-     * @param config
-     * @return
-     */
-    public static CacheUnionpayProductFactory getInstance(@NonNull UnionpayConfig config) {
-        return SimpleCacheUnionpayProductFactoryHolder.instance.setConfig(config);
     }
 
     @Override

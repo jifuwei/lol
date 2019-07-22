@@ -1,7 +1,7 @@
 package com.github.lol.pay.component.unionpay.product.gateway.service;
 
-import com.github.lol.pay.component.unionpay.IUnionPayProductFactory;
 import com.github.lol.pay.component.unionpay.CacheUnionpayProductFactory;
+import com.github.lol.pay.component.unionpay.IUnionPayProductFactory;
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.client.IUnionpayGatewayClient;
 import com.github.lol.pay.component.unionpay.constant.UnionpayConstant;
@@ -23,12 +23,11 @@ public class UnionpayGatewayServiceTest {
 
     private UnionpayConfig config = new UnionpayConfig();
 
-    private IUnionPayProductFactory unionPayProductFactory = CacheUnionpayProductFactory.getInstance(config);
-
     private IUnionpayGatewayClient gatewayClient;
 
     @Before
     public void before() {
+        IUnionPayProductFactory unionPayProductFactory = new CacheUnionpayProductFactory(config);
         gatewayClient = (IUnionpayGatewayClient) unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
     }
 

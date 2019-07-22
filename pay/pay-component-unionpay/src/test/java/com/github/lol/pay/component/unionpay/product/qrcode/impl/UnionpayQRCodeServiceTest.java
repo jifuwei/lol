@@ -1,7 +1,7 @@
 package com.github.lol.pay.component.unionpay.product.qrcode.impl;
 
-import com.github.lol.pay.component.unionpay.IUnionPayProductFactory;
 import com.github.lol.pay.component.unionpay.CacheUnionpayProductFactory;
+import com.github.lol.pay.component.unionpay.IUnionPayProductFactory;
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.client.IUnionpayQRCodeClient;
 import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
@@ -15,12 +15,11 @@ public class UnionpayQRCodeServiceTest {
 
     private UnionpayConfig config = new UnionpayConfig();
 
-    private IUnionPayProductFactory unionPayProductFactory = CacheUnionpayProductFactory.getInstance(config);
-
     private IUnionpayQRCodeClient qrCodeClient;
 
     @Before
     public void before() {
+        IUnionPayProductFactory unionPayProductFactory = new CacheUnionpayProductFactory(config);
         qrCodeClient = (IUnionpayQRCodeClient) unionPayProductFactory.produce(UnionpayProductEnum.QR_CODE.name());
     }
 
