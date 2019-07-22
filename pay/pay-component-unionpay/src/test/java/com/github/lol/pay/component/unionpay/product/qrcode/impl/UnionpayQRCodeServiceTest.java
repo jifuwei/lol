@@ -37,11 +37,11 @@ public class UnionpayQRCodeServiceTest {
                 .accessType("0")
                 .orderId("qrcodeqjfw123456")
                 .txnTime("20190722170412")
-                .txnAmt("100000")
+                .txnAmt("500000")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .origQryId("1256489524")
-                .origOrderId("1256489524")
-                .origTxnTime("20190719170412")
+                .origQryId("qrcode201907221021457qwer")
+                .origOrderId("qrcode201907221021457qwer")
+                .origTxnTime("20190722101256")
                 .build();
 
         QRCodeCancelConsumeSyncResp syncResp = qrCodeClient.cancelConsume(req);
@@ -75,6 +75,25 @@ public class UnionpayQRCodeServiceTest {
         assertNotNull(syncResp);
     }
 
+    /**
+     * 请求结果:	成功
+     * respCode	00
+     * acqCode	01022900
+     * payeeInfo	e2lkPTc3NzI5MDA1ODE3MTI5OSZtZXJDYXRDb2RlPTU4MTImbmFtZT3mtYvor5XomZrmi5/llYbmiLc3NzcyOTAwNTgxNzEyOTkmdGVybUlkPTAxMDgwMjA5fQ
+     * currencyCode	156
+     * paymentValidTime	86362
+     * orderType	10
+     * qrCodeType	0
+     * issCode	90880019
+     * txnAmt	500000
+     * txnNo	7919072254646293076120
+     * version	1.0.0
+     * invoiceSt	0
+     * orderNo	qrcode201907221021457qwer
+     * certId	69026276696
+     * reqType	0120000903
+     * respMsg	成功[0000000]
+     */
     @Test
     public void masterImg() {
         QRCodeMasterImgReq req = QRCodeMasterImgReq.builder()
@@ -87,7 +106,7 @@ public class UnionpayQRCodeServiceTest {
                 .channelType("08")
                 .merId(config.getMerId())
                 .accessType("0")
-                .orderId("qrcode20190722102147qwer")
+                .orderId("qrcode201907221021457qwer")
                 .txnTime("20190722101256")
                 .txnAmt("500000")
                 .backUrl("http://www.lol.com/gateway/callback")
@@ -114,6 +133,7 @@ public class UnionpayQRCodeServiceTest {
                 .orderId("qrcode20190722102156qwer")
                 .txnTime("20190722101256")
                 .txnAmt("500000")
+                .qrNo("C2B100001")
                 .backUrl("http://www.lol.com/gateway/callback")
                 .currencyCode("156")
                 .build();
