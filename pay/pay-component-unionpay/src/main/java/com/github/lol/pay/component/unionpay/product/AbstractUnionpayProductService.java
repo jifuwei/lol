@@ -5,7 +5,6 @@ import com.github.lol.lib.util.http.HttpNetUtil;
 import com.github.lol.pay.component.unionpay.UnionpayCertHolder;
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.UnionpaySignHolder;
-import com.github.lol.pay.component.unionpay.product.common.model.FormReq;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -39,6 +38,15 @@ public abstract class AbstractUnionpayProductService {
      * @return
      */
     protected abstract String productId();
+
+    protected void init(@NonNull UnionpayConfig config) {
+        // 1.配置
+        this.setConfig(config);
+        // 2.认证配置
+        this.setCertService(UnionpayCertHolder.of(config));
+        // 3.签名配置
+        this.setSignService(UnionpaySignHolder.of(config, this.getCertService()));
+    }
 
     /**
      * post to server

@@ -1,12 +1,10 @@
 package com.github.lol.pay.component.unionpay.product.gateway.impl;
 
-import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
-import com.github.lol.pay.component.unionpay.UnionpayCertHolder;
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
-import com.github.lol.pay.component.unionpay.UnionpaySignHolder;
+import com.github.lol.pay.component.unionpay.client.IUnionpayGatewayClient;
+import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductService;
-import com.github.lol.pay.component.unionpay.product.common.model.FormReq;
-import com.github.lol.pay.component.unionpay.client.IUnionGatewayClient;
+import com.github.lol.pay.component.unionpay.product.FormReq;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;
 import lombok.NonNull;
 
@@ -19,12 +17,10 @@ import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.Ap
  * @create: 2019-07-15 14:20
  **/
 public class UnionpayGatewayService extends AbstractUnionpayProductService
-        implements IUnionGatewayClient {
+        implements IUnionpayGatewayClient {
 
     public UnionpayGatewayService(@NonNull UnionpayConfig config) {
-        this.setConfig(config);
-        this.setCertService(UnionpayCertHolder.of(config));
-        this.setSignService(UnionpaySignHolder.of(config, this.getCertService()));
+        init(config);
     }
 
     public static UnionpayGatewayService of(@NonNull UnionpayConfig config) {
@@ -32,67 +28,67 @@ public class UnionpayGatewayService extends AbstractUnionpayProductService
     }
 
     @Override
-    public FormReq consume(@NonNull ConsumeReq consumeReq) {
+    public FormReq consume(@NonNull GatewayConsumeReq gatewayConsumeReq) {
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CONSUME;
-        return form(consumeReq, reqUrl);
+        return form(gatewayConsumeReq, reqUrl);
     }
 
     @Override
-    public CancelConsumeSyncResp cancelConsume(@NonNull CancelConsumeReq cancelConsumeReq) {
+    public GatewayCancelConsumeSyncResp cancelConsume(@NonNull GatewayCancelConsumeReq gatewayCancelConsumeReq) {
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CANCEL_CONSUME;
-        return post(cancelConsumeReq, reqUrl, CancelConsumeSyncResp.class);
+        return post(gatewayCancelConsumeReq, reqUrl, GatewayCancelConsumeSyncResp.class);
     }
 
     @Override
-    public BackConsumeSyncResp backConsume(@NonNull BackConsumeReq backConsumeReq) {
+    public GatewayBackConsumeSyncResp backConsume(@NonNull GatewayBackConsumeReq gatewayBackConsumeReq) {
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_BACK_CONSUME;
-        return post(backConsumeReq, reqUrl, BackConsumeSyncResp.class);
+        return post(gatewayBackConsumeReq, reqUrl, GatewayBackConsumeSyncResp.class);
     }
 
     @Override
-    public TransactionStatusQuerySyncResp transactionStatusQuery(
-            @NonNull TransactionStatusQueryReq transactionStatusQueryReq) {
+    public GatewayTransactionStatusQuerySyncResp transactionStatusQuery(
+            @NonNull GatewayTransactionStatusQueryReq gatewayTransactionStatusQueryReq) {
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_TRANSACTION_STATUS_QUERY;
-        return post(transactionStatusQueryReq, reqUrl, TransactionStatusQuerySyncResp.class);
+        return post(gatewayTransactionStatusQueryReq, reqUrl, GatewayTransactionStatusQuerySyncResp.class);
     }
 
     @Override
-    public EncryptInfoUpdateSyncResp encryptInfoUpdate(
-            @NonNull EncryptInfoUpdateReq encryptInfoUpdateReq) {
+    public GatewayEncryptInfoUpdateSyncResp encryptInfoUpdate(
+            @NonNull GatewayEncryptInfoUpdateReq gatewayEncryptInfoUpdateReq) {
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_ENCRYPT_INFO_UPDATE;
-        return post(encryptInfoUpdateReq, reqUrl, EncryptInfoUpdateSyncResp.class);
+        return post(gatewayEncryptInfoUpdateReq, reqUrl, GatewayEncryptInfoUpdateSyncResp.class);
     }
 
     @Override
-    public FormReq preAuth(@NonNull PreAuthReq preAuthReq) {
+    public FormReq preAuth(@NonNull GatewayPreAuthReq gatewayPreAuthReq) {
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_PRE_AUTH;
-        return form(preAuthReq, reqUrl);
+        return form(gatewayPreAuthReq, reqUrl);
     }
 
     @Override
-    public CancelPreAuthSyncResp cancelPreAuth(@NonNull CancelPreAuthReq cancelPreAuthReq) {
+    public GatewayCancelPreAuthSyncResp cancelPreAuth(@NonNull GatewayCancelPreAuthReq gatewayCancelPreAuthReq) {
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CANCEL_PRE_AUTH;
-        return post(cancelPreAuthReq, reqUrl, CancelPreAuthSyncResp.class);
+        return post(gatewayCancelPreAuthReq, reqUrl, GatewayCancelPreAuthSyncResp.class);
     }
 
     @Override
-    public CompletePreAuthSyncResp completePreAuth(@NonNull CompletePreAuthReq completePreAuthReq) {
+    public GatewayCompletePreAuthSyncResp completePreAuth(@NonNull GatewayCompletePreAuthReq gatewayCompletePreAuthReq) {
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_COMPLETE_PRE_AUTH;
-        return post(completePreAuthReq, reqUrl, CompletePreAuthSyncResp.class);
+        return post(gatewayCompletePreAuthReq, reqUrl, GatewayCompletePreAuthSyncResp.class);
     }
 
     @Override
-    public CancelCompletedPreAuthSyncResp cancelCompletedPreAuth(
-            @NonNull CancelCompletedPreAuthReq cancelCompletedPreAuthReq) {
+    public GatewayCancelCompletedPreAuthSyncResp cancelCompletedPreAuth(
+            @NonNull GatewayCancelCompletedPreAuthReq gatewayCancelCompletedPreAuthReq) {
         String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CANCEL_COMPLETE_PRE_AUTH;
-        return post(cancelCompletedPreAuthReq, reqUrl, CancelCompletedPreAuthSyncResp.class);
+        return post(gatewayCancelCompletedPreAuthReq, reqUrl, GatewayCancelCompletedPreAuthSyncResp.class);
     }
 
     @Override
-    public FileTransferSyncResp fileTransfer(@NonNull FileTransferReq fileTransferReq) {
+    public GatewayFileTransferSyncResp fileTransfer(@NonNull GatewayFileTransferReq gatewayFileTransferReq) {
         // 对账地址和主api不一致
         String reqUrl = this.getConfig().getFileDownLoadUrl();
-        return post(fileTransferReq, reqUrl, FileTransferSyncResp.class);
+        return post(gatewayFileTransferReq, reqUrl, GatewayFileTransferSyncResp.class);
     }
 
     @Override

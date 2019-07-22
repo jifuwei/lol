@@ -2,13 +2,14 @@ package com.github.lol.pay.component.unionpay.product.gateway.service;
 
 import com.github.lol.pay.component.unionpay.IUnionPayProductFactory;
 import com.github.lol.pay.component.unionpay.SimpleCacheUnionpayProductFactory;
-import com.github.lol.pay.component.unionpay.constant.UnionpayConstant;
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
-import com.github.lol.pay.component.unionpay.product.common.model.FormReq;
-import com.github.lol.pay.component.unionpay.client.IUnionGatewayClient;
-import com.github.lol.pay.component.unionpay.product.gateway.impl.UnionpayGatewayService;
+import com.github.lol.pay.component.unionpay.client.IUnionpayGatewayClient;
+import com.github.lol.pay.component.unionpay.constant.UnionpayConstant;
+import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
+import com.github.lol.pay.component.unionpay.product.FormReq;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;
 import com.github.lol.pay.component.unionpay.util.PackUtil;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
@@ -24,9 +25,16 @@ public class UnionpayGatewayServiceTest {
 
     private IUnionPayProductFactory unionPayProductFactory = SimpleCacheUnionpayProductFactory.getInstance(config);
 
+    private IUnionpayGatewayClient gatewayClient;
+
+    @Before
+    public void before() {
+        gatewayClient = (IUnionpayGatewayClient) unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
+    }
+
     @Test
     public void consume() {
-        ConsumeReq consumeReq = ConsumeReq.builder()
+        GatewayConsumeReq gatewayConsumeReq = GatewayConsumeReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -36,8 +44,8 @@ public class UnionpayGatewayServiceTest {
                 .channelType("07")
                 .merId(config.getMerId())
                 .accessType(config.getAccessType())
-                .orderId("jfw123456714")
-                .txnTime("20190719170412")
+                .orderId("jfw123456799")
+                .txnTime("20190722100412")
                 .currencyCode(config.getCurrencyCode())
                 .txnAmt("10000000")
                 .riskRateInfo("{commodityName=测试商品名称}")
@@ -46,8 +54,7 @@ public class UnionpayGatewayServiceTest {
                 .payTimeout(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime() + 15 * 60 * 1000))
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
-        FormReq formReq = gatewayClient.consume(consumeReq);
+        FormReq formReq = gatewayClient.consume(gatewayConsumeReq);
         System.out.println("html: " + formReq.buildAutoFormHtml());
 
         assertNotNull(formReq);
@@ -55,7 +62,7 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void cancelConsume() {
-        CancelConsumeReq req = CancelConsumeReq.builder()
+        GatewayCancelConsumeReq req = GatewayCancelConsumeReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -72,15 +79,14 @@ public class UnionpayGatewayServiceTest {
                 .origQryId("561907111704129975038")
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
-        CancelConsumeSyncResp syncResp = gatewayClient.cancelConsume(req);
+        GatewayCancelConsumeSyncResp syncResp = gatewayClient.cancelConsume(req);
 
         assertNotNull(syncResp);
     }
 
     @Test
     public void backConsume() {
-        BackConsumeReq req = BackConsumeReq.builder()
+        GatewayBackConsumeReq req = GatewayBackConsumeReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -97,8 +103,7 @@ public class UnionpayGatewayServiceTest {
                 .origQryId("041907111704129836258")
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
-        BackConsumeSyncResp syncResp = gatewayClient.backConsume(req);
+        GatewayBackConsumeSyncResp syncResp = gatewayClient.backConsume(req);
 
         assertNotNull(syncResp);
     }
@@ -109,7 +114,7 @@ public class UnionpayGatewayServiceTest {
         /**
          * orderId & txnTime 必须待查询交易单完全一致
          */
-        TransactionStatusQueryReq req = TransactionStatusQueryReq.builder()
+        GatewayTransactionStatusQueryReq req = GatewayTransactionStatusQueryReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -122,15 +127,14 @@ public class UnionpayGatewayServiceTest {
                 .txnTime("20190719170412")
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
-        TransactionStatusQuerySyncResp syncResp = gatewayClient.transactionStatusQuery(req);
+        GatewayTransactionStatusQuerySyncResp syncResp = gatewayClient.transactionStatusQuery(req);
 
         assertNotNull(syncResp);
     }
 
     @Test
     public void encryptInfoUpdate() {
-        EncryptInfoUpdateReq req = EncryptInfoUpdateReq.builder()
+        GatewayEncryptInfoUpdateReq req = GatewayEncryptInfoUpdateReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -145,15 +149,14 @@ public class UnionpayGatewayServiceTest {
                 .txnTime("20190719170412")
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
-        EncryptInfoUpdateSyncResp syncResp = gatewayClient.encryptInfoUpdate(req);
+        GatewayEncryptInfoUpdateSyncResp syncResp = gatewayClient.encryptInfoUpdate(req);
 
         assertNotNull(syncResp);
     }
 
     @Test
     public void preAuth() {
-        PreAuthReq req = PreAuthReq.builder()
+        GatewayPreAuthReq req = GatewayPreAuthReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -173,7 +176,6 @@ public class UnionpayGatewayServiceTest {
                 .accType("01")
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
         FormReq formReq = gatewayClient.preAuth(req);
         System.out.println("html: " + formReq.buildAutoFormHtml());
 
@@ -182,7 +184,7 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void cancelPreAuth() {
-        CancelPreAuthReq req = CancelPreAuthReq.builder()
+        GatewayCancelPreAuthReq req = GatewayCancelPreAuthReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -199,15 +201,14 @@ public class UnionpayGatewayServiceTest {
                 .origQryId("421907191704120442528")
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
-        CancelPreAuthSyncResp syncResp = gatewayClient.cancelPreAuth(req);
+        GatewayCancelPreAuthSyncResp syncResp = gatewayClient.cancelPreAuth(req);
 
         assertNotNull(syncResp);
     }
 
     @Test
     public void completePreAuth() {
-        CompletePreAuthReq req = CompletePreAuthReq.builder()
+        GatewayCompletePreAuthReq req = GatewayCompletePreAuthReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -224,15 +225,14 @@ public class UnionpayGatewayServiceTest {
                 .origQryId("711907191704128948768")
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
-        CompletePreAuthSyncResp syncResp = gatewayClient.completePreAuth(req);
+        GatewayCompletePreAuthSyncResp syncResp = gatewayClient.completePreAuth(req);
 
         assertNotNull(syncResp);
     }
 
     @Test
     public void cancelCompletedPreAuth() {
-        CancelCompletedPreAuthReq req = CancelCompletedPreAuthReq.builder()
+        GatewayCancelCompletedPreAuthReq req = GatewayCancelCompletedPreAuthReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -249,15 +249,14 @@ public class UnionpayGatewayServiceTest {
                 .origQryId("711907191704128948768")
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
-        CancelCompletedPreAuthSyncResp syncResp = gatewayClient.cancelCompletedPreAuth(req);
+        GatewayCancelCompletedPreAuthSyncResp syncResp = gatewayClient.cancelCompletedPreAuth(req);
 
         assertNotNull(syncResp);
     }
 
     @Test
     public void fileTransfer() {
-        FileTransferReq req = FileTransferReq.builder()
+        GatewayFileTransferReq req = GatewayFileTransferReq.builder()
                 .version(config.getVersion())
                 .encoding(config.getEncoding())
                 .signMethod(config.getSignMethod())
@@ -271,8 +270,7 @@ public class UnionpayGatewayServiceTest {
                 .fileType("00")
                 .build();
 
-        IUnionGatewayClient gatewayClient = unionPayProductFactory.produce(UnionpayGatewayService.class);
-        FileTransferSyncResp syncResp = gatewayClient.fileTransfer(req);
+        GatewayFileTransferSyncResp syncResp = gatewayClient.fileTransfer(req);
 
         assertNotNull(syncResp);
 

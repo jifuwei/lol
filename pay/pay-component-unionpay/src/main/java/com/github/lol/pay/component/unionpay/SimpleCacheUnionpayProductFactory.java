@@ -1,7 +1,9 @@
 package com.github.lol.pay.component.unionpay;
 
+import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductService;
 import com.github.lol.pay.component.unionpay.product.gateway.impl.UnionpayGatewayService;
+import com.github.lol.pay.component.unionpay.product.qrcode.impl.UnionpayQRCodeService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +28,7 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
     /**
      * cache map
      */
-    private final ConcurrentMap<Class<?>, Object> productMap = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Object> productMap = new ConcurrentHashMap<>();
 
     private UnionpayConfig config;
 
@@ -65,47 +67,51 @@ public class SimpleCacheUnionpayProductFactory implements IUnionPayProductFactor
     /**
      * product a product
      *
-     * @param clazz 支持的产品实现类，请在com.github.lol.pay.component.unionpay.product下寻找对应的产品
-     * @param <T>
+     * @param productName 支持的产品 com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum
      * @return
      */
     @Override
-    public <T extends AbstractUnionpayProductService> T produce(@NonNull Class<T> clazz) {
-        if (classCacheEnabled) {
-            Object cached = productMap.get(clazz);
-            if (!Objects.isNull(cached)) {
-                log.debug("==> UnionpayProductFactory cached [Class]: {}", clazz.getName());
-                return refreshCustomerConfig((T) cached);
-            }
+    public Object produce(@NonNull String productName) {
+        UnionpayProductEnum product = UnionpayProductEnum.valueOf(productName);
 
-            cached = buildClass(clazz);
-            productMap.put(clazz, cached);
-            log.debug("==> UnionpayProductFactory first init [Class]: {}", clazz.getName());
-
-
-            return (T) cached;
-        } else {
-            return refreshCustomerConfig((T) buildClass(clazz));
+        if (!classCacheEnabled) {
+            return buildClass(product);
         }
+
+        Object cached = productMap.get(product.name());
+        if (!Objects.isNull(cached)) {
+            log.debug("==> UnionpayProductFactory cached [product]: {}", product.name());
+            return refreshCustomerConfig(cached);
+        }
+
+        cached = buildClass(product);
+        productMap.put(product.name(), cached);
+        log.debug("==> UnionpayProductFactory first init [product]: {}", product.name());
+
+
+        return cached;
     }
 
     /**
      * refresh Customer Config
      *
      * @param cached
-     * @param <T>
      * @return
      */
-    private <T extends AbstractUnionpayProductService> T refreshCustomerConfig(@NonNull T cached) {
-        cached.setConfig(config);
+    private Object refreshCustomerConfig(@NonNull Object cached) {
+        AbstractUnionpayProductService aProductService = (AbstractUnionpayProductService) cached;
+        aProductService.setConfig(config);
         return cached;
     }
 
-    private <T> Object buildClass(@NonNull Class<T> clazz) {
-        if (UnionpayGatewayService.class.equals(clazz)) {
-            return UnionpayGatewayService.of(config);
-        } else {
-            throw new RuntimeException(String.format("[Class]: %s not support now", clazz.getName()));
+    private Object buildClass(@NonNull UnionpayProductEnum product) {
+        switch (product) {
+            case GATEWAY:
+                return UnionpayGatewayService.of(config);
+            case QR_CODE:
+                return UnionpayQRCodeService.of(config);
+            default:
+                throw new RuntimeException(String.format("[Unionpay Product]: %s not support", product.name()));
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.github.lol.pay.component.unionpay;
 
-import com.github.lol.pay.component.unionpay.client.IUnionGatewayClient;
-import com.github.lol.pay.component.unionpay.product.gateway.impl.UnionpayGatewayService;
+import com.github.lol.pay.component.unionpay.client.IUnionpayGatewayClient;
+import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -18,8 +18,8 @@ public class SimpleCacheUnionpayProductFactoryTest {
     @Test
     public void produce() {
         SimpleCacheUnionpayProductFactory factory = SimpleCacheUnionpayProductFactory.getInstance(new UnionpayConfig());
-        IUnionGatewayClient unionGatewayClient1 = factory.produce(UnionpayGatewayService.class);
-        IUnionGatewayClient unionGatewayClient2 = factory.produce(UnionpayGatewayService.class);
+        IUnionpayGatewayClient unionGatewayClient1 = (IUnionpayGatewayClient) factory.produce(UnionpayProductEnum.GATEWAY.name());
+        IUnionpayGatewayClient unionGatewayClient2 = (IUnionpayGatewayClient) factory.produce(UnionpayProductEnum.GATEWAY.name());
         assertEquals(unionGatewayClient1, unionGatewayClient2);
     }
 }

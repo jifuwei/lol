@@ -1,7 +1,5 @@
 package com.github.lol.pay.component.unionpay;
 
-import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductService;
-
 /**
  * unionpay product factory
  *
@@ -27,9 +25,8 @@ public interface IUnionPayProductFactory {
     /**
      * produce a product
      *
-     * @param clazz
-     * @param <T>
+     * @param productName
      * @return
      */
-    <T extends AbstractUnionpayProductService> T produce(Class<T> clazz);
+    Object produce(String productName);
 }

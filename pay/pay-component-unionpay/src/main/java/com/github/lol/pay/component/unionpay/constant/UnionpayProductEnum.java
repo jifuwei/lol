@@ -10,7 +10,8 @@ import lombok.Getter;
  **/
 public enum UnionpayProductEnum {
 
-    GATEWAY("在线网关支付");
+    GATEWAY("在线网关支付"),
+    QR_CODE("二维码支付");
 
     @Getter
     private String desc;

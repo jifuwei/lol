@@ -1,7 +1,7 @@
 package com.github.lol.pay.component.unionpay.util;
 
 import com.github.lol.lib.util.StrUtil;
-import com.github.lol.pay.component.unionpay.product.gateway.model.FileTransferSyncResp;
+import com.github.lol.pay.component.unionpay.product.gateway.model.GatewayFileTransferSyncResp;
 import lombok.Cleanup;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -40,7 +40,7 @@ public class PackUtil {
      * @return
      */
     @SneakyThrows
-    public static String doCodeFileContent(@NonNull FileTransferSyncResp syncResp,
+    public static String doCodeFileContent(@NonNull GatewayFileTransferSyncResp syncResp,
                                            @NonNull String savePath, String encoding) {
         encoding = StrUtil.isEmpty(encoding) ? UTF_8_ENCODING : encoding;
         String fileContent = syncResp.getFileContent();

@@ -57,7 +57,7 @@ public class UnionpayConstant {
      */
     public class Api {
         /**
-         * product: online gateway pay
+         * product: GATEWAY
          */
         public final static String URL_GATEWAY_CONSUME = "/gateway/api/frontTransReq.do";
         public final static String URL_GATEWAY_CANCEL_CONSUME = "/gateway/api/backTransReq.do";
@@ -68,5 +68,15 @@ public class UnionpayConstant {
         public final static String URL_GATEWAY_CANCEL_PRE_AUTH = "/gateway/api/backTransReq.do";
         public final static String URL_GATEWAY_COMPLETE_PRE_AUTH = "/gateway/api/backTransReq.do";
         public final static String URL_GATEWAY_CANCEL_COMPLETE_PRE_AUTH = "/gateway/api/backTransReq.do";
+
+        /**
+         * product: QR_CODE
+         */
+        public final static String URL_QR_CODE_CANCEL_CONSUME = "/gateway/api/backTransReq.do";
+        public final static String URL_QR_CODE_BACK_CONSUME = "/gateway/api/backTransReq.do";
+        public final static String URL_QR_CODE_MASTER_IMG = "/gateway/api/backTransReq.do";
+        public final static String URL_QR_CODE_SLAVE_IMG = "/gateway/api/backTransReq.do";
+        public final static String URL_QR_CODE_TRANSACTION_STATUS_QUERY = "/gateway/api/queryTrans.do";
+        public final static String URL_QR_CODE_REVERSAL = "/gateway/api/backTransReq.do";
     }
 }
