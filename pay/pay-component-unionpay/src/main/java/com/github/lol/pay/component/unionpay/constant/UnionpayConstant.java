@@ -16,6 +16,16 @@ public class UnionpayConstant {
     public final static String PARAM_CERT_ID = "certId";
     public final static String PARAM_SIGNATURE = "signature";
     public static final String PARAM_SIGN_PUB_KEY_CERT = "signPubKeyCert";
+    public static final String PARAM_MER_ID = "merId";
+    public static final String PARAM_ACCESS_TYPE = "accessType";
+    public static final String PARAM_DOMAIN = "domain";
+    public static final String PARAM_FILE_DOWNLOAD_URL = "fileDownLoadUrl";
+    public static final String PARAM_SIGN_CERT_PATH = "signCertPath";
+    public static final String PARAM_SIGN_CERT_PWD = "signCertPwd";
+    public static final String PARAM_SIGN_CERT_TYPE = "signCertType";
+    public static final String PARAM_MIDDLE_CERT_PATH = "middleCertPath";
+    public static final String PARAM_ROOT_CERT_PATH = "rootCertPath";
+    public static final String PARAM_ENCRYPT_CERT_PATH = "encryptCertPath";
 
     /**
      * api version
@@ -42,6 +52,11 @@ public class UnionpayConstant {
      * encoding
      */
     public final static String UTF_8_ENCODING = "UTF-8";
+
+    /**
+     * currency code
+     */
+    public final static String DEFAULT_CURRENCY_CODE = "156";
 
     /**
      * certificate config

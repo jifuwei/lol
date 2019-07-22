@@ -3,6 +3,7 @@ package com.github.lol.pay.component.unionpay.product.qrcode.impl;
 import com.github.lol.pay.component.unionpay.CacheUnionpayProductFactory;
 import com.github.lol.pay.component.unionpay.IUnionPayProductFactory;
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
+import com.github.lol.pay.component.unionpay.UnionpayGlobalConfig;
 import com.github.lol.pay.component.unionpay.client.IUnionpayQRCodeClient;
 import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import com.github.lol.pay.component.unionpay.product.qrcode.model.*;
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class UnionpayQRCodeServiceTest {
 
-    private UnionpayConfig config = new UnionpayConfig();
+    private UnionpayConfig config = UnionpayGlobalConfig.init();
 
     private IUnionpayQRCodeClient qrCodeClient;
 

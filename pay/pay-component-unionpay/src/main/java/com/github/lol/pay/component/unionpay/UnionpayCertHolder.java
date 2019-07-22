@@ -315,7 +315,7 @@ public class UnionpayCertHolder {
             throw new RuntimeException("verifyCertificate fail");
         }
 
-        if (config.isIfValidateCNName()) {
+        if (config.getValidateCNNameEnable()) {
             // 验证证书是否属于银联
             if (!UNIONPAY_CNNAME.equals(getIdentitiesFromCertficate(cert))) {
                 throw new RuntimeException("cer owner is not CUP:" + getIdentitiesFromCertficate(cert));

@@ -119,6 +119,6 @@ public abstract class AbstractUnionpayProductService {
      */
     private HttpNetUtil buildNetUtil(@NonNull String url, @NonNull String reqMethod) {
         return new HttpNetUtil(url, reqMethod, config.getEncoding(),
-                config.getConnectTimeout(), config.getReadTimeout(), false, config.getVerifyCert());
+                config.getConnectTimeout(), config.getReadTimeout(), false, config.getVerifyCertEnable());
     }
 }

@@ -64,10 +64,12 @@ public class HttpNetUtil {
     }
 
     public HttpNetUtil(String url, String reqMethod) {
-        new HttpNetUtil(url, reqMethod, null, null, null, null, null);
+        new HttpNetUtil(url, reqMethod,
+                null, null, null, null, null);
     }
 
-    public HttpNetUtil(String url, String reqMethod, String encoding, Integer connectTimeout, Integer readTimeout, Boolean cacheEnable, Boolean verifyCert) {
+    public HttpNetUtil(String url, String reqMethod, String encoding, Integer connectTimeout,
+                       Integer readTimeout, Boolean cacheEnable, Boolean verifyCert) {
         this.reqUrl = url;
         this.encoding = StrUtil.isEmpty(encoding) ? DEFAULT_ENCODING : encoding;
         this.reqMethod = reqMethod;

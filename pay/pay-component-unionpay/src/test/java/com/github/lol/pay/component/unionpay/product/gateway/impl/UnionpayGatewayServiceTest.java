@@ -3,6 +3,7 @@ package com.github.lol.pay.component.unionpay.product.gateway.impl;
 import com.github.lol.pay.component.unionpay.CacheUnionpayProductFactory;
 import com.github.lol.pay.component.unionpay.IUnionPayProductFactory;
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
+import com.github.lol.pay.component.unionpay.UnionpayGlobalConfig;
 import com.github.lol.pay.component.unionpay.client.IUnionpayGatewayClient;
 import com.github.lol.pay.component.unionpay.constant.UnionpayConstant;
 import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
@@ -21,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class UnionpayGatewayServiceTest {
 
-    private UnionpayConfig config = new UnionpayConfig();
+    private UnionpayConfig config = UnionpayGlobalConfig.init();
 
     private IUnionpayGatewayClient gatewayClient;
 
