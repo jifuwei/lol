@@ -38,6 +38,7 @@ IUnionPayProductFactory unionpayProductFactory;
 
 public void test() {
     // 具体使用哪种产品，见方法注释
-    IUnionpayQRCodeClient qrCodeClient = (IUnionpayGatewayClient) unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
+    IUnionpayQRCodeClient qrCodeClient = (IUnionpayGatewayClient) 
+    unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
 }
 ```
