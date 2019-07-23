@@ -71,27 +71,13 @@ public class UnionpayConstant {
      * all api url
      */
     public class Api {
-        /**
-         * product: GATEWAY
-         */
-        public final static String URL_GATEWAY_CONSUME = "/gateway/api/frontTransReq.do";
-        public final static String URL_GATEWAY_CANCEL_CONSUME = "/gateway/api/backTransReq.do";
-        public final static String URL_GATEWAY_BACK_CONSUME = "/gateway/api/backTransReq.do";
-        public final static String URL_GATEWAY_TRANSACTION_STATUS_QUERY = "/gateway/api/queryTrans.do";
-        public final static String URL_GATEWAY_ENCRYPT_INFO_UPDATE = "/gateway/api/backTransReq.do";
-        public final static String URL_GATEWAY_PRE_AUTH = "/gateway/api/frontTransReq.do";
-        public final static String URL_GATEWAY_CANCEL_PRE_AUTH = "/gateway/api/backTransReq.do";
-        public final static String URL_GATEWAY_COMPLETE_PRE_AUTH = "/gateway/api/backTransReq.do";
-        public final static String URL_GATEWAY_CANCEL_COMPLETE_PRE_AUTH = "/gateway/api/backTransReq.do";
 
-        /**
-         * product: QR_CODE
-         */
-        public final static String URL_QR_CODE_CANCEL_CONSUME = "/gateway/api/backTransReq.do";
-        public final static String URL_QR_CODE_BACK_CONSUME = "/gateway/api/backTransReq.do";
-        public final static String URL_QR_CODE_MASTER_IMG = "/gateway/api/backTransReq.do";
-        public final static String URL_QR_CODE_SLAVE_IMG = "/gateway/api/backTransReq.do";
-        public final static String URL_QR_CODE_TRANSACTION_STATUS_QUERY = "/gateway/api/queryTrans.do";
-        public final static String URL_QR_CODE_REVERSAL = "/gateway/api/backTransReq.do";
+        // 前台交易请求地址
+        public final static String URL_FRONT_TRANSFER = "/gateway/api/frontTransReq.do";
+        // 后台交易请求地址(无卡交易配置该地址)
+        public final static String URL_BACK_TRANSFER_WITHOUT_CARD = "/gateway/api/backTransReq.do";
+        // 单笔查询请求地址
+        public final static String URL_QUERY_SINGLE = "/gateway/api/queryTrans.do";
+
     }
 }

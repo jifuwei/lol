@@ -28,38 +28,38 @@ public class UnionpayQRCodeService extends AbstractUnionpayProductService
 
     @Override
     public QRCodeCancelConsumeSyncResp cancelConsume(@NonNull QRCodeCancelConsumeReq cancelConsumeReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_QR_CODE_CANCEL_CONSUME;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(cancelConsumeReq, reqUrl, QRCodeCancelConsumeSyncResp.class);
     }
 
     @Override
     public QRCodeBackConsumeSyncResp backConsume(@NonNull QRCodeBackConsumeReq backConsumeReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_QR_CODE_BACK_CONSUME;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(backConsumeReq, reqUrl, QRCodeBackConsumeSyncResp.class);
     }
 
     @Override
     public QRCodeMasterImgSyncResp masterImg(@NonNull QRCodeMasterImgReq masterImgReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_QR_CODE_MASTER_IMG;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(masterImgReq, reqUrl, QRCodeMasterImgSyncResp.class);
     }
 
     @Override
     public QRCodeSlaveImgSyncResp slaveImg(@NonNull QRCodeSlaveImgReq slaveImgReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_QR_CODE_SLAVE_IMG;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(slaveImgReq, reqUrl, QRCodeSlaveImgSyncResp.class);
     }
 
     @Override
     public QRCodeTransactionStatusQuerySyncResp transactionStatusQuery(
             @NonNull QRCodeTransactionStatusQueryReq transactionStatusQueryReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_QR_CODE_TRANSACTION_STATUS_QUERY;
+        String reqUrl = this.getConfig().getDomain() + URL_QUERY_SINGLE;
         return post(transactionStatusQueryReq, reqUrl, QRCodeTransactionStatusQuerySyncResp.class);
     }
 
     @Override
     public QRCodeReversalSyncResp reversal(@NonNull QRCodeReversalReq reversalReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_QR_CODE_REVERSAL;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(reversalReq, reqUrl, QRCodeReversalSyncResp.class);
     }
 

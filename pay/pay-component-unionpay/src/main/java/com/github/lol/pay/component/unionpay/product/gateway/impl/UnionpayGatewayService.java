@@ -29,58 +29,58 @@ public class UnionpayGatewayService extends AbstractUnionpayProductService
 
     @Override
     public FormReq consume(@NonNull GatewayConsumeReq gatewayConsumeReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CONSUME;
+        String reqUrl = this.getConfig().getDomain() + URL_FRONT_TRANSFER;
         return form(gatewayConsumeReq, reqUrl);
     }
 
     @Override
     public GatewayCancelConsumeSyncResp cancelConsume(@NonNull GatewayCancelConsumeReq gatewayCancelConsumeReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CANCEL_CONSUME;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(gatewayCancelConsumeReq, reqUrl, GatewayCancelConsumeSyncResp.class);
     }
 
     @Override
     public GatewayBackConsumeSyncResp backConsume(@NonNull GatewayBackConsumeReq gatewayBackConsumeReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_BACK_CONSUME;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(gatewayBackConsumeReq, reqUrl, GatewayBackConsumeSyncResp.class);
     }
 
     @Override
     public GatewayTransactionStatusQuerySyncResp transactionStatusQuery(
             @NonNull GatewayTransactionStatusQueryReq gatewayTransactionStatusQueryReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_TRANSACTION_STATUS_QUERY;
+        String reqUrl = this.getConfig().getDomain() + URL_QUERY_SINGLE;
         return post(gatewayTransactionStatusQueryReq, reqUrl, GatewayTransactionStatusQuerySyncResp.class);
     }
 
     @Override
     public GatewayEncryptInfoUpdateSyncResp encryptInfoUpdate(
             @NonNull GatewayEncryptInfoUpdateReq gatewayEncryptInfoUpdateReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_ENCRYPT_INFO_UPDATE;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(gatewayEncryptInfoUpdateReq, reqUrl, GatewayEncryptInfoUpdateSyncResp.class);
     }
 
     @Override
     public FormReq preAuth(@NonNull GatewayPreAuthReq gatewayPreAuthReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_PRE_AUTH;
+        String reqUrl = this.getConfig().getDomain() + URL_FRONT_TRANSFER;
         return form(gatewayPreAuthReq, reqUrl);
     }
 
     @Override
     public GatewayCancelPreAuthSyncResp cancelPreAuth(@NonNull GatewayCancelPreAuthReq gatewayCancelPreAuthReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CANCEL_PRE_AUTH;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(gatewayCancelPreAuthReq, reqUrl, GatewayCancelPreAuthSyncResp.class);
     }
 
     @Override
     public GatewayCompletePreAuthSyncResp completePreAuth(@NonNull GatewayCompletePreAuthReq gatewayCompletePreAuthReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_COMPLETE_PRE_AUTH;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(gatewayCompletePreAuthReq, reqUrl, GatewayCompletePreAuthSyncResp.class);
     }
 
     @Override
     public GatewayCancelCompletedPreAuthSyncResp cancelCompletedPreAuth(
             @NonNull GatewayCancelCompletedPreAuthReq gatewayCancelCompletedPreAuthReq) {
-        String reqUrl = this.getConfig().getDomain() + URL_GATEWAY_CANCEL_COMPLETE_PRE_AUTH;
+        String reqUrl = this.getConfig().getDomain() + URL_BACK_TRANSFER_WITHOUT_CARD;
         return post(gatewayCancelCompletedPreAuthReq, reqUrl, GatewayCancelCompletedPreAuthSyncResp.class);
     }
 
