@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.zip.Inflater;
 import java.util.zip.ZipEntry;
@@ -167,11 +168,11 @@ public class PackUtil {
         File file = new File(filePath);
         if (file.isFile() && file.exists()) {
             @Cleanup InputStreamReader read = new InputStreamReader(
-                    new FileInputStream(file), "iso-8859-1");
+                    new FileInputStream(file), StandardCharsets.ISO_8859_1);
             @Cleanup BufferedReader bufferedReader = new BufferedReader(read);
             String lineTxt;
             while ((lineTxt = bufferedReader.readLine()) != null) {
-                byte[] bs = lineTxt.getBytes("iso-8859-1");
+                byte[] bs = lineTxt.getBytes(StandardCharsets.ISO_8859_1);
                 // 解析的结果MAP，key为对账文件列序号，value为解析的值
                 Map<Integer, String> ZmDataMap = new LinkedHashMap<>();
                 // 左侧游标
