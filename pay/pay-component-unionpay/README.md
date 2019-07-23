@@ -43,16 +43,29 @@ public CacheUnionpayProductFactory unionpayProductFactory(
 @Autowired
 IUnionPayProductFactory unionpayProductFactory;
 
-public void test() {
+public void gatewayConsume() {
     // 具体使用哪种产品，见方法注释
-    IUnionpayQRCodeClient qrCodeClient = (IUnionpayGatewayClient) 
-    unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
+    IUnionpayGatewayClient gatewayClient = (IUnionpayGatewayClient) 
+        unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
+    
+    // 具体字段规则，参考各个model字段定义及api规则
+    GatewayConsumeReq gatewayConsumeReq = GatewayConsumeReq.of(config)
+                    .orderId("jfw123456799")
+                    .txnTime("20190722100412")
+                    .txnAmt("10000000")
+                    .frontUrl("http://www.lol.com/gateway/frontback")
+                    .backUrl("http://www.lol.com/gateway/callback")
+                    .payTimeout(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime() + 15 * 60 * 1000))
+                    .build();
+    
+    FormReq formReq = gatewayClient.consume(gatewayConsumeReq);
 }
 ```
 
 
 **测试用例：**  
-测试类中详细的测试了每个产品的方法，集成时可参考，各字段含义可直接查询官方文档
+包路径 `com.github.lol.pay.component.unionpay.product.*.impl`详细的测试了每个产品的方法，
+集成时可参考，各字段含义可直接参考注释或查询官方文档
 
 ### 注意事项
 - [如何申请银联注册号？](../../doc/支付/银联-测试账号申请.md)
