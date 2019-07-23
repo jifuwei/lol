@@ -11,7 +11,7 @@
 
 ### 组件集成
 
-**快速集成：**
+**1.快速集成：**
 ```java
 UnionpayConfig config = new UnionpayConfig();
 
@@ -21,7 +21,10 @@ new CacheUnionpayProductFactory(config).produce(UnionpayProductEnum.GATEWAY.name
 - 工厂类建议是**单例**，减少不必要的资源浪费
 - `CacheUnionpayProductFactory`默认有**缓存功能**，可通过设置`classCacheEnabled`值关闭，当然依赖方也可自行扩展`IUnionPayProductFactory`
 
-**与Spring集成（此处展示java config版本配置，xml参考集成即可）**
+**2.Spring集成**
+
+此处展示java config版本配置，xml参考集成即可
+
 ```java
 @Bean
 public UnionpayConfig unionpayConfig() {
@@ -38,7 +41,6 @@ public CacheUnionpayProductFactory unionpayProductFactory(
 }
 ```
 
-服务调用
 ```java
 @Autowired
 IUnionPayProductFactory unionpayProductFactory;
@@ -55,7 +57,8 @@ public void gatewayConsume() {
                     .txnAmt("10000000")
                     .frontUrl("http://www.lol.com/gateway/frontback")
                     .backUrl("http://www.lol.com/gateway/callback")
-                    .payTimeout(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime() + 15 * 60 * 1000))
+                    .payTimeout(new SimpleDateFormat("yyyyMMddHHmmss")
+                        .format(new Date().getTime() + 15 * 60 * 1000))
                     .build();
     
     FormReq formReq = gatewayClient.consume(gatewayConsumeReq);
@@ -63,7 +66,7 @@ public void gatewayConsume() {
 ```
 
 
-**测试用例：**  
+**3.测试用例：**  
 
 **集成测试前，请详细阅读[注意事项](#注意事项)** 
 
