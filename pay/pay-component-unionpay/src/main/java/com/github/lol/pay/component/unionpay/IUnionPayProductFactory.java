@@ -9,20 +9,6 @@ package com.github.lol.pay.component.unionpay;
 public interface IUnionPayProductFactory {
 
     /**
-     * check cache enable
-     *
-     * @return
-     */
-    Boolean isClassCacheEnabled();
-
-    /**
-     * set cache config
-     *
-     * @param classCacheEnabled
-     */
-    void setClassCacheEnabled(Boolean classCacheEnabled);
-
-    /**
      * produce a product
      *
      * @param productName

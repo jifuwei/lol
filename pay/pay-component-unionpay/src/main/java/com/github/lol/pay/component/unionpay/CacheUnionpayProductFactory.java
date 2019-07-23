@@ -1,7 +1,6 @@
 package com.github.lol.pay.component.unionpay;
 
 import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
-import com.github.lol.pay.component.unionpay.product.AbstractUnionpayProductService;
 import com.github.lol.pay.component.unionpay.product.gateway.impl.UnionpayGatewayService;
 import com.github.lol.pay.component.unionpay.product.qrcode.impl.UnionpayQRCodeService;
 import lombok.NonNull;
@@ -36,12 +35,10 @@ public class CacheUnionpayProductFactory implements IUnionPayProductFactory {
         this.config = config;
     }
 
-    @Override
     public void setClassCacheEnabled(@NonNull Boolean classCacheEnabled) {
         this.classCacheEnabled = classCacheEnabled;
     }
 
-    @Override
     public Boolean isClassCacheEnabled() {
         return classCacheEnabled;
     }
@@ -63,7 +60,7 @@ public class CacheUnionpayProductFactory implements IUnionPayProductFactory {
         Object cached = productMap.get(product.name());
         if (!Objects.isNull(cached)) {
             log.debug("==> UnionpayProductFactory cached [product]: {}", product.name());
-            return refreshCustomerConfig(cached);
+            return cached;
         }
 
         cached = buildClass(product);
@@ -75,17 +72,11 @@ public class CacheUnionpayProductFactory implements IUnionPayProductFactory {
     }
 
     /**
-     * refresh Customer Config
+     * create product impl
      *
-     * @param cached
+     * @param product
      * @return
      */
-    private Object refreshCustomerConfig(@NonNull Object cached) {
-        AbstractUnionpayProductService aProductService = (AbstractUnionpayProductService) cached;
-        aProductService.setConfig(config);
-        return cached;
-    }
-
     private Object buildClass(@NonNull UnionpayProductEnum product) {
         switch (product) {
             case GATEWAY:
