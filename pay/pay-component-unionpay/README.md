@@ -35,6 +35,7 @@ public UnionpayConfig unionpayConfig() {
             .build();
 }
 
+@Bean
 public CacheUnionpayProductFactory unionpayProductFactory(
         @Qualifier("unionpayConfig") UnionpayConfig unionpayConfig) {
     return new CacheUnionpayProductFactory(unionpayConfig);
