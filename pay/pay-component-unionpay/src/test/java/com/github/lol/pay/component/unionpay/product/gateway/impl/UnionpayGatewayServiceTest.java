@@ -35,7 +35,7 @@ public class UnionpayGatewayServiceTest {
     @Test
     public void consume() {
         GatewayConsumeReq gatewayConsumeReq = GatewayConsumeReq.of(config)
-//                .orderId("jfw123456799")
+                .orderId("jfw123456799")
                 .txnTime("20190722100412")
                 .txnAmt("10000000")
                 .frontUrl("http://www.lol.com/gateway/frontback")
