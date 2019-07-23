@@ -1,8 +1,9 @@
 package com.github.lol.pay.component.unionpay;
 
+import com.github.lol.lib.util.ReflectUtil;
 import com.github.lol.lib.util.StrUtil;
 import com.github.lol.lib.util.ValidUtil;
-import com.sun.istack.internal.NotNull;
+import com.github.lol.lib.util.annotation.NotEmpty;
 import com.sun.istack.internal.Nullable;
 import lombok.Builder;
 import lombok.Data;
@@ -27,10 +28,10 @@ public class UnionpayConfig {
      * 商户配置
      */
     // 商户ID
-    @NotNull
+    @NotEmpty
     private String merId;
     // 接入类型: 0-商户直连接入, 1-收单机构接入, 2-平台商户接入
-    @NotNull
+    @NotEmpty
     private String accessType;
     // 交易币种: 默认156 境内人民币
     @Nullable
@@ -40,7 +41,7 @@ public class UnionpayConfig {
      * 安全配置
      */
     // api domain
-    @NotNull
+    @NotEmpty
     private String domain;
     // 超时时间 默认 30000
     @Nullable
@@ -59,28 +60,28 @@ public class UnionpayConfig {
     @Nullable
     private String version;
     // 对账文件地址
-    @NotNull
+    @NotEmpty
     private String fileDownLoadUrl;
     // 签名方法 默认 01-RSA
-    @NotNull
+    @NotEmpty
     private String signMethod;
     // 签名证书路径
-    @NotNull
+    @NotEmpty
     private String signCertPath;
     // 签名证书密码
-    @NotNull
+    @NotEmpty
     private String signCertPwd;
     // 签名证书类型
-    @NotNull
+    @NotEmpty
     private String signCertType;
     // 中级证书路径
-    @NotNull
+    @NotEmpty
     private String middleCertPath;
     // 根证书路径
-    @NotNull
+    @NotEmpty
     private String rootCertPath;
     // 加密公钥证书路径
-    @NotNull
+    @NotEmpty
     private String encryptCertPath;
     // 磁道加密公钥模数
     @Nullable
@@ -141,6 +142,8 @@ public class UnionpayConfig {
     }
 
     private void init() {
+        ReflectUtil.validateNotNullField(this);
+
         ValidUtil.notEmpty(merId, "[UnionpayConfig] merId can't empty");
         ValidUtil.notEmpty(accessType, "[UnionpayConfig] accessType can't empty");
         currencyCode = StrUtil.isEmpty(currencyCode) ? DEFAULT_CURRENCY_CODE : currencyCode;

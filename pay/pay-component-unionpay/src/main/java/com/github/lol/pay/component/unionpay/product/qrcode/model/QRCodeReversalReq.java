@@ -1,5 +1,7 @@
 package com.github.lol.pay.component.unionpay.product.qrcode.model;
 
+import com.github.lol.lib.util.annotation.NotEmpty;
+import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +25,7 @@ public class QRCodeReversalReq implements Serializable {
     private String version;
     private String encoding;
     private String bizType;
+    @NotEmpty
     private String txnTime;
     private String txnType;
     private String txnSubType;
@@ -31,6 +34,7 @@ public class QRCodeReversalReq implements Serializable {
     private String signMethod;
     private String channelType;
     private String merId;
+    @NotEmpty
     private String orderId;
     private String subMerId;
     private String subMerAbbr;
@@ -40,4 +44,24 @@ public class QRCodeReversalReq implements Serializable {
     private String reserved;
     private String reqReserved;
     private String termId;
+
+    public static QRCodeReversalReqBuilder of(UnionpayConfig config) {
+        return QRCodeReversalReq.builder()
+                /**
+                 * 商户接入参数
+                 */
+                .merId(config.getMerId())
+                .accessType(config.getAccessType())
+
+                /**
+                 * 产品固定参数
+                 */
+                .version(config.getVersion())
+                .encoding(config.getEncoding())
+                .signMethod(config.getSignMethod())
+                .txnType("99")
+                .txnSubType("01")
+                .bizType("000000")
+                .channelType("08");
+    }
 }

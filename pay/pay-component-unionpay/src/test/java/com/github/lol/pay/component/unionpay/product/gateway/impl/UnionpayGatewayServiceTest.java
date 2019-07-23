@@ -34,21 +34,10 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void consume() {
-        GatewayConsumeReq gatewayConsumeReq = GatewayConsumeReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("01")
-                .txnSubType("01")
-                .bizType("000201")
-                .channelType("07")
-                .merId(config.getMerId())
-                .accessType(config.getAccessType())
-                .orderId("jfw123456799")
+        GatewayConsumeReq gatewayConsumeReq = GatewayConsumeReq.of(config)
+//                .orderId("jfw123456799")
                 .txnTime("20190722100412")
-                .currencyCode(config.getCurrencyCode())
                 .txnAmt("10000000")
-                .riskRateInfo("{commodityName=测试商品名称}")
                 .frontUrl("http://www.lol.com/gateway/frontback")
                 .backUrl("http://www.lol.com/gateway/callback")
                 .payTimeout(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime() + 15 * 60 * 1000))
@@ -62,16 +51,7 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void cancelConsume() {
-        GatewayCancelConsumeReq req = GatewayCancelConsumeReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("31")
-                .txnSubType("00")
-                .bizType("000000")
-                .channelType("07")
-                .merId(config.getMerId())
-                .accessType("0")
+        GatewayCancelConsumeReq req = GatewayCancelConsumeReq.of(config)
                 .orderId("cjfw123456712")
                 .txnTime("20190716170412")
                 .txnAmt("10000000")
@@ -86,16 +66,7 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void backConsume() {
-        GatewayBackConsumeReq req = GatewayBackConsumeReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("04")
-                .txnSubType("00")
-                .bizType("000000")
-                .channelType("07")
-                .merId(config.getMerId())
-                .accessType("0")
+        GatewayBackConsumeReq req = GatewayBackConsumeReq.of(config)
                 .orderId("bjfw123456712")
                 .txnTime("20190716170412")
                 .txnAmt("10000000")
@@ -114,15 +85,7 @@ public class UnionpayGatewayServiceTest {
         /**
          * orderId & txnTime 必须待查询交易单完全一致
          */
-        GatewayTransactionStatusQueryReq req = GatewayTransactionStatusQueryReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("00")
-                .txnSubType("00")
-                .bizType("000000")
-                .merId(config.getMerId())
-                .accessType("0")
+        GatewayTransactionStatusQueryReq req = GatewayTransactionStatusQueryReq.of(config)
                 .orderId("jfw123456714")
                 .txnTime("20190719170412")
                 .build();
@@ -134,17 +97,7 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void encryptInfoUpdate() {
-        GatewayEncryptInfoUpdateReq req = GatewayEncryptInfoUpdateReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("95")
-                .txnSubType("00")
-                .bizType("000000")
-                .channelType("07")
-                .merId(config.getMerId())
-                .accessType("0")
-                .certType("01")
+        GatewayEncryptInfoUpdateReq req = GatewayEncryptInfoUpdateReq.of(config)
                 .orderId("ejfw123456789")
                 .txnTime("20190719170412")
                 .build();
@@ -156,20 +109,10 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void preAuth() {
-        GatewayPreAuthReq req = GatewayPreAuthReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("02")
-                .txnSubType("01")
-                .bizType("000201")
-                .channelType("07")
-                .merId(config.getMerId())
-                .accessType("0")
+        GatewayPreAuthReq req = GatewayPreAuthReq.of(config)
                 .orderId("pjfw123456710")
                 .txnTime("20190719170412")
                 .txnAmt("5000000")
-                .currencyCode("156")
                 .frontUrl("http://www.lol.com/gateway/frontback")
                 .backUrl("http://www.lol.com/gateway/callback")
                 .payTimeout(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime() + 15 * 60 * 1000))
@@ -184,16 +127,7 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void cancelPreAuth() {
-        GatewayCancelPreAuthReq req = GatewayCancelPreAuthReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("32")
-                .txnSubType("00")
-                .bizType("000000")
-                .channelType("07")
-                .merId(config.getMerId())
-                .accessType("0")
+        GatewayCancelPreAuthReq req = GatewayCancelPreAuthReq.of(config)
                 .orderId("ejfw123456789")
                 .txnTime("20190719170412")
                 .txnAmt("5000000")
@@ -208,16 +142,7 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void completePreAuth() {
-        GatewayCompletePreAuthReq req = GatewayCompletePreAuthReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("03")
-                .txnSubType("00")
-                .bizType("000301")
-                .channelType("07")
-                .merId(config.getMerId())
-                .accessType("0")
+        GatewayCompletePreAuthReq req = GatewayCompletePreAuthReq.of(config)
                 .orderId("cpjfw123456710")
                 .txnTime("20190719170412")
                 .txnAmt("5000000")
@@ -232,16 +157,7 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void cancelCompletedPreAuth() {
-        GatewayCancelCompletedPreAuthReq req = GatewayCancelCompletedPreAuthReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("33")
-                .txnSubType("00")
-                .bizType("000000")
-                .channelType("07")
-                .merId(config.getMerId())
-                .accessType("0")
+        GatewayCancelCompletedPreAuthReq req = GatewayCancelCompletedPreAuthReq.of(config)
                 .orderId("ccpjfw123456789")
                 .txnTime("20190719170412")
                 .txnAmt("5000000")
@@ -256,18 +172,9 @@ public class UnionpayGatewayServiceTest {
 
     @Test
     public void fileTransfer() {
-        GatewayFileTransferReq req = GatewayFileTransferReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("76")
-                .txnSubType("01")
-                .bizType("000000")
-                .merId(config.getMerId())
-                .accessType("0")
+        GatewayFileTransferReq req = GatewayFileTransferReq.of(config)
                 .txnTime("20190719170412")
                 .settleDate("0119")
-                .fileType("00")
                 .build();
 
         GatewayFileTransferSyncResp syncResp = gatewayClient.fileTransfer(req);

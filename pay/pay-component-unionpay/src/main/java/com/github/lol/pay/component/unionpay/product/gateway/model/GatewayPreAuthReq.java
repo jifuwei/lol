@@ -1,5 +1,7 @@
 package com.github.lol.pay.component.unionpay.product.gateway.model;
 
+import com.github.lol.lib.util.annotation.NotEmpty;
+import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,9 +27,12 @@ public class GatewayPreAuthReq implements Serializable {
     private String version;
     private String encoding;
     private String bizType;
+    @NotEmpty
     private String txnTime;
+    @NotEmpty
     private String backUrl;
     private String currencyCode;
+    @NotEmpty
     private String txnAmt;
     private String txnType;
     private String txnSubType;
@@ -36,17 +41,20 @@ public class GatewayPreAuthReq implements Serializable {
     private String signMethod;
     private String channelType;
     private String merId;
+    @NotEmpty
     private String orderId;
     private String orderDesc;
     private String subMerId;
     private String subMerAbbr;
     private String subMerName;
     private String encryptCertId;
+    @NotEmpty
     private String frontUrl;
     private String customerInfo;
     private String cardTransData;
     private String accountPayChannel;
     private String accNo;
+    @NotEmpty
     private String accType;
     private String certId;
     private String reserved;
@@ -59,7 +67,29 @@ public class GatewayPreAuthReq implements Serializable {
     private String reqReserved;
     private String frontFailUrl;
     private String supPayType;
+    @NotEmpty
     private String payTimeout;
     private String termId;
     private String userMac;
+
+    public static GatewayPreAuthReqBuilder of(UnionpayConfig config) {
+        return GatewayPreAuthReq.builder()
+                /**
+                 * 商户接入参数
+                 */
+                .merId(config.getMerId())
+                .accessType(config.getAccessType())
+                .currencyCode(config.getCurrencyCode())
+
+                /**
+                 * 产品固定参数
+                 */
+                .version(config.getVersion())
+                .encoding(config.getEncoding())
+                .signMethod(config.getSignMethod())
+                .txnType("02")
+                .txnSubType("01")
+                .bizType("000201")
+                .channelType("07");
+    }
 }

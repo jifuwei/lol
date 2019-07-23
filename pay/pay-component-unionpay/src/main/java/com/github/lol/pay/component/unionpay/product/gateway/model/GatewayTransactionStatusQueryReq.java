@@ -1,5 +1,7 @@
 package com.github.lol.pay.component.unionpay.product.gateway.model;
 
+import com.github.lol.lib.util.annotation.NotEmpty;
+import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +27,7 @@ public class GatewayTransactionStatusQueryReq implements Serializable {
     private String version;
     private String encoding;
     private String bizType;
+    @NotEmpty
     private String txnTime;
     private String txnType;
     private String txnSubType;
@@ -32,7 +35,27 @@ public class GatewayTransactionStatusQueryReq implements Serializable {
     private String signature;
     private String signMethod;
     private String merId;
+    @NotEmpty
     private String orderId;
     private String certId;
     private String reserved;
+
+    public static GatewayTransactionStatusQueryReqBuilder of(UnionpayConfig config) {
+        return GatewayTransactionStatusQueryReq.builder()
+                /**
+                 * 商户接入参数
+                 */
+                .merId(config.getMerId())
+                .accessType(config.getAccessType())
+
+                /**
+                 * 产品固定参数
+                 */
+                .version(config.getVersion())
+                .encoding(config.getEncoding())
+                .signMethod(config.getSignMethod())
+                .txnType("00")
+                .txnSubType("00")
+                .bizType("000000");
+    }
 }

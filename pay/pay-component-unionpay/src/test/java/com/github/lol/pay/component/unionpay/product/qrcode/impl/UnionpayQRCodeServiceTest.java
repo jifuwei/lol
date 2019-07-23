@@ -26,16 +26,7 @@ public class UnionpayQRCodeServiceTest {
 
     @Test
     public void cancelConsume() {
-        QRCodeCancelConsumeReq req = QRCodeCancelConsumeReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("31")
-                .txnSubType("00")
-                .bizType("000000")
-                .channelType("08")
-                .merId(config.getMerId())
-                .accessType("0")
+        QRCodeCancelConsumeReq req = QRCodeCancelConsumeReq.of(config)
                 .orderId("qrcodeqjfw123456")
                 .txnTime("20190722170412")
                 .txnAmt("500000")
@@ -52,16 +43,7 @@ public class UnionpayQRCodeServiceTest {
 
     @Test
     public void backConsume() {
-        QRCodeBackConsumeReq req = QRCodeBackConsumeReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("04")
-                .txnSubType("00")
-                .bizType("000000")
-                .channelType("08")
-                .merId(config.getMerId())
-                .accessType("0")
+        QRCodeBackConsumeReq req = QRCodeBackConsumeReq.of(config)
                 .orderId("qrcodebjfw123456")
                 .txnTime("20190722170412")
                 .txnAmt("100000")
@@ -97,21 +79,11 @@ public class UnionpayQRCodeServiceTest {
      */
     @Test
     public void masterImg() {
-        QRCodeMasterImgReq req = QRCodeMasterImgReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("01")
-                .txnSubType("07")
-                .bizType("000000")
-                .channelType("08")
-                .merId(config.getMerId())
-                .accessType("0")
+        QRCodeMasterImgReq req = QRCodeMasterImgReq.of(config)
                 .orderId("qrcode201907221021457qwer")
                 .txnTime("20190722101256")
                 .txnAmt("500000")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .currencyCode("156")
                 .build();
 
         QRCodeMasterImgSyncResp syncResp = qrCodeClient.masterImg(req);
@@ -121,22 +93,12 @@ public class UnionpayQRCodeServiceTest {
 
     @Test
     public void slaveImg() {
-        QRCodeSlaveImgReq req = QRCodeSlaveImgReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("01")
-                .txnSubType("06")
-                .bizType("000000")
-                .channelType("08")
-                .merId(config.getMerId())
-                .accessType("0")
+        QRCodeSlaveImgReq req = QRCodeSlaveImgReq.of(config)
                 .orderId("qrcode20190722102156qwer")
                 .txnTime("20190722101256")
                 .txnAmt("500000")
                 .qrNo("C2B100001")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .currencyCode("156")
                 .build();
 
         QRCodeSlaveImgSyncResp syncResp = qrCodeClient.slaveImg(req);
@@ -146,15 +108,7 @@ public class UnionpayQRCodeServiceTest {
 
     @Test
     public void transactionStatusQuery() {
-        QRCodeTransactionStatusQueryReq req = QRCodeTransactionStatusQueryReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("00")
-                .txnSubType("00")
-                .bizType("000000")
-                .merId(config.getMerId())
-                .accessType("0")
+        QRCodeTransactionStatusQueryReq req = QRCodeTransactionStatusQueryReq.of(config)
                 .orderId("qrcode20190722102156qwer")
                 .txnTime("20190722101256")
                 .build();
@@ -166,16 +120,7 @@ public class UnionpayQRCodeServiceTest {
 
     @Test
     public void reversal() {
-        QRCodeReversalReq req = QRCodeReversalReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("99")
-                .txnSubType("01")
-                .bizType("000000")
-                .channelType("08")
-                .merId(config.getMerId())
-                .accessType("0")
+        QRCodeReversalReq req = QRCodeReversalReq.of(config)
                 .orderId("qrcode20190722102156qwer")
                 .txnTime("20190722101256")
                 .build();
@@ -187,18 +132,9 @@ public class UnionpayQRCodeServiceTest {
 
     @Test
     public void fileTransfer() {
-        QRCodeFileTransferReq req = QRCodeFileTransferReq.builder()
-                .version(config.getVersion())
-                .encoding(config.getEncoding())
-                .signMethod(config.getSignMethod())
-                .txnType("76")
-                .txnSubType("01")
-                .bizType("000000")
-                .merId(config.getMerId())
-                .accessType("0")
+        QRCodeFileTransferReq req = QRCodeFileTransferReq.of(config)
                 .settleDate("0722")
                 .txnTime("20190722101256")
-                .fileType("00")
                 .build();
 
         QRCodeFileTransferSyncResp syncResp = qrCodeClient.fileTransfer(req);

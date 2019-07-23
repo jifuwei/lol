@@ -1,5 +1,7 @@
 package com.github.lol.pay.component.unionpay.product.qrcode.model;
 
+import com.github.lol.lib.util.annotation.NotEmpty;
+import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,12 +23,16 @@ public class QRCodeSlaveImgReq implements Serializable {
     private static final long serialVersionUID = -5720621872143917889L;
 
     private String qrNo;
+    @NotEmpty
     private String version;
     private String encoding;
     private String bizType;
+    @NotEmpty
     private String txnTime;
+    @NotEmpty
     private String backUrl;
     private String currencyCode;
+    @NotEmpty
     private String txnAmt;
     private String txnType;
     private String txnSubType;
@@ -35,6 +41,7 @@ public class QRCodeSlaveImgReq implements Serializable {
     private String signMethod;
     private String channelType;
     private String merId;
+    @NotEmpty
     private String orderId;
     private String subMerId;
     private String subMerAbbr;
@@ -47,4 +54,25 @@ public class QRCodeSlaveImgReq implements Serializable {
     private String reqReserved;
     private String termId;
     private String termInfo;
+
+    public static QRCodeSlaveImgReqBuilder of(UnionpayConfig config) {
+        return QRCodeSlaveImgReq.builder()
+                /**
+                 * 商户接入参数
+                 */
+                .merId(config.getMerId())
+                .accessType(config.getAccessType())
+                .currencyCode("156")
+
+                /**
+                 * 产品固定参数
+                 */
+                .version(config.getVersion())
+                .encoding(config.getEncoding())
+                .signMethod(config.getSignMethod())
+                .txnType("01")
+                .txnSubType("06")
+                .bizType("000000")
+                .channelType("08");
+    }
 }

@@ -1,5 +1,6 @@
 package com.github.lol.pay.component.unionpay.product;
 
+import com.github.lol.lib.util.ReflectUtil;
 import com.github.lol.lib.util.SerializeUtil;
 import com.github.lol.lib.util.http.HttpNetUtil;
 import com.github.lol.pay.component.unionpay.UnionpayCertHolder;
@@ -70,6 +71,8 @@ public abstract class AbstractUnionpayProductService {
      * @return
      */
     protected FormReq form(@NonNull Object reqObject, @NonNull String url) {
+        ReflectUtil.validateNotNullField(reqObject);
+
         Map<String, String> dataMap = SerializeUtil.objectToMapNullRemove(reqObject,
                 String.class, String.class);
 
@@ -93,6 +96,9 @@ public abstract class AbstractUnionpayProductService {
     private <T> T send(@NonNull Object reqObject, @NonNull String url,
                        @NonNull String reqMethod,
                        @NonNull Class<T> returnClazz) {
+        // 0.数据校验
+        ReflectUtil.validateNotNullField(reqObject);
+
         // 1.序列化
         Map<String, Object> dataMap = SerializeUtil.objectToMapNullRemove(reqObject,
                 String.class, Object.class);

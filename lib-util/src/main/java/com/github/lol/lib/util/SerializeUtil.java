@@ -36,7 +36,7 @@ public class SerializeUtil {
         T obj = beanClass.newInstance();
         // get all super class
         Class clazz = obj.getClass();
-        List<Class> clazzList = getAllClazz(clazz);
+        List<Class> clazzList = ReflectUtil.getAllClazz(clazz);
 
         for (Class aClass : clazzList) {
             Field[] fields = aClass.getDeclaredFields();
@@ -88,7 +88,7 @@ public class SerializeUtil {
     public static Map<String, Object> objectToMap(@NonNull Object source) {
         // get all super class
         Class clazz = source.getClass();
-        List<Class> clazzList = getAllClazz(clazz);
+        List<Class> clazzList = ReflectUtil.getAllClazz(clazz);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -123,16 +123,6 @@ public class SerializeUtil {
                 .filter(e -> Objects.isNull(removeKeySet) || !removeKeySet.contains(e.getKey()))
                 .map(e -> e.getKey() + EQUAL + e.getValue())
                 .collect(Collectors.joining(AMPERSAND));
-    }
-
-    private static List<Class> getAllClazz(@NonNull Class clazz) {
-        List<Class> clazzList = new ArrayList<>();
-        do {
-            clazzList.add(clazz);
-            clazz = clazz.getSuperclass();
-        } while (clazz != null && clazz != Object.class);
-
-        return clazzList;
     }
 
     private static void removeNullKey(@NonNull Map map) {
