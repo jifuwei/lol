@@ -68,6 +68,11 @@ public class UnionpayConstant {
     public static final String UNIONPAY_CNNAME = "中国银联股份有限公司";
 
     /**
+     * date time format
+     */
+    public final static String DEFAULT_DATE_TIME_FORMAT = "yyyyMMddHHmmss";
+
+    /**
      * all api url
      */
     public class Api {

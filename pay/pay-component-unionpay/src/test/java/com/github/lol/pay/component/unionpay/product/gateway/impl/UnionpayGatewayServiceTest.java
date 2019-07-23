@@ -10,6 +10,8 @@ import com.github.lol.pay.component.unionpay.product.FormReq;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;
 import com.github.lol.pay.component.unionpay.util.PackUtil;
 import com.github.pay.component.core.IUnionPayProductFactory;
+import com.github.pay.component.core.SimpleOrderIdGenerator;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,8 +20,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.lol.pay.component.unionpay.constant.UnionpayConstant.DEFAULT_DATE_TIME_FORMAT;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * 在线网关支付-测试
+ * <p>
+ * 注意：
+ * 如何集成产品测试权限？
+ * 测试api返回无权限等错误信息时，测试请注意，应关注当前测试的是那款产品，然后前往【商户测试中心】-【我的产品】-【未测试】，
+ * 在列表中选择需要的测试产品，点击【开始测试】，约等待20分钟后，再次尝试即可授权
+ *
+ * @author jifuwei
+ * @create: 2019-07-12 13:45
+ */
 public class UnionpayGatewayServiceTest {
 
     private UnionpayConfig config = UnionpayGlobalConfig.init();
@@ -32,15 +46,21 @@ public class UnionpayGatewayServiceTest {
         gatewayClient = (IUnionpayGatewayClient) unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
     }
 
+    /**
+     * orderId = GATEWAY20190723165305uFt1
+     * txnTime = 20190723165305
+     * <p>
+     * 这个两个测试参数后续会用到，测试时建议手动保存
+     */
     @Test
     public void consume() {
         GatewayConsumeReq gatewayConsumeReq = GatewayConsumeReq.of(config)
-                .orderId("jfw123456799")
-                .txnTime("20190722100412")
+                .orderId(SimpleOrderIdGenerator.get(UnionpayProductEnum.GATEWAY.name()))
+                .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
                 .txnAmt("10000000")
                 .frontUrl("http://www.lol.com/gateway/frontback")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .payTimeout(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime() + 15 * 60 * 1000))
+                .payTimeout(new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT).format(new Date().getTime() + 15 * 60 * 1000))
                 .build();
 
         FormReq formReq = gatewayClient.consume(gatewayConsumeReq);
@@ -49,14 +69,18 @@ public class UnionpayGatewayServiceTest {
         assertNotNull(formReq);
     }
 
+    /**
+     * txnAmt 必须与原始订单相同，否则会报错
+     * origQryId 原始订单查询id, 可通过状态接口查询得到
+     */
     @Test
     public void cancelConsume() {
         GatewayCancelConsumeReq req = GatewayCancelConsumeReq.of(config)
-                .orderId("cjfw123456712")
-                .txnTime("20190716170412")
+                .orderId(SimpleOrderIdGenerator.get(UnionpayProductEnum.GATEWAY.name()))
+                .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
                 .txnAmt("10000000")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .origQryId("561907111704129975038")
+                .origQryId("461907231653058181258")
                 .build();
 
         GatewayCancelConsumeSyncResp syncResp = gatewayClient.cancelConsume(req);
@@ -64,14 +88,18 @@ public class UnionpayGatewayServiceTest {
         assertNotNull(syncResp);
     }
 
+    /**
+     * txnAmt 必须与原始订单相同，否则会报错
+     * origQryId 原始订单查询id, 可通过状态接口查询得到
+     */
     @Test
     public void backConsume() {
         GatewayBackConsumeReq req = GatewayBackConsumeReq.of(config)
-                .orderId("bjfw123456712")
-                .txnTime("20190716170412")
+                .orderId(SimpleOrderIdGenerator.get(UnionpayProductEnum.GATEWAY.name()))
+                .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
                 .txnAmt("10000000")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .origQryId("041907111704129836258")
+                .origQryId("461907231653058181258")
                 .build();
 
         GatewayBackConsumeSyncResp syncResp = gatewayClient.backConsume(req);
@@ -79,15 +107,14 @@ public class UnionpayGatewayServiceTest {
         assertNotNull(syncResp);
     }
 
+    /**
+     * orderId & txnTime 必须与被查询交易单完全一致
+     */
     @Test
     public void transactionStatusQuery() {
-
-        /**
-         * orderId & txnTime 必须待查询交易单完全一致
-         */
         GatewayTransactionStatusQueryReq req = GatewayTransactionStatusQueryReq.of(config)
-                .orderId("jfw123456714")
-                .txnTime("20190719170412")
+                .orderId("GATEWAY20190723170401rbi6")
+                .txnTime("20190723170401")
                 .build();
 
         GatewayTransactionStatusQuerySyncResp syncResp = gatewayClient.transactionStatusQuery(req);
@@ -98,8 +125,8 @@ public class UnionpayGatewayServiceTest {
     @Test
     public void encryptInfoUpdate() {
         GatewayEncryptInfoUpdateReq req = GatewayEncryptInfoUpdateReq.of(config)
-                .orderId("ejfw123456789")
-                .txnTime("20190719170412")
+                .orderId(SimpleOrderIdGenerator.get(UnionpayProductEnum.GATEWAY.name()))
+                .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
                 .build();
 
         GatewayEncryptInfoUpdateSyncResp syncResp = gatewayClient.encryptInfoUpdate(req);
@@ -107,15 +134,19 @@ public class UnionpayGatewayServiceTest {
         assertNotNull(syncResp);
     }
 
+    /**
+     * orderId = GATEWAY20190723170401rbi6
+     * txnTime = 20190723170401
+     */
     @Test
     public void preAuth() {
         GatewayPreAuthReq req = GatewayPreAuthReq.of(config)
-                .orderId("pjfw123456710")
-                .txnTime("20190719170412")
+                .orderId(SimpleOrderIdGenerator.get(UnionpayProductEnum.GATEWAY.name()))
+                .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
                 .txnAmt("5000000")
                 .frontUrl("http://www.lol.com/gateway/frontback")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .payTimeout(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime() + 15 * 60 * 1000))
+                .payTimeout(new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT).format(new Date().getTime() + 15 * 60 * 1000))
                 .accType("01")
                 .build();
 
@@ -128,11 +159,11 @@ public class UnionpayGatewayServiceTest {
     @Test
     public void cancelPreAuth() {
         GatewayCancelPreAuthReq req = GatewayCancelPreAuthReq.of(config)
-                .orderId("ejfw123456789")
-                .txnTime("20190719170412")
+                .orderId(SimpleOrderIdGenerator.get(UnionpayProductEnum.GATEWAY.name()))
+                .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
                 .txnAmt("5000000")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .origQryId("421907191704120442528")
+                .origQryId("531907231704018461268")
                 .build();
 
         GatewayCancelPreAuthSyncResp syncResp = gatewayClient.cancelPreAuth(req);
@@ -143,11 +174,11 @@ public class UnionpayGatewayServiceTest {
     @Test
     public void completePreAuth() {
         GatewayCompletePreAuthReq req = GatewayCompletePreAuthReq.of(config)
-                .orderId("cpjfw123456710")
-                .txnTime("20190719170412")
+                .orderId(SimpleOrderIdGenerator.get(UnionpayProductEnum.GATEWAY.name()))
+                .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
                 .txnAmt("5000000")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .origQryId("711907191704128948768")
+                .origQryId("531907231704018461268")
                 .build();
 
         GatewayCompletePreAuthSyncResp syncResp = gatewayClient.completePreAuth(req);
@@ -158,11 +189,11 @@ public class UnionpayGatewayServiceTest {
     @Test
     public void cancelCompletedPreAuth() {
         GatewayCancelCompletedPreAuthReq req = GatewayCancelCompletedPreAuthReq.of(config)
-                .orderId("ccpjfw123456789")
-                .txnTime("20190719170412")
+                .orderId(SimpleOrderIdGenerator.get(UnionpayProductEnum.GATEWAY.name()))
+                .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
                 .txnAmt("5000000")
                 .backUrl("http://www.lol.com/gateway/callback")
-                .origQryId("711907191704128948768")
+                .origQryId("531907231704018461268")
                 .build();
 
         GatewayCancelCompletedPreAuthSyncResp syncResp = gatewayClient.cancelCompletedPreAuth(req);
@@ -170,10 +201,15 @@ public class UnionpayGatewayServiceTest {
         assertNotNull(syncResp);
     }
 
+    /**
+     * 测试环境，申请的测试商户是没办法拉取文件的，建议商户号换成银联测试共享商户号：
+     * 商户号- 700000000000001
+     * 拉取日期 - 0119
+     */
     @Test
     public void fileTransfer() {
         GatewayFileTransferReq req = GatewayFileTransferReq.of(config)
-                .txnTime("20190719170412")
+                .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
                 .settleDate("0119")
                 .build();
 

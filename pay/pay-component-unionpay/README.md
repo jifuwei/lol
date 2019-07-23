@@ -64,8 +64,13 @@ public void gatewayConsume() {
 
 
 **测试用例：**  
-包路径 `com.github.lol.pay.component.unionpay.product.*.impl`详细的测试了每个产品的方法，
+
+**集成测试前，请详细阅读[注意事项](#注意事项)** 
+
+ `com.github.lol.pay.component.unionpay.product.*.impl`路径下详细的测试了每个产品的方法，
 集成时可参考，各字段含义可直接参考注释或查询官方文档
+
+其中，在线网关支付-测试类`UnionpayGatewayServiceTest`**注解最为详细，可参照此处集成测试**，其它的产品大同小异
 
 ### 注意事项
 - [如何申请银联注册号？](../../doc/支付/银联-测试账号申请.md)
