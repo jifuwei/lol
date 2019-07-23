@@ -27,6 +27,11 @@
             <artifactId>lib-util</artifactId>
             <version>${default.snapshot}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github</groupId>
+            <artifactId>pay-component-core</artifactId>
+            <version>${default.snapshot}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

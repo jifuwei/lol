@@ -1,7 +1,6 @@
 package com.github.lol.pay.component.unionpay.product.gateway.impl;
 
 import com.github.lol.pay.component.unionpay.CacheUnionpayProductFactory;
-import com.github.lol.pay.component.unionpay.IUnionPayProductFactory;
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.UnionpayGlobalConfig;
 import com.github.lol.pay.component.unionpay.client.IUnionpayGatewayClient;
@@ -10,6 +9,7 @@ import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import com.github.lol.pay.component.unionpay.product.FormReq;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;
 import com.github.lol.pay.component.unionpay.util.PackUtil;
+import com.github.pay.component.core.IUnionPayProductFactory;
 import org.junit.Before;
 import org.junit.Test;
 

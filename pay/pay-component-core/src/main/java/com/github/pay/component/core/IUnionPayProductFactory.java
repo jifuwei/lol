@@ -1,4 +1,4 @@
-package com.github.lol.pay.component.unionpay;
+package com.github.pay.component.core;
 
 /**
  * unionpay product factory

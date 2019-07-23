@@ -1,12 +1,12 @@
 package com.github.lol.pay.component.unionpay.product.qrcode.impl;
 
 import com.github.lol.pay.component.unionpay.CacheUnionpayProductFactory;
-import com.github.lol.pay.component.unionpay.IUnionPayProductFactory;
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.UnionpayGlobalConfig;
 import com.github.lol.pay.component.unionpay.client.IUnionpayQRCodeClient;
 import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import com.github.lol.pay.component.unionpay.product.qrcode.model.*;
+import com.github.pay.component.core.IUnionPayProductFactory;
 import org.junit.Before;
 import org.junit.Test;
 
