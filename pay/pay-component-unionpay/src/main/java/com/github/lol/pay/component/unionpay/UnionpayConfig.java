@@ -4,7 +4,6 @@ import com.github.lol.lib.util.ReflectUtil;
 import com.github.lol.lib.util.StrUtil;
 import com.github.lol.lib.util.ValidUtil;
 import com.github.lol.lib.util.annotation.NotEmpty;
-import com.sun.istack.internal.Nullable;
 import lombok.Builder;
 import lombok.Data;
 
@@ -34,7 +33,6 @@ public class UnionpayConfig {
     @NotEmpty
     private String accessType;
     // 交易币种: 默认156 境内人民币
-    @Nullable
     private String currencyCode;
 
     /**
@@ -44,20 +42,15 @@ public class UnionpayConfig {
     @NotEmpty
     private String domain;
     // 超时时间 默认 30000
-    @Nullable
     private Integer connectTimeout;
     // 读取超时时间 默认 30000
-    @Nullable
     private Integer readTimeout;
     // 是否校验证书 默认 false 生产环境建议校验
-    @Nullable
     private Boolean verifyCertEnable;
 
     // 编码 默认 UTF-8
-    @Nullable
     private String encoding;
     // 版本 默认 5.1.0
-    @Nullable
     private String version;
     // 对账文件地址
     @NotEmpty
@@ -84,19 +77,14 @@ public class UnionpayConfig {
     @NotEmpty
     private String encryptCertPath;
     // 磁道加密公钥模数
-    @Nullable
     private String encryptTrackKeyModulus;
     // 磁道加密公钥指数
-    @Nullable
     private String encryptTrackKeyExponent;
     // 验证签名公钥证书目录
-    @Nullable
     private String validateCertDir;
     // 安全密钥(SHA256和SM3计算时使用)
-    @Nullable
     private String secureKey;
     // 是否验证验签证书CN 默认 false 生产建议打开
-    @Nullable
     private Boolean validateCNNameEnable;
 
     public UnionpayConfig(String merId, String accessType, String domain, String fileDownLoadUrl,
