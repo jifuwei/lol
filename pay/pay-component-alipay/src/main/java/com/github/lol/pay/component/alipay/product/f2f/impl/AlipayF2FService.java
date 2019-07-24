@@ -1,13 +1,12 @@
 package com.github.lol.pay.component.alipay.product.f2f.impl;
 
-import com.alipay.api.request.*;
 import com.alipay.api.response.*;
 import com.github.lol.pay.component.alipay.AlipayConfig;
 import com.github.lol.pay.component.alipay.IAlipayF2FClient;
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.AbstractAlipayProductService;
+import com.github.lol.pay.component.alipay.product.f2f.model.*;
 import lombok.NonNull;
-import lombok.SneakyThrows;
 
 /**
  * alipay F2F service
@@ -26,58 +25,48 @@ public class AlipayF2FService extends AbstractAlipayProductService implements IA
     }
 
     @Override
-    @SneakyThrows
-    public AlipayTradePayResponse pay(AlipayTradePayRequest alipayTradePayRequest) {
-        return this.getAlipayClient().execute(alipayTradePayRequest);
+    public AlipayTradePayResponse pay(PayBizContentReq payBizContentReq) {
+        return null;
     }
 
     @Override
-    @SneakyThrows
-    public AlipayTradeQueryResponse query(AlipayTradeQueryRequest alipayTradeQueryRequest) {
-        return this.getAlipayClient().execute(alipayTradeQueryRequest);
+    public AlipayTradeQueryResponse query(QueryBizContentReq queryBizContentReq) {
+        return null;
     }
 
     @Override
-    @SneakyThrows
-    public AlipayTradeCancelResponse cancel(AlipayTradeCancelRequest alipayTradeCancelRequest) {
-        return this.getAlipayClient().execute(alipayTradeCancelRequest);
+    public AlipayTradeCancelResponse cancel(CancelBizContentReq cancelBizContentReq) {
+        return null;
     }
 
     @Override
-    @SneakyThrows
-    public AlipayTradeCreateResponse create(AlipayTradeCreateRequest alipayTradeCreateRequest) {
-        return this.getAlipayClient().execute(alipayTradeCreateRequest);
+    public AlipayTradeCreateResponse create(CreateBizContentReq createBizContentReq) {
+        return null;
     }
 
     @Override
-    @SneakyThrows
-    public AlipayTradeRefundResponse refund(AlipayTradeRefundRequest alipayTradeRefundRequest) {
-        return this.getAlipayClient().execute(alipayTradeRefundRequest);
+    public AlipayTradeRefundResponse refund(RefundBizContentReq refundBizContentReq) {
+        return null;
     }
 
     @Override
-    @SneakyThrows
-    public AlipayTradePrecreateResponse preCreate(AlipayTradePrecreateRequest alipayTradePrecreateRequest) {
-        return this.getAlipayClient().execute(alipayTradePrecreateRequest);
+    public AlipayTradePrecreateResponse preCreate(PreCreateBizContentReq preCreateBizContentReq) {
+        return null;
     }
 
     @Override
-    @SneakyThrows
-    public AlipayTradeCloseResponse close(AlipayTradeCloseRequest alipayTradeCloseRequest) {
-        return this.getAlipayClient().execute(alipayTradeCloseRequest);
+    public AlipayTradeCloseResponse close(CloseBizContentReq closeBizContentReq) {
+        return null;
     }
 
     @Override
-    @SneakyThrows
-    public AlipayDataDataserviceBillDownloadurlQueryResponse billDownloadurlQuery(
-            AlipayDataDataserviceBillDownloadurlQueryRequest billDownloadurlQueryRequest) {
-        return this.getAlipayClient().execute(billDownloadurlQueryRequest);
+    public AlipayDataDataserviceBillDownloadurlQueryResponse billDownloadurlQuery(BillDownloadUrlQueryBizContentReq billDownloadUrlQueryBizContentReq) {
+        return null;
     }
 
     @Override
-    @SneakyThrows
-    public MonitorHeartbeatSynResponse monitorHeartbeatSyn(MonitorHeartbeatSynRequest monitorHeartbeatSynRequest) {
-        return this.getAlipayClient().execute(monitorHeartbeatSynRequest);
+    public MonitorHeartbeatSynResponse monitorHeartbeatSyn(MonitorHeartbeatSynBizContentReq monitorHeartbeatSynBizContentReq) {
+        return null;
     }
 
     @Override
