@@ -40,7 +40,7 @@ mvn clean install
 <dependencies>
     <dependency>
         <groupId>com.github</groupId>
-        <artifactId>pay-component-core</artifactId>
+        <artifactId>pay-component-unionpay</artifactId>
         <version>${latest.version}</version>
     </dependency>
 </dependencies>
