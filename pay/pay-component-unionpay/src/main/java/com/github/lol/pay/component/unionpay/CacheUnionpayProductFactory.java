@@ -21,14 +21,14 @@ import java.util.concurrent.ConcurrentMap;
 public class CacheUnionpayProductFactory implements IProductFactory {
 
     /**
-     * check need cache
-     */
-    private Boolean classCacheEnabled = true;
-
-    /**
      * cache map
      */
     private final ConcurrentMap<String, Object> productMap = new ConcurrentHashMap<>();
+
+    /**
+     * check need cache
+     */
+    private Boolean classCacheEnabled = true;
 
     private UnionpayConfig config;
 
