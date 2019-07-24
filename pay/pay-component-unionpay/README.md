@@ -26,43 +26,50 @@ new CacheUnionpayProductFactory(config).produce(UnionpayProductEnum.GATEWAY.name
 此处展示java config版本配置，xml参考集成即可
 
 ```java
-@Bean
-public UnionpayConfig unionpayConfig() {
-    return UnionpayConfig.builder()
-            .version(UnionpayConstant.VERSION_5_1_0)
-            .encoding(UnionpayConstant.UTF_8_ENCODING)
-            // 此处省略必备配置 具体参照字段注解
-            .build();
-}
-
-@Bean
-public CacheUnionpayProductFactory unionpayProductFactory(
-        @Qualifier("unionpayConfig") UnionpayConfig unionpayConfig) {
-    return new CacheUnionpayProductFactory(unionpayConfig);
+@Configuration
+public class UnionpayConfiguration {
+    
+    @Bean
+    public UnionpayConfig unionpayConfig() {
+        return UnionpayConfig.builder()
+                .version(UnionpayConstant.VERSION_5_1_0)
+                .encoding(UnionpayConstant.UTF_8_ENCODING)
+                // 此处省略必备配置 具体参照字段注解
+                .build();
+    }
+    
+    @Bean
+    public CacheUnionpayProductFactory unionpayProductFactory(
+            @Qualifier("unionpayConfig") UnionpayConfig unionpayConfig) {
+        return new CacheUnionpayProductFactory(unionpayConfig);
+    }
 }
 ```
 
 ```java
-@Autowired
-IUnionPayProductFactory unionpayProductFactory;
-
-public void gatewayConsume() {
-    // 具体使用哪种产品，见方法注释
-    IUnionpayGatewayClient gatewayClient = (IUnionpayGatewayClient) 
-        unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
+@Service
+public class UnionpayGatewayService {
+    @Autowired
+    IUnionPayProductFactory unionpayProductFactory;
     
-    // 具体字段规则，参考各个model字段定义及api规则
-    GatewayConsumeReq gatewayConsumeReq = GatewayConsumeReq.of(config)
-                    .orderId("jfw123456799")
-                    .txnTime("20190722100412")
-                    .txnAmt("10000000")
-                    .frontUrl("http://www.lol.com/gateway/frontback")
-                    .backUrl("http://www.lol.com/gateway/callback")
-                    .payTimeout(new SimpleDateFormat("yyyyMMddHHmmss")
-                        .format(new Date().getTime() + 15 * 60 * 1000))
-                    .build();
-    
-    FormReq formReq = gatewayClient.consume(gatewayConsumeReq);
+    public void gatewayConsume() {
+        // 具体使用哪种产品，见方法注释
+        IUnionpayGatewayClient gatewayClient = (IUnionpayGatewayClient) 
+            unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
+        
+        // 具体字段规则，参考各个model字段定义及api规则
+        GatewayConsumeReq gatewayConsumeReq = GatewayConsumeReq.of(config)
+                        .orderId(SimpleOrderIdGenerator.get(UnionpayProductEnum.GATEWAY.name()))
+                        .txnTime(DateTime.now().toString(DEFAULT_DATE_TIME_FORMAT))
+                        .txnAmt("10000000")
+                        .frontUrl("http://www.lol.com/gateway/frontback")
+                        .backUrl("http://www.lol.com/gateway/callback")
+                        .payTimeout(new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT)
+                                .format(new Date().getTime() + 15 * 60 * 1000))
+                        .build();
+        
+        FormReq formReq = gatewayClient.consume(gatewayConsumeReq);
+    }
 }
 ```
 
