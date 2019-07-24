@@ -34,7 +34,7 @@ cd lol
 mvn clean install
 ```
 
-### Maven dependency
+### 必备依赖
 银联支付只需要依赖如下`component`包即可
 ```xml
 <dependencies>
@@ -46,7 +46,7 @@ mvn clean install
 </dependencies>
 ```
 
-### Create a unionpay product config bean
+### 创建支付实现并使用
 ```java
 @Configuration
 public class UnionpayConfiguration {
@@ -96,6 +96,7 @@ public class UnionpayGatewayService {
 
 ## Building
 如果你想尝试最新的功能，可以使用如下命令构建
+
 注意：jdk需要 1.8+
 分支：master
 
