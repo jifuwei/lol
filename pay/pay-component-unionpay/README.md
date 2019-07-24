@@ -13,9 +13,13 @@
 
 **1.快速集成：**
 ```java
-UnionpayConfig config = new UnionpayConfig();
-
-new CacheUnionpayProductFactory(config).produce(UnionpayProductEnum.GATEWAY.name())
+public class App {
+    public static void main(String[] args) {
+        UnionpayConfig config = new UnionpayConfig();
+        
+        new CacheUnionpayProductFactory(config).produce(UnionpayProductEnum.GATEWAY.name());
+    }
+}
 ```
 
 - 工厂类建议是**单例**，减少不必要的资源浪费

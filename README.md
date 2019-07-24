@@ -47,6 +47,19 @@ mvn clean install
 ```
 
 ### 创建支付实现并使用
+
+**快速集成**
+```java
+public class App {
+    public static void main(String[] args) {
+        UnionpayConfig config = new UnionpayConfig();
+        
+        new CacheUnionpayProductFactory(config).produce(UnionpayProductEnum.GATEWAY.name());
+    }
+}
+```
+
+**spring集成**
 ```java
 @Configuration
 public class UnionpayConfiguration {
