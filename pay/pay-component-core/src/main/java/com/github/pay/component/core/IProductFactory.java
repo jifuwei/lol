@@ -6,7 +6,7 @@ package com.github.pay.component.core;
  * @author: jifuwei
  * @create: 2019-07-15 17:04
  **/
-public interface IUnionPayProductFactory {
+public interface IProductFactory {
 
     /**
      * produce a product

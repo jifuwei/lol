@@ -6,7 +6,7 @@ import com.github.lol.pay.component.unionpay.UnionpayGlobalConfig;
 import com.github.lol.pay.component.unionpay.client.IUnionpayQRCodeClient;
 import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import com.github.lol.pay.component.unionpay.product.qrcode.model.*;
-import com.github.pay.component.core.IUnionPayProductFactory;
+import com.github.pay.component.core.IProductFactory;
 import com.github.pay.component.core.SimpleOrderIdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -34,7 +34,7 @@ public class UnionpayQRCodeServiceTest {
 
     @Before
     public void before() {
-        IUnionPayProductFactory unionPayProductFactory = new CacheUnionpayProductFactory(config);
+        IProductFactory unionPayProductFactory = new CacheUnionpayProductFactory(config);
         qrCodeClient = (IUnionpayQRCodeClient) unionPayProductFactory.produce(UnionpayProductEnum.QR_CODE.name());
     }
 

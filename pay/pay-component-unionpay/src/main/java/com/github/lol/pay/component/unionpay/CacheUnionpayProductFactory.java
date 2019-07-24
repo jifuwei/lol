@@ -3,7 +3,7 @@ package com.github.lol.pay.component.unionpay;
 import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import com.github.lol.pay.component.unionpay.product.gateway.impl.UnionpayGatewayService;
 import com.github.lol.pay.component.unionpay.product.qrcode.impl.UnionpayQRCodeService;
-import com.github.pay.component.core.IUnionPayProductFactory;
+import com.github.pay.component.core.IProductFactory;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  * @create: 2019-07-15 15:07
  **/
 @Slf4j
-public class CacheUnionpayProductFactory implements IUnionPayProductFactory {
+public class CacheUnionpayProductFactory implements IProductFactory {
 
     /**
      * check need cache

@@ -9,7 +9,7 @@ import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import com.github.lol.pay.component.unionpay.product.FormReq;
 import com.github.lol.pay.component.unionpay.product.gateway.model.*;
 import com.github.lol.pay.component.unionpay.util.PackUtil;
-import com.github.pay.component.core.IUnionPayProductFactory;
+import com.github.pay.component.core.IProductFactory;
 import com.github.pay.component.core.SimpleOrderIdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -42,7 +42,7 @@ public class UnionpayGatewayServiceTest {
 
     @Before
     public void before() {
-        IUnionPayProductFactory unionPayProductFactory = new CacheUnionpayProductFactory(config);
+        IProductFactory unionPayProductFactory = new CacheUnionpayProductFactory(config);
         gatewayClient = (IUnionpayGatewayClient) unionPayProductFactory.produce(UnionpayProductEnum.GATEWAY.name());
     }
 
