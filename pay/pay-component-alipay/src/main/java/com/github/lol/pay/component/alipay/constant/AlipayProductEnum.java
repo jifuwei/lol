@@ -10,7 +10,8 @@ import lombok.Getter;
  **/
 public enum AlipayProductEnum {
 
-    F2F("当面付");
+    F2F("当面付"),
+    APP("APP支付");
 
     @Getter
     private String desc;
