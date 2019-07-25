@@ -1,4 +1,4 @@
-package com.github.pay.component.core;
+package com.github.lol.pay.core;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;

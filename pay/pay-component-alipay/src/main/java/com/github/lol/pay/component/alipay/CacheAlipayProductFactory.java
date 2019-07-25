@@ -2,7 +2,7 @@ package com.github.lol.pay.component.alipay;
 
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.f2f.impl.AlipayF2FService;
-import com.github.pay.component.core.CacheProductFactory;
+import com.github.lol.pay.core.CacheProductFactory;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 

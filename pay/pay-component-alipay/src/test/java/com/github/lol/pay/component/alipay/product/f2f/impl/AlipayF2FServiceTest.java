@@ -5,8 +5,8 @@ import com.github.lol.pay.component.alipay.CacheAlipayProductFactory;
 import com.github.lol.pay.component.alipay.client.IAlipayF2FClient;
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.f2f.model.*;
-import com.github.pay.component.core.IProductFactory;
-import com.github.pay.component.core.SimpleOrderIdGenerator;
+import com.github.lol.pay.core.IProductFactory;
+import com.github.lol.pay.core.SimpleOrderIdGenerator;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>com.github</groupId>
-            <artifactId>pay-component-core</artifactId>
+            <artifactId>pay-core</artifactId>
             <version>${default.snapshot}</version>
         </dependency>
 

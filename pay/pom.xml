@@ -15,10 +15,10 @@
     <name>pay</name>
 
     <modules>
+        <module>pay-core</module>
         <module>pay-component-unionpay</module>
         <module>pay-component-alipay</module>
         <module>pay-component-wechatpay</module>
-        <module>pay-component-core</module>
     </modules>
 
 </project>

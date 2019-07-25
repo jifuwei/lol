@@ -1,4 +1,4 @@
-package com.github.pay.component.core;
+package com.github.lol.pay.core;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.RandomStringUtils;

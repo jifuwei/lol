@@ -3,7 +3,7 @@ package com.github.lol.pay.component.unionpay;
 import com.github.lol.pay.component.unionpay.constant.UnionpayProductEnum;
 import com.github.lol.pay.component.unionpay.product.gateway.impl.UnionpayGatewayService;
 import com.github.lol.pay.component.unionpay.product.qrcode.impl.UnionpayQRCodeService;
-import com.github.pay.component.core.CacheProductFactory;
+import com.github.lol.pay.core.CacheProductFactory;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
