@@ -84,7 +84,7 @@ public class UnionpayConfiguration {
 @Service
 public class UnionpayGatewayService {
     @Autowired
-    IUnionPayProductFactory unionpayProductFactory;
+    IProductFactory unionpayProductFactory;
     
     public void gatewayConsume() {
         // 具体使用哪种产品，见方法注释
