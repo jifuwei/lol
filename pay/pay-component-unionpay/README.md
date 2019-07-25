@@ -11,6 +11,17 @@
 
 ### 组件集成
 
+**0.依赖**
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.github</groupId>
+        <artifactId>pay-component-unionpay</artifactId>
+        <version>${latest.version}</version>
+    </dependency>
+</dependencies>
+```
+
 **1.快速集成：**
 ```java
 public class App {
@@ -23,7 +34,7 @@ public class App {
 ```
 
 - 工厂类建议是**单例**，减少不必要的资源浪费
-- `CacheUnionpayProductFactory`默认有**缓存功能**，可通过设置`classCacheEnabled`值关闭，当然依赖方也可自行扩展`IUnionPayProductFactory`
+- `CacheUnionpayProductFactory`默认有**缓存功能**，可通过设置`classCacheEnabled`值关闭，当然依赖方也可自行扩展`IProductFactory`
 
 **2.Spring集成**
 
@@ -54,7 +65,7 @@ public class UnionpayConfiguration {
 @Service
 public class UnionpayGatewayService {
     @Autowired
-    IUnionPayProductFactory unionpayProductFactory;
+    IProductFactory unionpayProductFactory;
     
     public void gatewayConsume() {
         // 具体使用哪种产品，见方法注释
