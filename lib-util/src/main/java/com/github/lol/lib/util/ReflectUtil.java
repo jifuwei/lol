@@ -4,6 +4,7 @@ import com.github.lol.lib.util.annotation.NotEmpty;
 import lombok.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +52,18 @@ public class ReflectUtil {
         return field.get(source);
     }
 
+    @SneakyThrows
+    public static Object newInstance(@NonNull Class<?> clazz) {
+        return clazz.newInstance();
+    }
+
+    @SneakyThrows
+    public static void invokeDeclaredMethod(Object targetReq, String methodName, Class<?>[] parameterTypes, Object[] args) {
+        Class<?> clazz = targetReq.getClass();
+        Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
+        method.invoke(targetReq, args);
+    }
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -71,10 +84,15 @@ public class ReflectUtil {
     }
 
     public static void main(String[] args) {
-        TestObject object1 = new TestObject("lisi", "15", "1");
-        object1.setId("1");
-        validateNotNullField(object1);
-        TestObject object2 = new TestObject("lisi", null, "1");
-        validateNotNullField(object2);
+//        TestObject object1 = new TestObject("lisi", "15", "1");
+//        object1.setId("1");
+//        validateNotNullField(object1);
+//        TestObject object2 = new TestObject("lisi", null, "1");
+//        validateNotNullField(object2);
+
+        Object source = newInstance(TestObject.class);
+        invokeDeclaredMethod(source, "setName", new Class[]{String.class}, new Object[]{"lisi111"});
+        System.out.println(source.toString());
+
     }
 }

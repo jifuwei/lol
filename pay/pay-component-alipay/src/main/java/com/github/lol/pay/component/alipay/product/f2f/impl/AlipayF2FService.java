@@ -1,5 +1,7 @@
 package com.github.lol.pay.component.alipay.product.f2f.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alipay.api.request.*;
 import com.alipay.api.response.*;
 import com.github.lol.pay.component.alipay.AlipayConfig;
 import com.github.lol.pay.component.alipay.IAlipayF2FClient;
@@ -7,6 +9,8 @@ import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.AbstractAlipayProductService;
 import com.github.lol.pay.component.alipay.product.f2f.model.*;
 import lombok.NonNull;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * alipay F2F service
@@ -14,6 +18,7 @@ import lombok.NonNull;
  * @author: jifuwei
  * @create: 2019-07-24 14:36
  **/
+@Slf4j
 public class AlipayF2FService extends AbstractAlipayProductService implements IAlipayF2FClient {
 
     public AlipayF2FService(@NonNull AlipayConfig config) {
@@ -25,48 +30,95 @@ public class AlipayF2FService extends AbstractAlipayProductService implements IA
     }
 
     @Override
-    public AlipayTradePayResponse pay(PayBizContentReq payBizContentReq) {
-        return null;
+    @SneakyThrows
+    public AlipayTradePayResponse pay(@NonNull PayBizContentReq payBizContentReq) {
+        AlipayTradePayRequest req = new AlipayTradePayRequest();
+        req.setBizContent(JSON.toJSONString(payBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [pay] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
     }
 
     @Override
-    public AlipayTradeQueryResponse query(QueryBizContentReq queryBizContentReq) {
-        return null;
+    @SneakyThrows
+    public AlipayTradeQueryResponse query(@NonNull QueryBizContentReq queryBizContentReq) {
+        AlipayTradeQueryRequest req = new AlipayTradeQueryRequest();
+        req.setBizContent(JSON.toJSONString(queryBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [query] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
     }
 
     @Override
-    public AlipayTradeCancelResponse cancel(CancelBizContentReq cancelBizContentReq) {
-        return null;
+    @SneakyThrows
+    public AlipayTradeCancelResponse cancel(@NonNull CancelBizContentReq cancelBizContentReq) {
+        AlipayTradeCancelRequest req = new AlipayTradeCancelRequest();
+        req.setBizContent(JSON.toJSONString(cancelBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [cancel] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
     }
 
     @Override
-    public AlipayTradeCreateResponse create(CreateBizContentReq createBizContentReq) {
-        return null;
+    @SneakyThrows
+    public AlipayTradeCreateResponse create(@NonNull CreateBizContentReq createBizContentReq) {
+        AlipayTradeCreateRequest req = new AlipayTradeCreateRequest();
+        req.setBizContent(JSON.toJSONString(createBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [create] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
     }
 
     @Override
-    public AlipayTradeRefundResponse refund(RefundBizContentReq refundBizContentReq) {
-        return null;
+    @SneakyThrows
+    public AlipayTradeRefundResponse refund(@NonNull RefundBizContentReq refundBizContentReq) {
+        AlipayTradeRefundRequest req = new AlipayTradeRefundRequest();
+        req.setBizContent(JSON.toJSONString(refundBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [refund] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
     }
 
     @Override
-    public AlipayTradePrecreateResponse preCreate(PreCreateBizContentReq preCreateBizContentReq) {
-        return null;
+    @SneakyThrows
+    public AlipayTradePrecreateResponse preCreate(@NonNull PreCreateBizContentReq preCreateBizContentReq) {
+        AlipayTradePrecreateRequest req = new AlipayTradePrecreateRequest();
+        req.setBizContent(JSON.toJSONString(preCreateBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [preCreate] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
     }
 
     @Override
-    public AlipayTradeCloseResponse close(CloseBizContentReq closeBizContentReq) {
-        return null;
+    @SneakyThrows
+    public AlipayTradeCloseResponse close(@NonNull CloseBizContentReq closeBizContentReq) {
+        AlipayTradeCloseRequest req = new AlipayTradeCloseRequest();
+        req.setBizContent(JSON.toJSONString(closeBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [close] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
     }
 
     @Override
-    public AlipayDataDataserviceBillDownloadurlQueryResponse billDownloadurlQuery(BillDownloadUrlQueryBizContentReq billDownloadUrlQueryBizContentReq) {
-        return null;
+    @SneakyThrows
+    public AlipayDataDataserviceBillDownloadurlQueryResponse billDownloadurlQuery(
+            @NonNull BillDownloadUrlQueryBizContentReq billDownloadUrlQueryBizContentReq) {
+        AlipayDataDataserviceBillDownloadurlQueryRequest req = new AlipayDataDataserviceBillDownloadurlQueryRequest();
+        req.setBizContent(JSON.toJSONString(billDownloadUrlQueryBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [billDownloadurlQuery] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
     }
 
     @Override
-    public MonitorHeartbeatSynResponse monitorHeartbeatSyn(MonitorHeartbeatSynBizContentReq monitorHeartbeatSynBizContentReq) {
-        return null;
+    @SneakyThrows
+    public MonitorHeartbeatSynResponse monitorHeartbeatSyn(
+            @NonNull MonitorHeartbeatSynBizContentReq monitorHeartbeatSynBizContentReq) {
+        MonitorHeartbeatSynRequest req = new MonitorHeartbeatSynRequest();
+        req.setBizContent(JSON.toJSONString(monitorHeartbeatSynBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [monitorHeartbeatSyn] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
     }
 
     @Override

@@ -17,6 +17,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class BillDownloadUrlQueryBizContentReq {
+
+    public final static String BILL_TYPE_TRADE = "trade";
+
     @NotEmpty
     private String billType;
     @NotEmpty

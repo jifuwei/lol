@@ -17,6 +17,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MonitorHeartbeatSynBizContentReq {
+
+    public final static String PRODUCT_FP = "FP";
+
+    // 收银机
+    public final static String TYPE_CR = "CR";
+    // 门店
+    public final static String TYPE_STORE = "STORE";
+    // 售卖
+    public final static String TYPE_VM = "VM";
+
     @NotEmpty
     private String product;
     @NotEmpty
@@ -32,7 +42,17 @@ public class MonitorHeartbeatSynBizContentReq {
     private String sysServiceProviderId;
     private String mac;
     @NotEmpty
-    private String tradeInfo;
+    private TradeInfo tradeInfo;
     private String exceptionInfo;
     private String extendInfo;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class TradeInfo {
+        private String OTN;
+        private String TC;
+        private String STAT;
+    }
 }
