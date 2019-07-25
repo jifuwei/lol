@@ -1,4 +1,4 @@
-package com.github.lol.pay.component.alipay.product.f2f.model;
+package com.github.lol.pay.component.alipay.product.model;
 
 import com.github.lol.lib.util.annotation.NotEmpty;
 import lombok.AllArgsConstructor;

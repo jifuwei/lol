@@ -9,18 +9,17 @@ import com.github.lol.pay.component.alipay.product.model.*;
  * @author: jifuwei
  * @create: 2019-07-24 14:40
  **/
-public interface IAlipayF2FClient {
+public interface IAlipayAppClient {
 
     /**
-     * 统一收单交易支付接口（条码支付）
+     * app支付接口
      * <p>
-     * 收银员使用扫码设备读取用户手机支付宝“付款码”/声波获取设备（如麦克风）读取用户手机支付宝的声波信息后，
-     * 将二维码或条码信息/声波信息通过本接口上送至支付宝发起支付。
+     * 外部商户APP唤起快捷SDK创建订单并支付
      *
-     * @param payBizContentReq
+     * @param appPayBizContentReq
      * @return
      */
-    AlipayTradePayResponse pay(PayBizContentReq payBizContentReq);
+    AlipayTradeAppPayResponse appPay(AppPayBizContentReq appPayBizContentReq);
 
     /**
      * 统一收单线下交易查询
@@ -34,28 +33,6 @@ public interface IAlipayF2FClient {
      * @return
      */
     AlipayTradeQueryResponse query(QueryBizContentReq queryBizContentReq);
-
-    /**
-     * 统一收单交易撤销接口
-     * <p>
-     * 支付交易返回失败或支付系统超时，调用该接口撤销交易。如果此订单用户支付失败，支付宝系统会将此订单关闭；
-     * 如果用户支付成功，支付宝系统会将此订单资金退还给用户。 注意：只有发生支付系统超时或者支付结果未知时可调用撤销，
-     * 其他正常支付的单如需实现相同功能请调用申请退款API。提交支付交易后调用【查询订单API】，没有明确的支付结果再调用【撤销订单API】。
-     *
-     * @param cancelBizContentReq
-     * @return
-     */
-    AlipayTradeCancelResponse cancel(CancelBizContentReq cancelBizContentReq);
-
-    /**
-     * 统一收单交易创建接口
-     * <p>
-     * 商户通过该接口进行交易的创建下单
-     *
-     * @param createBizContentReq
-     * @return
-     */
-    AlipayTradeCreateResponse create(CreateBizContentReq createBizContentReq);
 
     /**
      * 统一收单交易退款接口
@@ -72,14 +49,17 @@ public interface IAlipayF2FClient {
     AlipayTradeRefundResponse refund(RefundBizContentReq refundBizContentReq);
 
     /**
-     * 统一收单线下交易预创建（扫码支付）
+     * 统一收单交易退款查询
      * <p>
-     * 收银员通过收银台或商户后台调用支付宝接口，生成二维码后，展示给用户，由用户扫描二维码完成订单支付。
+     * 商户可使用该接口查询自已通过alipay.trade.refund或alipay.trade.refund.apply提交的退款请求是否执行成功。
+     * 该接口的返回码10000，仅代表本次查询操作成功，不代表退款成功。如果该接口返回了查询数据，
+     * 且refund_status为空或为REFUND_SUCCESS，则代表退款成功，如果没有查询到则代表未退款成功，
+     * 可以调用退款接口进行重试。重试时请务必保证退款请求号一致。
      *
-     * @param preCreateBizContentReq
      * @return
      */
-    AlipayTradePrecreateResponse preCreate(PreCreateBizContentReq preCreateBizContentReq);
+    AlipayTradeFastpayRefundQueryResponse fastpayRefundQuery(
+            FastpayRefundQueryBizContentReq fastpayRefundQueryBizContentReq);
 
     /**
      * 统一收单交易关闭接口
@@ -101,15 +81,4 @@ public interface IAlipayF2FClient {
      */
     AlipayDataDataserviceBillDownloadurlQueryResponse billDownloadurlQuery(
             BillDownloadUrlQueryBizContentReq billDownloadUrlQueryBizContentReq);
-
-    /**
-     * 交易保障接口
-     * <p>
-     * 支付宝将大数据和监控开放给商户/ISV。为了保障商户收银效果，要求每30分钟（或小于30分钟）从终端同步支付宝交易性能和异常信息。
-     * 支付宝将该数据和支付宝内数据有机整合为商户/ISV提供实时监控能力，为线下收银保障护航。
-     *
-     * @param monitorHeartbeatSynBizContentReq
-     * @return
-     */
-    MonitorHeartbeatSynResponse monitorHeartbeatSyn(MonitorHeartbeatSynBizContentReq monitorHeartbeatSynBizContentReq);
 }

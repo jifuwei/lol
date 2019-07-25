@@ -4,7 +4,7 @@ import com.github.lol.pay.component.alipay.AlipayConfig;
 import com.github.lol.pay.component.alipay.CacheAlipayProductFactory;
 import com.github.lol.pay.component.alipay.client.IAlipayF2FClient;
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
-import com.github.lol.pay.component.alipay.product.f2f.model.*;
+import com.github.lol.pay.component.alipay.product.model.*;
 import com.github.lol.pay.core.IProductFactory;
 import com.github.lol.pay.core.SimpleOrderIdGenerator;
 import org.junit.Before;
@@ -12,10 +12,10 @@ import org.junit.Test;
 
 import static com.github.lol.pay.component.alipay.AlipayConfig.ENCODING_UTF_8;
 import static com.github.lol.pay.component.alipay.AlipayConfig.SIGN_TYPE_RSA2;
-import static com.github.lol.pay.component.alipay.product.f2f.model.BillDownloadUrlQueryBizContentReq.BILL_TYPE_TRADE;
-import static com.github.lol.pay.component.alipay.product.f2f.model.MonitorHeartbeatSynBizContentReq.PRODUCT_FP;
-import static com.github.lol.pay.component.alipay.product.f2f.model.MonitorHeartbeatSynBizContentReq.TYPE_STORE;
-import static com.github.lol.pay.component.alipay.product.f2f.model.PayBizContentReq.SCENE_BAR_CODE;
+import static com.github.lol.pay.component.alipay.product.model.BillDownloadUrlQueryBizContentReq.BILL_TYPE_TRADE;
+import static com.github.lol.pay.component.alipay.product.model.MonitorHeartbeatSynBizContentReq.PRODUCT_FP;
+import static com.github.lol.pay.component.alipay.product.model.MonitorHeartbeatSynBizContentReq.TYPE_STORE;
+import static com.github.lol.pay.component.alipay.product.model.PayBizContentReq.SCENE_BAR_CODE;
 
 public class AlipayF2FServiceTest {
 

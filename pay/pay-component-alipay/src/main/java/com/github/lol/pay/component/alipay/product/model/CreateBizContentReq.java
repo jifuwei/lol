@@ -1,4 +1,4 @@
-package com.github.lol.pay.component.alipay.product.f2f.model;
+package com.github.lol.pay.component.alipay.product.model;
 
 import com.github.lol.lib.util.annotation.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -10,58 +10,39 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * alipay trade pay biz content req
+ * create alipay trade biz content request
  * <p>
- * reference doc: https://docs.open.alipay.com/api_1/alipay.trade.pay
+ * reference doc: https://docs.open.alipay.com/api_15/alipay.trade.create
  *
  * @author: jifuwei
- * @create: 2019-07-24 16:17
+ * @create: 2019-07-24 16:47
  **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PayBizContentReq {
-
-    public final static String SCENE_BAR_CODE = "bar_code";
-
+public class CreateBizContentReq {
     @NotEmpty
     private String outTradeNo;
-    @NotEmpty
-    private String scene;
-
-    // 支付授权码，25~30开头的长度为16~24位的数字，实际字符串长度以开发者获取的付款码长度为准
-    @NotEmpty
-    private String authCode;
-    private String productCode;
-    @NotEmpty
-    private String subject;
-    private String buyerId;
     private String sellerId;
-
-    // 单位【元】精确到小数点后两位
     @NotEmpty
     private String totalAmount;
-    private String transCurrency;
-    private String settleCurrency;
     private String discountableAmount;
-    private String body;
-    private List<GoodsDetail> goodsDetail;
-    private String operatorId;
     @NotEmpty
+    private String subject;
+    private String body;
+    private String buyerId;
+    private List<GoodsDetail> goodsDetail;
+    private String productCode;
+    private String operatorId;
     private String storeId;
     private String terminalId;
     private ExtendParams extendParams;
-
-    // 该笔订单允许的最晚付款时间，逾期将关闭交易。
-    // 取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。
-    // 该参数数值不接受小数点， 如 1.5h，可转换为 90m
-    @NotEmpty
     private String timeoutExpress;
-    private String authConfirmMode;
-    private String terminalParams;
-    private PromoParams promoParams;
-    private String advancePaymentType;
+    private SettleInfo settleInfo;
+    private LogisticsDetail logisticsDetail;
+    private BusinessParams businessParams;
+    private ReceiverAddressInfo receiverAddressInfo;
 
     @Data
     @NoArgsConstructor
@@ -102,7 +83,49 @@ public class PayBizContentReq {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class PromoParams {
-        private String actualOrderTime;
+    public static class SettleInfo {
+        private List<SettleDetailInfos> settleDetailInfos;
+        private String merchantType;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class SettleDetailInfos {
+        private String transInType;
+        private String transIn;
+        private String summaryDimension;
+        private String settleEntityId;
+        private String settleEntityType;
+        private String amount;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class LogisticsDetail {
+        private String logisticsType;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class BusinessParams {
+        private String campusCard;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ReceiverAddressInfo {
+        private String name;
+        private String address;
+        private String mobile;
+        private String zip;
+        private String divisionCode;
     }
 }

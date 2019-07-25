@@ -5,7 +5,7 @@ import com.github.lol.pay.component.alipay.AlipayConfig;
 import com.github.lol.pay.component.alipay.client.IAlipayF2FClient;
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.AbstractAlipayProductService;
-import com.github.lol.pay.component.alipay.product.f2f.model.*;
+import com.github.lol.pay.component.alipay.product.model.*;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 

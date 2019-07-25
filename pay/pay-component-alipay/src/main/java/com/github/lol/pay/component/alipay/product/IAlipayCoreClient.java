@@ -1,10 +1,10 @@
 package com.github.lol.pay.component.alipay.product;
 
 import com.alipay.api.response.*;
-import com.github.lol.pay.component.alipay.product.f2f.model.*;
+import com.github.lol.pay.component.alipay.product.model.*;
 
 /**
- * alipay F2F client
+ * alipay core client
  *
  * @author: jifuwei
  * @create: 2019-07-24 14:40
@@ -112,4 +112,26 @@ public interface IAlipayCoreClient {
      * @return
      */
     MonitorHeartbeatSynResponse monitorHeartbeatSyn(MonitorHeartbeatSynBizContentReq monitorHeartbeatSynBizContentReq);
+
+    /**
+     * app支付接口
+     * <p>
+     * 外部商户APP唤起快捷SDK创建订单并支付
+     *
+     * @param appPayBizContentReq
+     * @return
+     */
+    AlipayTradeAppPayResponse appPay(AppPayBizContentReq appPayBizContentReq);
+
+    /**
+     * 统一收单交易退款查询
+     * <p>
+     * 商户可使用该接口查询自已通过alipay.trade.refund或alipay.trade.refund.apply提交的退款请求是否执行成功。
+     * 该接口的返回码10000，仅代表本次查询操作成功，不代表退款成功。如果该接口返回了查询数据，
+     * 且refund_status为空或为REFUND_SUCCESS，则代表退款成功，如果没有查询到则代表未退款成功，
+     * 可以调用退款接口进行重试。重试时请务必保证退款请求号一致。
+     *
+     * @return
+     */
+    AlipayTradeFastpayRefundQueryResponse fastpayRefundQuery(FastpayRefundQueryBizContentReq fastpayRefundQueryBizContentReq);
 }

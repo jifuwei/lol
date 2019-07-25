@@ -8,7 +8,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.*;
 import com.alipay.api.response.*;
 import com.github.lol.pay.component.alipay.AlipayConfig;
-import com.github.lol.pay.component.alipay.product.f2f.model.*;
+import com.github.lol.pay.component.alipay.product.model.*;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -132,6 +132,27 @@ public class AlipayCoreService implements IAlipayCoreClient {
         MonitorHeartbeatSynRequest req = new MonitorHeartbeatSynRequest();
         req.setBizContent(JSON.toJSONString(monitorHeartbeatSynBizContentReq, this.getSerializeConfig()));
         log.debug("Alipay api [monitorHeartbeatSyn] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
+    }
+
+    @Override
+    @SneakyThrows
+    public AlipayTradeAppPayResponse appPay(@NonNull AppPayBizContentReq appPayBizContentReq) {
+        AlipayTradeAppPayRequest req = new AlipayTradeAppPayRequest();
+        req.setBizContent(JSON.toJSONString(appPayBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [appPay] req: {}", req.getBizContent());
+
+        return this.getAlipayClient().execute(req);
+    }
+
+    @Override
+    @SneakyThrows
+    public AlipayTradeFastpayRefundQueryResponse fastpayRefundQuery(
+            @NonNull FastpayRefundQueryBizContentReq fastpayRefundQueryBizContentReq) {
+        AlipayTradeFastpayRefundQueryRequest req = new AlipayTradeFastpayRefundQueryRequest();
+        req.setBizContent(JSON.toJSONString(fastpayRefundQueryBizContentReq, this.getSerializeConfig()));
+        log.debug("Alipay api [fastpayRefundQuery] req: {}", req.getBizContent());
 
         return this.getAlipayClient().execute(req);
     }
