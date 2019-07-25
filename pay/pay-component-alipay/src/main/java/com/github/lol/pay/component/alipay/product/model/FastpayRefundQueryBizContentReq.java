@@ -20,10 +20,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FastpayRefundQueryBizContentReq {
     @NotEmpty
-    private String trade_no;
+    private String tradeNo;
     @NotEmpty
-    private String out_trade_no;
+    private String outTradeNo;
     @NotEmpty
-    private String out_request_no;
-    private String org_pid;
+    private String outRequestNo;
+    private String orgPid;
 }
