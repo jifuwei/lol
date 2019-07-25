@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * query alipay trade biz content request
+ * <p>
+ * reference doc: https://docs.open.alipay.com/api_15/alipay.trade.query
  *
  * @author: jifuwei
  * @create: 2019-07-24 16:47

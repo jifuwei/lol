@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * bill download url query alipay trade biz content request
+ * <p>
+ * reference doc: https://docs.open.alipay.com/api_15/alipay.data.dataservice.bill.downloadurl.query
  *
  * @author: jifuwei
  * @create: 2019-07-24 16:47

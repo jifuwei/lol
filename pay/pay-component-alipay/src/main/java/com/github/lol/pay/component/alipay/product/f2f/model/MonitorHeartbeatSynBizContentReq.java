@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * cancel alipay trade biz content request
+ * <p>
+ * reference doc: https://docs.open.alipay.com/api_15/monitor.heartbeat.syn
  *
  * @author: jifuwei
  * @create: 2019-07-24 16:47
