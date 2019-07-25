@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alipay.api.request.*;
 import com.alipay.api.response.*;
 import com.github.lol.pay.component.alipay.AlipayConfig;
-import com.github.lol.pay.component.alipay.IAlipayF2FClient;
+import com.github.lol.pay.component.alipay.client.IAlipayF2FClient;
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.AbstractAlipayProductService;
 import com.github.lol.pay.component.alipay.product.f2f.model.*;

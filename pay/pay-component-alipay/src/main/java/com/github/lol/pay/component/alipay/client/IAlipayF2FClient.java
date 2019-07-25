@@ -1,4 +1,4 @@
-package com.github.lol.pay.component.alipay;
+package com.github.lol.pay.component.alipay.client;
 
 import com.alipay.api.response.*;
 import com.github.lol.pay.component.alipay.product.f2f.model.*;

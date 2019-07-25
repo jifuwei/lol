@@ -2,7 +2,7 @@ package com.github.lol.pay.component.alipay.product.f2f.impl;
 
 import com.github.lol.pay.component.alipay.AlipayConfig;
 import com.github.lol.pay.component.alipay.CacheAlipayProductFactory;
-import com.github.lol.pay.component.alipay.IAlipayF2FClient;
+import com.github.lol.pay.component.alipay.client.IAlipayF2FClient;
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.f2f.model.*;
 import com.github.pay.component.core.IProductFactory;
