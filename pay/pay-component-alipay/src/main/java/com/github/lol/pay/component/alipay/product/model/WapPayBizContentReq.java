@@ -19,6 +19,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class WapPayBizContentReq {
+
+    public final static String DEFAULT_PRODUCT_CODE = "QUICK_WAP_WAY";
+
     private String body;
     @NotEmpty
     private String subject;
