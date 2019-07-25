@@ -143,5 +143,5 @@ public interface IAlipayCoreClient {
      * @param wapPayBizContentReq
      * @return
      */
-    AlipayTradeWapPayResponse wapPay(WapPayBizContentReq wapPayBizContentReq);
+    String wapPay(WapPayBizContentReq wapPayBizContentReq);
 }

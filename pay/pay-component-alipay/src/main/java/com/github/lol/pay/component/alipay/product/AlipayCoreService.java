@@ -159,11 +159,11 @@ public class AlipayCoreService implements IAlipayCoreClient {
 
     @Override
     @SneakyThrows
-    public AlipayTradeWapPayResponse wapPay(WapPayBizContentReq wapPayBizContentReq) {
+    public String wapPay(WapPayBizContentReq wapPayBizContentReq) {
         AlipayTradeWapPayRequest req = new AlipayTradeWapPayRequest();
         req.setBizContent(JSON.toJSONString(wapPayBizContentReq, this.getSerializeConfig()));
         log.debug("Alipay api [wapPay] req: {}", req.getBizContent());
 
-        return this.getAlipayClient().execute(req);
+        return this.getAlipayClient().pageExecute(req).getBody();
     }
 }

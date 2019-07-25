@@ -28,7 +28,7 @@ public class AlipayWapService extends AbstractAlipayProductService implements IA
 
 
     @Override
-    public AlipayTradeWapPayResponse wapPay(WapPayBizContentReq wapPayBizContentReq) {
+    public String wapPay(WapPayBizContentReq wapPayBizContentReq) {
         return this.getAlipayCoreService().wapPay(wapPayBizContentReq);
     }
 

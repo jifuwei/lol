@@ -19,7 +19,7 @@ public interface IAlipayWapClient {
      * @param wapPayBizContentReq
      * @return
      */
-    AlipayTradeWapPayResponse wapPay(WapPayBizContentReq wapPayBizContentReq);
+    String wapPay(WapPayBizContentReq wapPayBizContentReq);
 
     /**
      * 统一收单线下交易查询
