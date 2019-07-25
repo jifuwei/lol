@@ -134,4 +134,14 @@ public interface IAlipayCoreClient {
      * @return
      */
     AlipayTradeFastpayRefundQueryResponse fastpayRefundQuery(FastpayRefundQueryBizContentReq fastpayRefundQueryBizContentReq);
+
+    /**
+     * 手机网站支付
+     * <p>
+     * 外部商户创建订单并支付
+     *
+     * @param wapPayBizContentReq
+     * @return
+     */
+    AlipayTradeWapPayResponse wapPay(WapPayBizContentReq wapPayBizContentReq);
 }
