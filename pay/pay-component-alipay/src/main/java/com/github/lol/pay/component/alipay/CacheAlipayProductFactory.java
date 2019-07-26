@@ -3,6 +3,7 @@ package com.github.lol.pay.component.alipay;
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.app.impl.AlipayAppService;
 import com.github.lol.pay.component.alipay.product.f2f.impl.AlipayF2FService;
+import com.github.lol.pay.component.alipay.product.pc.impl.AlipayPcService;
 import com.github.lol.pay.component.alipay.product.wap.impl.AlipayWapService;
 import com.github.lol.pay.core.CacheProductFactory;
 import lombok.NonNull;
@@ -34,6 +35,8 @@ public class CacheAlipayProductFactory extends CacheProductFactory {
                 return AlipayAppService.of(config);
             case "WAP":
                 return AlipayWapService.of(config);
+            case "PC":
+                return AlipayPcService.of(config);
             default:
                 throw new RuntimeException(String.format("[CacheAlipayProductFactory]: %s not support",
                         productName));
