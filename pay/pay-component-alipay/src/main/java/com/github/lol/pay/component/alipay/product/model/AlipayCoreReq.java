@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * alipay core request
  *
@@ -15,7 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AlipayCoreReq {
+public class AlipayCoreReq implements Serializable {
+    private static final long serialVersionUID = 3159060941030466661L;
+    
     private String productId;
     private String methodName;
     private String bizContent;

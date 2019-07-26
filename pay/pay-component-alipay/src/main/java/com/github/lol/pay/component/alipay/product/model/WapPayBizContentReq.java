@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * wap pay trade biz content request
  * <p>
@@ -18,7 +20,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WapPayBizContentReq {
+public class WapPayBizContentReq implements Serializable {
+    private static final long serialVersionUID = -479256155741677764L;
 
     public final static String DEFAULT_PRODUCT_CODE = "QUICK_WAP_WAY";
 
@@ -59,6 +62,6 @@ public class WapPayBizContentReq {
     @AllArgsConstructor
     @Builder
     public static class ExtendParams {
-        String sysServiceProviderId;
+        private String sysServiceProviderId;
     }
 }

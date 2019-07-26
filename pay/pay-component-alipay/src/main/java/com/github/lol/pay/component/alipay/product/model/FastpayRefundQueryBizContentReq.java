@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * fastpay refund query trade biz content request
  * <p>
@@ -18,7 +20,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FastpayRefundQueryBizContentReq {
+public class FastpayRefundQueryBizContentReq implements Serializable {
+    private static final long serialVersionUID = 5080102937654481773L;
+
     @NotEmpty
     private String tradeNo;
     @NotEmpty

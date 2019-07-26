@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -20,7 +21,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AppPayBizContentReq {
+public class AppPayBizContentReq implements Serializable {
+    private static final long serialVersionUID = -7698221908645664826L;
+
     @NotEmpty
     private String timeoutExpress;
     @NotEmpty
@@ -59,11 +62,11 @@ public class AppPayBizContentReq {
     @AllArgsConstructor
     @Builder
     public static class ExtendParams {
-        String sysServiceProviderId;
-        String hbFqNum;
-        String hbFqSellerPercent;
-        IndustryRefluxInfo industryRefluxInfo;
-        String cardType;
+        private String sysServiceProviderId;
+        private String hbFqNum;
+        private String hbFqSellerPercent;
+        private IndustryRefluxInfo industryRefluxInfo;
+        private String cardType;
     }
 
     @Data

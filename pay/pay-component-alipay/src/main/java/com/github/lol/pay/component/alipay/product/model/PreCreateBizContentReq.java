@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PreCreateBizContentReq {
+public class PreCreateBizContentReq implements Serializable {
+    private static final long serialVersionUID = 7090032190810794375L;
+
     @NotEmpty
     private String outTradeNo;
     private String sellerId;
@@ -67,9 +70,9 @@ public class PreCreateBizContentReq {
     @AllArgsConstructor
     @Builder
     public static class ExtendParams {
-        String sysServiceProviderId;
-        IndustryRefluxInfo industryRefluxInfo;
-        String cardType;
+        private String sysServiceProviderId;
+        private IndustryRefluxInfo industryRefluxInfo;
+        private String cardType;
     }
 
     @Data

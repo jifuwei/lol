@@ -6,8 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
- * cancel alipay trade biz content request
+ * MonitorHeartbeatSyn alipay trade biz content request
  * <p>
  * reference doc: https://docs.open.alipay.com/api_15/monitor.heartbeat.syn
  *
@@ -18,7 +20,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MonitorHeartbeatSynBizContentReq {
+public class MonitorHeartbeatSynBizContentReq implements Serializable {
+    private static final long serialVersionUID = 2419475290820423958L;
 
     public final static String PRODUCT_FP = "FP";
 

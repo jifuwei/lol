@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * cancel alipay trade biz content request
  * <p>
@@ -18,7 +20,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CancelBizContentReq {
+public class CancelBizContentReq implements Serializable {
+    private static final long serialVersionUID = -6657600314554329120L;
+
     @NotEmpty
     private String outTradeNo;
     @NotEmpty

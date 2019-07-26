@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * close alipay trade biz content request
  * <p>
@@ -18,7 +20,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CloseBizContentReq {
+public class CloseBizContentReq implements Serializable {
+    private static final long serialVersionUID = 1713474734828142139L;
+
     @NotEmpty
     private String tradeNo;
     @NotEmpty

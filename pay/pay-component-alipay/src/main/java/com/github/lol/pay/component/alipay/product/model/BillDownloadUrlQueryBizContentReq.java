@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * bill download url query alipay trade biz content request
  * <p>
@@ -18,7 +20,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BillDownloadUrlQueryBizContentReq {
+public class BillDownloadUrlQueryBizContentReq implements Serializable {
+    private static final long serialVersionUID = 5022100582161029283L;
 
     public final static String BILL_TYPE_TRADE = "trade";
 

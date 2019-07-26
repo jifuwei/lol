@@ -1,10 +1,12 @@
 package com.github.lol.pay.component.alipay.product.model;
 
+import com.github.lol.lib.util.annotation.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +22,16 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PagePayBizContentReq {
+public class PagePayBizContentReq implements Serializable {
+    private static final long serialVersionUID = -1131059759873048349L;
+
+    @NotEmpty
     private String outTradeNo;
+    @NotEmpty
     private String productCode;
+    @NotEmpty
     private String totalAmount;
+    @NotEmpty
     private String subject;
     private String body;
     private String timeExpire;
