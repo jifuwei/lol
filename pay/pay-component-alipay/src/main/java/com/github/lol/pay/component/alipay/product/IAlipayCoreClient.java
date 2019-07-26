@@ -1,7 +1,7 @@
 package com.github.lol.pay.component.alipay.product;
 
 import com.alipay.api.response.*;
-import com.github.lol.pay.component.alipay.product.model.*;
+import com.github.lol.pay.component.alipay.product.model.AlipayCoreReq;
 
 /**
  * alipay core client
@@ -17,10 +17,10 @@ public interface IAlipayCoreClient {
      * 收银员使用扫码设备读取用户手机支付宝“付款码”/声波获取设备（如麦克风）读取用户手机支付宝的声波信息后，
      * 将二维码或条码信息/声波信息通过本接口上送至支付宝发起支付。
      *
-     * @param payBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    AlipayTradePayResponse pay(PayBizContentReq payBizContentReq);
+    AlipayTradePayResponse pay(AlipayCoreReq alipayCoreReq);
 
     /**
      * 统一收单线下交易查询
@@ -30,10 +30,10 @@ public interface IAlipayCoreClient {
      * 返回系统错误或未知交易状态情况； 调用alipay.trade.pay，返回INPROCESS的状态； 调用alipay.trade.cancel之前，
      * 需确认支付状态；
      *
-     * @param queryBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    AlipayTradeQueryResponse query(QueryBizContentReq queryBizContentReq);
+    AlipayTradeQueryResponse query(AlipayCoreReq alipayCoreReq);
 
     /**
      * 统一收单交易撤销接口
@@ -42,20 +42,20 @@ public interface IAlipayCoreClient {
      * 如果用户支付成功，支付宝系统会将此订单资金退还给用户。 注意：只有发生支付系统超时或者支付结果未知时可调用撤销，
      * 其他正常支付的单如需实现相同功能请调用申请退款API。提交支付交易后调用【查询订单API】，没有明确的支付结果再调用【撤销订单API】。
      *
-     * @param cancelBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    AlipayTradeCancelResponse cancel(CancelBizContentReq cancelBizContentReq);
+    AlipayTradeCancelResponse cancel(AlipayCoreReq alipayCoreReq);
 
     /**
      * 统一收单交易创建接口
      * <p>
      * 商户通过该接口进行交易的创建下单
      *
-     * @param createBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    AlipayTradeCreateResponse create(CreateBizContentReq createBizContentReq);
+    AlipayTradeCreateResponse create(AlipayCoreReq alipayCoreReq);
 
     /**
      * 统一收单交易退款接口
@@ -66,41 +66,40 @@ public interface IAlipayCoreClient {
      * 多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交，要采用原来的退款单号。
      * 总退款金额不能超过用户实际支付金额
      *
-     * @param refundBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    AlipayTradeRefundResponse refund(RefundBizContentReq refundBizContentReq);
+    AlipayTradeRefundResponse refund(AlipayCoreReq alipayCoreReq);
 
     /**
      * 统一收单线下交易预创建（扫码支付）
      * <p>
      * 收银员通过收银台或商户后台调用支付宝接口，生成二维码后，展示给用户，由用户扫描二维码完成订单支付。
      *
-     * @param preCreateBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    AlipayTradePrecreateResponse preCreate(PreCreateBizContentReq preCreateBizContentReq);
+    AlipayTradePrecreateResponse preCreate(AlipayCoreReq alipayCoreReq);
 
     /**
      * 统一收单交易关闭接口
      * <p>
      * 用于交易创建后，用户在一定时间内未进行支付，可调用该接口直接将未付款的交易进行关闭。
      *
-     * @param closeBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    AlipayTradeCloseResponse close(CloseBizContentReq closeBizContentReq);
+    AlipayTradeCloseResponse close(AlipayCoreReq alipayCoreReq);
 
     /**
      * 查询对账单下载地址接口
      * <p>
      * 为方便商户快速查账，支持商户通过本接口获取商户离线账单下载地址
      *
-     * @param billDownloadUrlQueryBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    AlipayDataDataserviceBillDownloadurlQueryResponse billDownloadurlQuery(
-            BillDownloadUrlQueryBizContentReq billDownloadUrlQueryBizContentReq);
+    AlipayDataDataserviceBillDownloadurlQueryResponse billDownloadurlQuery(AlipayCoreReq alipayCoreReq);
 
     /**
      * 交易保障接口
@@ -108,20 +107,20 @@ public interface IAlipayCoreClient {
      * 支付宝将大数据和监控开放给商户/ISV。为了保障商户收银效果，要求每30分钟（或小于30分钟）从终端同步支付宝交易性能和异常信息。
      * 支付宝将该数据和支付宝内数据有机整合为商户/ISV提供实时监控能力，为线下收银保障护航。
      *
-     * @param monitorHeartbeatSynBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    MonitorHeartbeatSynResponse monitorHeartbeatSyn(MonitorHeartbeatSynBizContentReq monitorHeartbeatSynBizContentReq);
+    MonitorHeartbeatSynResponse monitorHeartbeatSyn(AlipayCoreReq alipayCoreReq);
 
     /**
      * app支付接口
      * <p>
      * 外部商户APP唤起快捷SDK创建订单并支付
      *
-     * @param appPayBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    AlipayTradeAppPayResponse appPay(AppPayBizContentReq appPayBizContentReq);
+    AlipayTradeAppPayResponse appPay(AlipayCoreReq alipayCoreReq);
 
     /**
      * 统一收单交易退款查询
@@ -131,17 +130,18 @@ public interface IAlipayCoreClient {
      * 且refund_status为空或为REFUND_SUCCESS，则代表退款成功，如果没有查询到则代表未退款成功，
      * 可以调用退款接口进行重试。重试时请务必保证退款请求号一致。
      *
+     * @param alipayCoreReq
      * @return
      */
-    AlipayTradeFastpayRefundQueryResponse fastpayRefundQuery(FastpayRefundQueryBizContentReq fastpayRefundQueryBizContentReq);
+    AlipayTradeFastpayRefundQueryResponse fastpayRefundQuery(AlipayCoreReq alipayCoreReq);
 
     /**
      * 手机网站支付
      * <p>
      * 外部商户创建订单并支付
      *
-     * @param wapPayBizContentReq
+     * @param alipayCoreReq
      * @return
      */
-    String wapPay(WapPayBizContentReq wapPayBizContentReq);
+    String wapPay(AlipayCoreReq alipayCoreReq);
 }

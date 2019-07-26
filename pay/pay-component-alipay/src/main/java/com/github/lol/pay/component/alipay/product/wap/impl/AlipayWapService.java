@@ -29,34 +29,42 @@ public class AlipayWapService extends AbstractAlipayProductService implements IA
 
     @Override
     public String wapPay(WapPayBizContentReq wapPayBizContentReq) {
-        return this.getAlipayCoreService().wapPay(wapPayBizContentReq);
+        return this.getAlipayCoreService()
+                .wapPay(pkgAlipayCoreReq("wapPay", wapPayBizContentReq));
     }
 
     @Override
     public AlipayTradeQueryResponse query(@NonNull QueryBizContentReq queryBizContentReq) {
-        return this.getAlipayCoreService().query(queryBizContentReq);
+        return this.getAlipayCoreService()
+                .query(pkgAlipayCoreReq("query", queryBizContentReq));
     }
 
     @Override
     public AlipayTradeRefundResponse refund(@NonNull RefundBizContentReq refundBizContentReq) {
-        return this.getAlipayCoreService().refund(refundBizContentReq);
+        return this.getAlipayCoreService()
+                .refund(pkgAlipayCoreReq("refund", refundBizContentReq));
     }
 
     @Override
     public AlipayTradeFastpayRefundQueryResponse fastpayRefundQuery(
             @NonNull FastpayRefundQueryBizContentReq fastpayRefundQueryBizContentReq) {
-        return this.getAlipayCoreService().fastpayRefundQuery(fastpayRefundQueryBizContentReq);
+        return this.getAlipayCoreService()
+                .fastpayRefundQuery(pkgAlipayCoreReq("fastpayRefundQuery",
+                        fastpayRefundQueryBizContentReq));
     }
 
     @Override
     public AlipayTradeCloseResponse close(@NonNull CloseBizContentReq closeBizContentReq) {
-        return this.getAlipayCoreService().close(closeBizContentReq);
+        return this.getAlipayCoreService()
+                .close(pkgAlipayCoreReq("close", closeBizContentReq));
     }
 
     @Override
     public AlipayDataDataserviceBillDownloadurlQueryResponse billDownloadurlQuery(
             @NonNull BillDownloadUrlQueryBizContentReq billDownloadUrlQueryBizContentReq) {
-        return this.getAlipayCoreService().billDownloadurlQuery(billDownloadUrlQueryBizContentReq);
+        return this.getAlipayCoreService()
+                .billDownloadurlQuery(pkgAlipayCoreReq("billDownloadurlQuery",
+                        billDownloadUrlQueryBizContentReq));
     }
 
     @Override

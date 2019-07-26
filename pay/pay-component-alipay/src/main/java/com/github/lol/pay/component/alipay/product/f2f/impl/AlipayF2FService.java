@@ -28,49 +28,60 @@ public class AlipayF2FService extends AbstractAlipayProductService implements IA
 
     @Override
     public AlipayTradePayResponse pay(@NonNull PayBizContentReq payBizContentReq) {
-        return this.getAlipayCoreService().pay(payBizContentReq);
+        return this.getAlipayCoreService()
+                .pay(pkgAlipayCoreReq("pay", payBizContentReq));
     }
 
     @Override
     public AlipayTradeQueryResponse query(@NonNull QueryBizContentReq queryBizContentReq) {
-        return this.getAlipayCoreService().query(queryBizContentReq);
+        return this.getAlipayCoreService()
+                .query(pkgAlipayCoreReq("query", queryBizContentReq));
     }
 
     @Override
     public AlipayTradeCancelResponse cancel(@NonNull CancelBizContentReq cancelBizContentReq) {
-        return this.getAlipayCoreService().cancel(cancelBizContentReq);
+        return this.getAlipayCoreService()
+                .cancel(pkgAlipayCoreReq("cancel", cancelBizContentReq));
     }
 
     @Override
     public AlipayTradeCreateResponse create(@NonNull CreateBizContentReq createBizContentReq) {
-        return this.getAlipayCoreService().create(createBizContentReq);
+        return this.getAlipayCoreService()
+                .create(pkgAlipayCoreReq("create", createBizContentReq));
     }
 
     @Override
     public AlipayTradeRefundResponse refund(@NonNull RefundBizContentReq refundBizContentReq) {
-        return this.getAlipayCoreService().refund(refundBizContentReq);
+        return this.getAlipayCoreService()
+                .refund(pkgAlipayCoreReq("refund", refundBizContentReq));
     }
 
     @Override
     public AlipayTradePrecreateResponse preCreate(@NonNull PreCreateBizContentReq preCreateBizContentReq) {
-        return this.getAlipayCoreService().preCreate(preCreateBizContentReq);
+        return this.getAlipayCoreService()
+                .preCreate(pkgAlipayCoreReq("preCreate", preCreateBizContentReq));
     }
 
     @Override
     public AlipayTradeCloseResponse close(@NonNull CloseBizContentReq closeBizContentReq) {
-        return this.getAlipayCoreService().close(closeBizContentReq);
+        return this.getAlipayCoreService()
+                .close(pkgAlipayCoreReq("close", closeBizContentReq));
     }
 
     @Override
     public AlipayDataDataserviceBillDownloadurlQueryResponse billDownloadurlQuery(
             @NonNull BillDownloadUrlQueryBizContentReq billDownloadUrlQueryBizContentReq) {
-        return this.getAlipayCoreService().billDownloadurlQuery(billDownloadUrlQueryBizContentReq);
+        return this.getAlipayCoreService()
+                .billDownloadurlQuery(pkgAlipayCoreReq("billDownloadurlQuery",
+                        billDownloadUrlQueryBizContentReq));
     }
 
     @Override
     public MonitorHeartbeatSynResponse monitorHeartbeatSyn(
             @NonNull MonitorHeartbeatSynBizContentReq monitorHeartbeatSynBizContentReq) {
-        return this.getAlipayCoreService().monitorHeartbeatSyn(monitorHeartbeatSynBizContentReq);
+        return this.getAlipayCoreService()
+                .monitorHeartbeatSyn(pkgAlipayCoreReq("monitorHeartbeatSyn",
+                        monitorHeartbeatSynBizContentReq));
     }
 
     @Override

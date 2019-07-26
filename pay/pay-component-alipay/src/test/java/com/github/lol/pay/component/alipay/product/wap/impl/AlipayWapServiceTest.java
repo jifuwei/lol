@@ -10,6 +10,8 @@ import com.github.lol.pay.core.SimpleOrderIdGenerator;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static com.github.lol.pay.component.alipay.AlipayConfig.ENCODING_UTF_8;
 import static com.github.lol.pay.component.alipay.AlipayConfig.SIGN_TYPE_RSA2;
 import static com.github.lol.pay.component.alipay.product.model.BillDownloadUrlQueryBizContentReq.BILL_TYPE_TRADE;
@@ -19,7 +21,7 @@ public class AlipayWapServiceTest {
 
     private AlipayConfig config = new AlipayConfig("https://openapi.alipay.com/gateway.do",
             "APP_ID", "APP_PRIVATE_KEY", "json", ENCODING_UTF_8,
-            "ALIPAY_PUBLIC_KEY", SIGN_TYPE_RSA2);
+            "ALIPAY_PUBLIC_KEY", SIGN_TYPE_RSA2, new HashMap<>(), new HashMap<>());
 
     private IAlipayWapClient wapClient;
 

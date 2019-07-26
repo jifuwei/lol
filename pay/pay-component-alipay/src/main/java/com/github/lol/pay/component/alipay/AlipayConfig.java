@@ -6,6 +6,8 @@ import com.github.lol.lib.util.annotation.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Map;
+
 /**
  * alipay config
  *
@@ -22,6 +24,9 @@ public class AlipayConfig {
     public final static String SIGN_TYPE_RSA = "RSA";
     public final static String SIGN_TYPE_RSA2 = "RSA2";
 
+    /**
+     * 基础配置
+     */
     // 支付宝网关路由 固定
     @NotEmpty
     private String apiGatewayUrl;
@@ -44,8 +49,18 @@ public class AlipayConfig {
     @NotEmpty
     private String signType;
 
+    /**
+     * 回调管理
+     * <p>
+     * frontUrlMap key = String.format("%s.%s.frontUrl", 产品名, 当前执行的方法名);
+     * backUrlMap key = String.format("%s.%s.backUrl", 产品名, 当前执行的方法名);
+     */
+    private Map<String, String> frontUrlMap;
+    private Map<String, String> backUrlMap;
+
     public AlipayConfig(String apiGatewayUrl, String appId, String appPrivateKey, String paramFormat,
-                        String encoding, String alipayPublicKey, String signType) {
+                        String encoding, String alipayPublicKey, String signType,
+                        Map<String, String> frontUrlMap, Map<String, String> backUrlMap) {
         this.apiGatewayUrl = apiGatewayUrl;
         this.appId = appId;
         this.appPrivateKey = appPrivateKey;
@@ -53,6 +68,8 @@ public class AlipayConfig {
         this.encoding = encoding;
         this.alipayPublicKey = alipayPublicKey;
         this.signType = signType;
+        this.frontUrlMap = frontUrlMap;
+        this.backUrlMap = backUrlMap;
 
         init();
     }
