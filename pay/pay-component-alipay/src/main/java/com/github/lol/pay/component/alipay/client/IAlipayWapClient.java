@@ -4,7 +4,7 @@ import com.alipay.api.response.*;
 import com.github.lol.pay.component.alipay.product.model.*;
 
 /**
- * alipay F2F client
+ * alipay WAP client
  *
  * @author: jifuwei
  * @create: 2019-07-24 14:40
