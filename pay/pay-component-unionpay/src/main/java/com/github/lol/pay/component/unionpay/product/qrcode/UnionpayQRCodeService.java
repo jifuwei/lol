@@ -1,4 +1,4 @@
-package com.github.lol.pay.component.unionpay.product.qrcode.impl;
+package com.github.lol.pay.component.unionpay.product.qrcode;
 
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.client.IUnionpayQRCodeClient;

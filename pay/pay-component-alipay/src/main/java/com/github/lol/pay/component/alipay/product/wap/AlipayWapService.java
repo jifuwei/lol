@@ -1,8 +1,8 @@
-package com.github.lol.pay.component.alipay.product.pc.impl;
+package com.github.lol.pay.component.alipay.product.wap;
 
 import com.alipay.api.response.*;
 import com.github.lol.pay.component.alipay.AlipayConfig;
-import com.github.lol.pay.component.alipay.client.IAlipayPcClient;
+import com.github.lol.pay.component.alipay.client.IAlipayWapClient;
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.AbstractAlipayProductService;
 import com.github.lol.pay.component.alipay.product.model.*;
@@ -10,27 +10,27 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * alipay PC service
+ * alipay APP service
  *
  * @author: jifuwei
  * @create: 2019-07-24 14:36
  **/
 @Slf4j
-public class AlipayPcService extends AbstractAlipayProductService implements IAlipayPcClient {
+public class AlipayWapService extends AbstractAlipayProductService implements IAlipayWapClient {
 
-    public AlipayPcService(@NonNull AlipayConfig config) {
+    public AlipayWapService(@NonNull AlipayConfig config) {
         init(config);
     }
 
-    public static AlipayPcService of(@NonNull AlipayConfig config) {
-        return new AlipayPcService(config);
+    public static AlipayWapService of(@NonNull AlipayConfig config) {
+        return new AlipayWapService(config);
     }
 
 
     @Override
-    public String pagePay(PagePayBizContentReq pagePayBizContentReq) {
+    public String wapPay(WapPayBizContentReq wapPayBizContentReq) {
         return this.getAlipayCoreService()
-                .pagePay(pkgAlipayCoreReq("pagePay", pagePayBizContentReq));
+                .wapPay(pkgAlipayCoreReq("wapPay", wapPayBizContentReq));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.github.lol.pay.component.unionpay.product.gateway.impl;
+package com.github.lol.pay.component.unionpay.product.gateway;
 
 import com.github.lol.pay.component.unionpay.UnionpayConfig;
 import com.github.lol.pay.component.unionpay.client.IUnionpayGatewayClient;

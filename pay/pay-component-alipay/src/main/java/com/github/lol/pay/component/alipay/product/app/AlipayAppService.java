@@ -1,8 +1,8 @@
-package com.github.lol.pay.component.alipay.product.f2f.impl;
+package com.github.lol.pay.component.alipay.product.app;
 
 import com.alipay.api.response.*;
 import com.github.lol.pay.component.alipay.AlipayConfig;
-import com.github.lol.pay.component.alipay.client.IAlipayF2FClient;
+import com.github.lol.pay.component.alipay.client.IAlipayAppClient;
 import com.github.lol.pay.component.alipay.constant.AlipayProductEnum;
 import com.github.lol.pay.component.alipay.product.AbstractAlipayProductService;
 import com.github.lol.pay.component.alipay.product.model.*;
@@ -10,26 +10,27 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * alipay F2F service
+ * alipay APP service
  *
  * @author: jifuwei
  * @create: 2019-07-24 14:36
  **/
 @Slf4j
-public class AlipayF2FService extends AbstractAlipayProductService implements IAlipayF2FClient {
+public class AlipayAppService extends AbstractAlipayProductService implements IAlipayAppClient {
 
-    public AlipayF2FService(@NonNull AlipayConfig config) {
+    public AlipayAppService(@NonNull AlipayConfig config) {
         init(config);
     }
 
-    public static AlipayF2FService of(@NonNull AlipayConfig config) {
-        return new AlipayF2FService(config);
+    public static AlipayAppService of(@NonNull AlipayConfig config) {
+        return new AlipayAppService(config);
     }
 
+
     @Override
-    public AlipayTradePayResponse pay(@NonNull PayBizContentReq payBizContentReq) {
+    public AlipayTradeAppPayResponse appPay(@NonNull AppPayBizContentReq appPayBizContentReq) {
         return this.getAlipayCoreService()
-                .pay(pkgAlipayCoreReq("pay", payBizContentReq));
+                .appPay(pkgAlipayCoreReq("appPay", appPayBizContentReq));
     }
 
     @Override
@@ -39,27 +40,17 @@ public class AlipayF2FService extends AbstractAlipayProductService implements IA
     }
 
     @Override
-    public AlipayTradeCancelResponse cancel(@NonNull CancelBizContentReq cancelBizContentReq) {
-        return this.getAlipayCoreService()
-                .cancel(pkgAlipayCoreReq("cancel", cancelBizContentReq));
-    }
-
-    @Override
-    public AlipayTradeCreateResponse create(@NonNull CreateBizContentReq createBizContentReq) {
-        return this.getAlipayCoreService()
-                .create(pkgAlipayCoreReq("create", createBizContentReq));
-    }
-
-    @Override
     public AlipayTradeRefundResponse refund(@NonNull RefundBizContentReq refundBizContentReq) {
         return this.getAlipayCoreService()
                 .refund(pkgAlipayCoreReq("refund", refundBizContentReq));
     }
 
     @Override
-    public AlipayTradePrecreateResponse preCreate(@NonNull PreCreateBizContentReq preCreateBizContentReq) {
+    public AlipayTradeFastpayRefundQueryResponse fastpayRefundQuery(
+            @NonNull FastpayRefundQueryBizContentReq fastpayRefundQueryBizContentReq) {
         return this.getAlipayCoreService()
-                .preCreate(pkgAlipayCoreReq("preCreate", preCreateBizContentReq));
+                .fastpayRefundQuery(pkgAlipayCoreReq("fastpayRefundQuery",
+                        fastpayRefundQueryBizContentReq));
     }
 
     @Override
@@ -77,20 +68,12 @@ public class AlipayF2FService extends AbstractAlipayProductService implements IA
     }
 
     @Override
-    public MonitorHeartbeatSynResponse monitorHeartbeatSyn(
-            @NonNull MonitorHeartbeatSynBizContentReq monitorHeartbeatSynBizContentReq) {
-        return this.getAlipayCoreService()
-                .monitorHeartbeatSyn(pkgAlipayCoreReq("monitorHeartbeatSyn",
-                        monitorHeartbeatSynBizContentReq));
-    }
-
-    @Override
     protected String productName() {
-        return AlipayProductEnum.F2F.getDesc();
+        return AlipayProductEnum.APP.getDesc();
     }
 
     @Override
     protected String productId() {
-        return AlipayProductEnum.F2F.name();
+        return AlipayProductEnum.APP.name();
     }
 }
