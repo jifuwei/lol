@@ -4,6 +4,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.*;
 import com.alipay.api.response.*;
+import com.github.lol.lib.util.ReflectUtil;
 import com.github.lol.pay.component.alipay.AlipayConfig;
 import com.github.lol.pay.component.alipay.product.model.AlipayCoreReq;
 import lombok.Data;
@@ -156,15 +157,32 @@ public class AlipayCoreService implements IAlipayCoreClient {
     @SneakyThrows
     public String wapPay(@NonNull AlipayCoreReq alipayCoreReq) {
         AlipayTradeWapPayRequest req = new AlipayTradeWapPayRequest();
-        String frontUrl = getConfigUrl("frontUrl", alipayCoreReq.getProductId(), alipayCoreReq.getMethodName());
-        String backUrl = getConfigUrl("backUrl", alipayCoreReq.getProductId(), alipayCoreReq.getMethodName());
 
-        req.setReturnUrl(frontUrl);
-        req.setNotifyUrl(backUrl);
+        setUrl(req, alipayCoreReq);
         req.setBizContent(alipayCoreReq.getBizContent());
         log.debug("Alipay api [%s] [wapPay] req: {}", alipayCoreReq.getProductId(), req.getBizContent());
 
         return this.getAlipayClient().pageExecute(req).getBody();
+    }
+
+    @Override
+    @SneakyThrows
+    public String pagePay(AlipayCoreReq alipayCoreReq) {
+        AlipayTradePagePayRequest req = new AlipayTradePagePayRequest();
+
+        setUrl(req, alipayCoreReq);
+        req.setBizContent(alipayCoreReq.getBizContent());
+        log.debug("Alipay api [%s] [pagePay] req: {}", alipayCoreReq.getProductId(), req.getBizContent());
+
+        return this.getAlipayClient().pageExecute(req).getBody();
+    }
+
+    private void setUrl(Object req, AlipayCoreReq alipayCoreReq) {
+        String frontUrl = getConfigUrl("frontUrl", alipayCoreReq.getProductId(), alipayCoreReq.getMethodName());
+        String backUrl = getConfigUrl("backUrl", alipayCoreReq.getProductId(), alipayCoreReq.getMethodName());
+
+        ReflectUtil.invokeDeclaredMethod(req, "setReturnUrl", new Class[]{String.class}, new Object[]{frontUrl});
+        ReflectUtil.invokeDeclaredMethod(req, "setNotifyUrl", new Class[]{String.class}, new Object[]{backUrl});
     }
 
     private String getConfigUrl(@NonNull String type, @NonNull String productId, @NonNull String method) {

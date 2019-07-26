@@ -12,7 +12,8 @@ public enum AlipayProductEnum {
 
     F2F("当面付"),
     APP("APP支付"),
-    WAP("手机网站支付");
+    WAP("手机网站支付"),
+    PC("电脑网站支付");
 
     @Getter
     private String desc;

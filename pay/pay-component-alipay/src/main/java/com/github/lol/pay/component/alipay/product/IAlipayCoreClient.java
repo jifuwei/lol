@@ -144,4 +144,14 @@ public interface IAlipayCoreClient {
      * @return
      */
     String wapPay(AlipayCoreReq alipayCoreReq);
+
+    /**
+     * 统一收单下单并支付页面接口
+     * <p>
+     * PC场景下单并支付
+     *
+     * @param alipayCoreReq
+     * @return
+     */
+    String pagePay(AlipayCoreReq alipayCoreReq);
 }
