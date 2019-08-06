@@ -1,11 +1,10 @@
 package com.github.lol.pay.component.wechatpay.product.f2f;
 
-import com.alibaba.fastjson.JSON;
 import com.github.lol.pay.component.wechatpay.IWeChatPayF2FClient;
 import com.github.lol.pay.component.wechatpay.WeChatPayConfig;
 import com.github.lol.pay.component.wechatpay.constant.WeChatPayProductEnum;
 import com.github.lol.pay.component.wechatpay.product.AbstractWeChatPayProductService;
-import com.github.lol.pay.component.wechatpay.product.model.MicroPayReq;
+import com.github.lol.pay.component.wechatpay.product.model.*;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,60 @@ public class WeChatPayF2FService extends AbstractWeChatPayProductService impleme
     @Override
     @SneakyThrows
     public Map<String, String> microPay(MicroPayReq microPayReq) {
-        return this.getWxPay().microPay(JSON.parseObject(JSON.toJSONString(microPayReq, this.getSerializeConfig()), Map.class));
+        return this.getWxPay().microPay(serializeObject2Map(microPayReq));
+    }
+
+    @Override
+    @SneakyThrows
+    public Map<String, String> orderQuery(OrderQueryReq orderQueryReq) {
+        return this.getWxPay().orderQuery(serializeObject2Map(orderQueryReq));
+    }
+
+    @Override
+    @SneakyThrows
+    public Map<String, String> reverse(ReverseReq reverseReq) {
+        return this.getWxPay().reverse(serializeObject2Map(reverseReq));
+    }
+
+    @Override
+    @SneakyThrows
+    public Map<String, String> refund(RefundReq refundReq) {
+        return this.getWxPay().refund(serializeObject2Map(refundReq));
+    }
+
+    @Override
+    @SneakyThrows
+    public Map<String, String> refundQuery(RefundQueryReq refundQueryReq) {
+        return this.getWxPay().refundQuery(serializeObject2Map(refundQueryReq));
+    }
+
+    @Override
+    @SneakyThrows
+    public Map<String, String> downloadBill(DownloadBillReq downloadBillReq) {
+        return this.getWxPay().downloadBill(serializeObject2Map(downloadBillReq));
+    }
+
+    @Override
+    @SneakyThrows
+    public Map<String, String> downloadFundFlow(DownloadFundFlowReq downloadBillReq) {
+        return this.getWxPay().downloadFundFlow(serializeObject2Map(downloadBillReq));
+    }
+
+    @Override
+    @SneakyThrows
+    public Map<String, String> report(ReportReq reportReq) {
+        return this.getWxPay().report(serializeObject2Map(reportReq));
+    }
+
+    @Override
+    @SneakyThrows
+    public Map<String, String> authCodeToOpenId(AuthCodeToOpenIdReq authCodeToOpenIdReq) {
+        return this.getWxPay().authCodeToOpenid(serializeObject2Map(authCodeToOpenIdReq));
+    }
+
+    @Override
+    public Map<String, String> batchQueryComment(BatchQueryCommentReq batchQueryCommentReq) {
+        return null; // TODO 暂不支持
     }
 
     @Override

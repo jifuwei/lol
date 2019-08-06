@@ -578,6 +578,32 @@ public class WXPay {
         return ret;
     }
 
+    public Map<String, String> downloadFundFlow(Map<String, String> reqData) throws Exception {
+        return this.downloadFundFlow(reqData, this.config.getHttpConnectTimeoutMs(), this.config.getHttpReadTimeoutMs());
+    }
+
+    public Map<String, String> downloadFundFlow(Map<String, String> reqData, int connectTimeoutMs, int readTimeoutMs) throws Exception {
+        String url;
+        if (this.useSandbox) {
+            url = WXPayConstants.SANDBOX_DOWNLOADFUNDFLOW_URL_SUFFIX;
+        } else {
+            url = WXPayConstants.DOWNLOADFUNDFLOW_URL_SUFFIX;
+        }
+        String respStr = this.requestWithoutCert(url, this.fillRequestData(reqData), connectTimeoutMs, readTimeoutMs).trim();
+        Map<String, String> ret;
+        // 出现错误，返回XML数据
+        if (respStr.indexOf("<") == 0) {
+            ret = WXPayUtil.xmlToMap(respStr);
+        } else {
+            // 正常返回csv数据
+            ret = new HashMap<String, String>();
+            ret.put("return_code", WXPayConstants.SUCCESS);
+            ret.put("return_msg", "ok");
+            ret.put("data", respStr);
+        }
+        return ret;
+    }
+
 
     /**
      * 作用：交易保障<br>
